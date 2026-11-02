@@ -73,4 +73,4 @@ Prayer times via AlAdhan or an explicitly selected offline calculation; next pra
 
 واجهة عربية وإنجليزية، والأرقام تتبع اللغة تلقائيًا. الصلاة والطقس اختياريان ولا يحتاجان صلاحية الموقع. المواقيت محسوبة ويجب مطابقتها مع جدول مسجدك؛ ليست اعتمادًا رسميًا. الصور مرخّصة، ولا تتضمن النسخة العامة فيديوهات الاختبار الشخصية. كل تغيير في المعاينة يحتاج الحفظ الصريح. النسخة تجريبية وتبقى القيود موضحة في تقرير التحقق.
 
-[Smart Ambient visual review gallery](docs/0.9.0/gallery.html) | [1080p Studio screenshot](docs/0.9.0/images/studio-smart.png) (host-rendered,not a physical-TV test).
+[Smart Ambient visual review gallery](docs/0.9.0/gallery.html) | [Arabic Studio](docs/0.9.0/images/studio-smart.png) · [English Studio](docs/0.9.0/images/studio-en.png) (host-rendered,not a physical-TV test).

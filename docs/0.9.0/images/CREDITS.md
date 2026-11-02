@@ -1,6 +1,6 @@
 # 0.9 host-rendered review gallery
 
-Actual shared-renderer test captures at1920x1080,not physical-TV screenshots. Clock/date/prayer labels are rendered live; weather is explicitly labeled sample data. UI is MIT; photo portions retain their original licenses. Changes: runtime crop/resize/compression plus UI composition. No synthetic footage.
+Actual shared-renderer test captures at1920x1080,not physical-TV screenshots. Clock/date/prayer labels are rendered live; widget captures use dated provider-reference fixtures (not current readings); the Studio images show the real live renderer without fabricated network data. UI is MIT; photo portions retain their original licenses. Changes: runtime crop/resize/compression plus UI composition. No synthetic footage.
 
 ## smart-theme-0.png - Saudi Green / Diriyah
 
@@ -38,7 +38,7 @@ License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0
 
 Photo portion retains this license,including share-alike where applicable. No endorsement.
 
-## studio-smart.png - Live Preview Studio / Smart Information
+## studio-smart.png and studio-en.png - Live Preview Studio / Arabic and English
 
 Creator: Radosław Botev
 

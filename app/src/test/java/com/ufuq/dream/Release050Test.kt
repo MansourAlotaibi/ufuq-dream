@@ -55,9 +55,9 @@ class Release050Test {
   prefs.edit().putInt("schema",5).putInt("scene_choice",2).putBoolean("hour24",false).commit()
   val repo=SettingsRepository(context);val saved=repo.load()
   assertFalse(saved.nightDim);assertFalse(saved.latinDigits)
-  val draft=SettingsDraft(saved);draft.update(saved.copy(nightDim=true,latinDigits=true))
+  val draft=SettingsDraft(saved);draft.update(saved.copy(nightDim=true,latinDigits=true,language="en"))
   assertFalse(repo.load().nightDim);draft.revert();assertEquals(saved,draft.current)
-  draft.update(saved.copy(nightDim=true,latinDigits=true));repo.save(draft.current)
+  draft.update(saved.copy(nightDim=true,latinDigits=true,language="en"));repo.save(draft.current)
   assertTrue(SettingsRepository(context).load().nightDim);assertTrue(repo.load().latinDigits)
  }
  @Test fun nightRampAndOffAreDeterministic(){
@@ -132,9 +132,9 @@ class Release050Test {
   val controller=Robolectric.buildActivity(SettingsActivity::class.java).setup()
   val a=controller.get();val root=a.window.decorView
   root.findViewWithTag<android.view.View>("night").performClick()
-  root.findViewWithTag<android.view.View>("section_1").requestFocus()
+  root.findViewWithTag<android.view.View>("section_0").requestFocus()
   shadowOf(Looper.getMainLooper()).idle()
-  root.findViewWithTag<android.view.View>("digits").performClick()
+  root.findViewWithTag<android.view.View>("language").performClick()
   org.robolectric.shadows.ShadowDialog.getLatestDialog().findViewById<android.view.View>(android.R.id.content)
    .findViewWithTag<android.view.View>("choice_1").performClick()
   assertTrue(a.draft.current.nightDim);assertTrue(a.draft.current.latinDigits)

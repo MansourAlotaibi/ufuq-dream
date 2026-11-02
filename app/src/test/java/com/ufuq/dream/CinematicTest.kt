@@ -151,7 +151,7 @@ class CinematicTest {
         val controller=Robolectric.buildActivity(SettingsActivity::class.java).setup()
         val a=controller.get();val decor=a.window.decorView
         capture(decor,"studio-automatic")
-        assertNull(decor.findViewWithTag<View>("section_3"));assertNull(decor.findViewWithTag<View>("compare"))
+        assertNotNull(decor.findViewWithTag<View>("section_3"));assertNull(decor.findViewWithTag<View>("section_4"));assertNull(decor.findViewWithTag<View>("compare"))
         choose(a,"scene",3);assertEquals(2,a.draft.current.sceneChoice);assertEquals(-1,repo.load().sceneChoice)
         section(a,1);choose(a,"size",1);choose(a,"time",0)
         decor.findViewWithTag<View>("gregorian").performClick();idle();decor.findViewWithTag<View>("hijri").performClick();idle()

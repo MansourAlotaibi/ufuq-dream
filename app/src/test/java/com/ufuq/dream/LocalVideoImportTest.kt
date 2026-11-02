@@ -52,6 +52,9 @@ class LocalVideoImportTest {
         controller.pause().stop().destroy()
     }
     @Test fun importRequiresExplicitRightsAcknowledgementAndScopedPicker() {
+        val picker=Intent(Intent.ACTION_OPEN_DOCUMENT).apply{addCategory(Intent.CATEGORY_OPENABLE);type="video/mp4";addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)}
+        val handler=android.content.pm.ResolveInfo().apply{activityInfo=android.content.pm.ActivityInfo().apply{packageName="example.documents";name="example.documents.Picker";enabled=true;exported=true}}
+        shadowOf(context.packageManager).addResolveInfoForIntent(picker,handler)
         val controller = Robolectric.buildActivity(SettingsActivity::class.java).setup()
         val activity = controller.get()
         activity.window.decorView.findViewWithTag<View>("import_video").performClick()

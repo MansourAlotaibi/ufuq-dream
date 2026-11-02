@@ -17,3 +17,6 @@ Preserve the working Mi Box experience. Publish only the curated source and lice
 - Localization resources and a deliberate English experience if supported; Arabic remains the primary product language.
 
 Do not add weather, prayer times, sports, feeds or network accounts just to increase feature count. No timetable is promised.
+
+## 0.9 Smart Ambient — review branch
+Implemented optional offline calculated prayer times and saved-opt-in weather with shared Studio/Dream presentation. Before release: independent production key/password recovery,isolated production APK testing,physical TV/overscan/D-pad/long-run checks,prayer timetable review and provider compatibility. Future extension points only: football information and optional ambient audio; neither is implemented in0.9. No date for them is promised.

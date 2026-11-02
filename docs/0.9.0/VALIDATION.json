@@ -1,0 +1,45 @@
+{
+  "version": "0.9.0-rc1",
+  "versionCode": 22,
+  "codeCommit": "513cf3aeb06366b7e06d6d74902d488c2cd6cb94",
+  "cleanGradle": [
+    "clean",
+    "assembleDebug",
+    "assembleRelease",
+    "lintDebug",
+    "lintRelease",
+    "test"
+  ],
+  "cleanBuild": "success",
+  "hostMediaTests": {
+    "tests": 5,
+    "failures": 0
+  },
+  "physicalScope": "Earlier debug stability build: one-hour run; new color/bilingual changes are not a new production-signed endurance certification.",
+  "remainingStableGates": [
+    "Independent signing-key/password recovery verification",
+    "Isolated production APK physical acceptance",
+    "Sleep/wake and broader physical TV coverage"
+  ],
+  "newPublication": "prerelease only",
+  "Debug": {
+    "tests": 146,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "lint": {
+      "Error": 0,
+      "Warning": 9
+    }
+  },
+  "Release": {
+    "tests": 146,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "lint": {
+      "Error": 0,
+      "Warning": 9
+    }
+  }
+}

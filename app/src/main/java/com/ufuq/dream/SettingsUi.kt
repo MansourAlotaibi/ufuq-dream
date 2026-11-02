@@ -14,6 +14,8 @@ class SettingsUi(private val context: Context) {
     val ink = Color.parseColor("#F2EBDD")
     val muted = Color.parseColor("#B9B4A6")
     var themeIndex: Int = 1
+    var language: String = "ar"
+    fun tr(value:String)=AppLanguage.text(value,language)
     val accent get() = ThemeManager.get(themeIndex).accent
     fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
     fun surface(focused: Boolean, selected: Boolean = false) = GradientDrawable().apply {
@@ -23,15 +25,15 @@ class SettingsUi(private val context: Context) {
         if (focused) setStroke(dp(2), ink)
     }
     fun text(value: String, size: Float, secondary: Boolean = false) = TextView(context).apply {
-        text = value; textSize = size; setTextColor(if (secondary) muted else ink)
+        text = tr(value); textSize = size; setTextColor(if (secondary) muted else ink)
         gravity = Gravity.START or Gravity.CENTER_VERTICAL
-        textDirection = View.TEXT_DIRECTION_RTL
+        textDirection = if(language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL
         typeface = Typeface.create("sans-serif", Typeface.NORMAL)
         isFocusable = false
     }
     fun row(title: String, description: String, value: String, help: (String) -> Unit, click: () -> Unit): LinearLayout {
         val row = LinearLayout(context).apply {
-            orientation = LinearLayout.HORIZONTAL; layoutDirection = View.LAYOUT_DIRECTION_RTL
+            orientation = LinearLayout.HORIZONTAL; layoutDirection = AppLanguage.direction(language)
             gravity = Gravity.CENTER_VERTICAL; minimumHeight = dp(76)
             setPadding(dp(18), dp(10), dp(18), dp(10)); isFocusable = true; isFocusableInTouchMode = true; isClickable = true
             descendantFocusability = android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS

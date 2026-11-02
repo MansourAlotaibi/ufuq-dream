@@ -1,0 +1,834 @@
+[
+  {
+    "city": "riyadh",
+    "date": "02-11-2026",
+    "method": 4,
+    "school": 0,
+    "url": "https://api.aladhan.com/v1/timings/02-11-2026?latitude=24.7136&longitude=46.6753&method=4&school=0&timezonestring=Asia/Riyadh&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "12dcd482822b79ac610446d30ef49f1dff8f8b13f9baeb12299195f9ff833e64",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-11-02T04:41:00+03:00",
+          "Sunrise": "2026-11-02T06:01:00+03:00",
+          "Dhuhr": "2026-11-02T11:37:00+03:00",
+          "Asr": "2026-11-02T14:49:00+03:00",
+          "Sunset": "2026-11-02T17:13:00+03:00",
+          "Maghrib": "2026-11-02T17:13:00+03:00",
+          "Isha": "2026-11-02T18:43:00+03:00",
+          "Imsak": "2026-11-02T04:31:00+03:00",
+          "Midnight": "2026-11-02T23:37:00+03:00",
+          "Firstthird": "2026-11-02T21:29:00+03:00",
+          "Lastthird": "2026-11-03T01:45:00+03:00"
+        },
+        "date": {
+          "readable": "02 Nov 2026",
+          "timestamp": "1793592000",
+          "hijri": {
+            "date": "22-05-1448",
+            "format": "DD-MM-YYYY",
+            "day": "22",
+            "weekday": {
+              "en": "Al Athnayn",
+              "ar": "الاثنين"
+            },
+            "month": {
+              "number": 5,
+              "en": "Jumādá al-ūlá",
+              "ar": "جُمادى الأولى",
+              "days": 30
+            },
+            "year": "1448",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "02-11-2026",
+            "format": "DD-MM-YYYY",
+            "day": "02",
+            "weekday": {
+              "en": "Monday"
+            },
+            "month": {
+              "number": 11,
+              "en": "November"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 24.7136,
+          "longitude": 46.6753,
+          "timezone": "Asia/Riyadh",
+          "method": {
+            "id": 4,
+            "name": "Umm Al-Qura University, Makkah",
+            "params": {
+              "Fajr": 18.5,
+              "Isha": "90 min"
+            },
+            "location": {
+              "latitude": 21.3890824,
+              "longitude": 39.8579118
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "STANDARD",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "riyadh",
+    "date": "03-11-2026",
+    "method": 4,
+    "school": 0,
+    "url": "https://api.aladhan.com/v1/timings/03-11-2026?latitude=24.7136&longitude=46.6753&method=4&school=0&timezonestring=Asia/Riyadh&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "f3a643248b28b7690debd98f818bb9827ed4bb0670324ab10591f8b024778355",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-11-03T04:42:00+03:00",
+          "Sunrise": "2026-11-03T06:01:00+03:00",
+          "Dhuhr": "2026-11-03T11:37:00+03:00",
+          "Asr": "2026-11-03T14:49:00+03:00",
+          "Sunset": "2026-11-03T17:12:00+03:00",
+          "Maghrib": "2026-11-03T17:12:00+03:00",
+          "Isha": "2026-11-03T18:42:00+03:00",
+          "Imsak": "2026-11-03T04:32:00+03:00",
+          "Midnight": "2026-11-03T23:37:00+03:00",
+          "Firstthird": "2026-11-03T21:28:00+03:00",
+          "Lastthird": "2026-11-04T01:45:00+03:00"
+        },
+        "date": {
+          "readable": "03 Nov 2026",
+          "timestamp": "1793678400",
+          "hijri": {
+            "date": "23-05-1448",
+            "format": "DD-MM-YYYY",
+            "day": "23",
+            "weekday": {
+              "en": "Al Thalaata",
+              "ar": "الثلاثاء"
+            },
+            "month": {
+              "number": 5,
+              "en": "Jumādá al-ūlá",
+              "ar": "جُمادى الأولى",
+              "days": 30
+            },
+            "year": "1448",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "03-11-2026",
+            "format": "DD-MM-YYYY",
+            "day": "03",
+            "weekday": {
+              "en": "Tuesday"
+            },
+            "month": {
+              "number": 11,
+              "en": "November"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 24.7136,
+          "longitude": 46.6753,
+          "timezone": "Asia/Riyadh",
+          "method": {
+            "id": 4,
+            "name": "Umm Al-Qura University, Makkah",
+            "params": {
+              "Fajr": 18.5,
+              "Isha": "90 min"
+            },
+            "location": {
+              "latitude": 21.3890824,
+              "longitude": 39.8579118
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "STANDARD",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "jeddah",
+    "date": "15-03-2026",
+    "method": 4,
+    "school": 0,
+    "url": "https://api.aladhan.com/v1/timings/15-03-2026?latitude=21.5433&longitude=39.1728&method=4&school=0&timezonestring=Asia/Riyadh&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "3dab803fd32b0c8123adec60f766a2e099cfb528b2e1cd2283d2bf0c7c79c0e1",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-03-15T05:16:00+03:00",
+          "Sunrise": "2026-03-15T06:32:00+03:00",
+          "Dhuhr": "2026-03-15T12:32:00+03:00",
+          "Asr": "2026-03-15T15:56:00+03:00",
+          "Sunset": "2026-03-15T18:33:00+03:00",
+          "Maghrib": "2026-03-15T18:33:00+03:00",
+          "Isha": "2026-03-15T20:33:00+03:00",
+          "Imsak": "2026-03-15T05:06:00+03:00",
+          "Midnight": "2026-03-16T00:32:00+03:00",
+          "Firstthird": "2026-03-15T22:32:00+03:00",
+          "Lastthird": "2026-03-16T02:32:00+03:00"
+        },
+        "date": {
+          "readable": "15 Mar 2026",
+          "timestamp": "1773547200",
+          "hijri": {
+            "date": "26-09-1447",
+            "format": "DD-MM-YYYY",
+            "day": "26",
+            "weekday": {
+              "en": "Al Ahad",
+              "ar": "الاحد"
+            },
+            "month": {
+              "number": 9,
+              "en": "Ramaḍān",
+              "ar": "رَمَضان",
+              "days": 30
+            },
+            "year": "1447",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "15-03-2026",
+            "format": "DD-MM-YYYY",
+            "day": "15",
+            "weekday": {
+              "en": "Sunday"
+            },
+            "month": {
+              "number": 3,
+              "en": "March"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 21.5433,
+          "longitude": 39.1728,
+          "timezone": "Asia/Riyadh",
+          "method": {
+            "id": 4,
+            "name": "Umm Al-Qura University, Makkah",
+            "params": {
+              "Fajr": 18.5,
+              "Isha": "90 min"
+            },
+            "location": {
+              "latitude": 21.3890824,
+              "longitude": 39.8579118
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "STANDARD",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 30,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "makkah",
+    "date": "02-11-2026",
+    "method": 4,
+    "school": 0,
+    "url": "https://api.aladhan.com/v1/timings/02-11-2026?latitude=21.4225&longitude=39.8262&method=4&school=0&timezonestring=Asia/Riyadh&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "5407f0637e3abf80c0fa87576a9411e3202e27994a042b1e46f090c96f9081e1",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-11-02T05:06:00+03:00",
+          "Sunrise": "2026-11-02T06:24:00+03:00",
+          "Dhuhr": "2026-11-02T12:04:00+03:00",
+          "Asr": "2026-11-02T15:20:00+03:00",
+          "Sunset": "2026-11-02T17:44:00+03:00",
+          "Maghrib": "2026-11-02T17:44:00+03:00",
+          "Isha": "2026-11-02T19:14:00+03:00",
+          "Imsak": "2026-11-02T04:56:00+03:00",
+          "Midnight": "2026-11-03T00:04:00+03:00",
+          "Firstthird": "2026-11-02T21:57:00+03:00",
+          "Lastthird": "2026-11-03T02:11:00+03:00"
+        },
+        "date": {
+          "readable": "02 Nov 2026",
+          "timestamp": "1793592000",
+          "hijri": {
+            "date": "22-05-1448",
+            "format": "DD-MM-YYYY",
+            "day": "22",
+            "weekday": {
+              "en": "Al Athnayn",
+              "ar": "الاثنين"
+            },
+            "month": {
+              "number": 5,
+              "en": "Jumādá al-ūlá",
+              "ar": "جُمادى الأولى",
+              "days": 30
+            },
+            "year": "1448",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "02-11-2026",
+            "format": "DD-MM-YYYY",
+            "day": "02",
+            "weekday": {
+              "en": "Monday"
+            },
+            "month": {
+              "number": 11,
+              "en": "November"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 21.4225,
+          "longitude": 39.8262,
+          "timezone": "Asia/Riyadh",
+          "method": {
+            "id": 4,
+            "name": "Umm Al-Qura University, Makkah",
+            "params": {
+              "Fajr": 18.5,
+              "Isha": "90 min"
+            },
+            "location": {
+              "latitude": 21.3890824,
+              "longitude": 39.8579118
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "STANDARD",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "madinah",
+    "date": "02-11-2026",
+    "method": 4,
+    "school": 1,
+    "url": "https://api.aladhan.com/v1/timings/02-11-2026?latitude=24.4672&longitude=39.6111&method=4&school=1&timezonestring=Asia/Riyadh&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "1e17f009bb3ffad6efef915a677a06c3dbd166affb858ca37ee8a24cfb1cf089",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-11-02T05:09:00+03:00",
+          "Sunrise": "2026-11-02T06:29:00+03:00",
+          "Dhuhr": "2026-11-02T12:05:00+03:00",
+          "Asr": "2026-11-02T16:05:00+03:00",
+          "Sunset": "2026-11-02T17:41:00+03:00",
+          "Maghrib": "2026-11-02T17:41:00+03:00",
+          "Isha": "2026-11-02T19:11:00+03:00",
+          "Imsak": "2026-11-02T04:59:00+03:00",
+          "Midnight": "2026-11-03T00:05:00+03:00",
+          "Firstthird": "2026-11-02T21:57:00+03:00",
+          "Lastthird": "2026-11-03T02:13:00+03:00"
+        },
+        "date": {
+          "readable": "02 Nov 2026",
+          "timestamp": "1793592000",
+          "hijri": {
+            "date": "22-05-1448",
+            "format": "DD-MM-YYYY",
+            "day": "22",
+            "weekday": {
+              "en": "Al Athnayn",
+              "ar": "الاثنين"
+            },
+            "month": {
+              "number": 5,
+              "en": "Jumādá al-ūlá",
+              "ar": "جُمادى الأولى",
+              "days": 30
+            },
+            "year": "1448",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "02-11-2026",
+            "format": "DD-MM-YYYY",
+            "day": "02",
+            "weekday": {
+              "en": "Monday"
+            },
+            "month": {
+              "number": 11,
+              "en": "November"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 24.4672,
+          "longitude": 39.6111,
+          "timezone": "Asia/Riyadh",
+          "method": {
+            "id": 4,
+            "name": "Umm Al-Qura University, Makkah",
+            "params": {
+              "Fajr": 18.5,
+              "Isha": "90 min"
+            },
+            "location": {
+              "latitude": 21.3890824,
+              "longitude": 39.8579118
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "HANAFI",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "riyadh",
+    "date": "02-11-2026",
+    "method": 3,
+    "school": 0,
+    "url": "https://api.aladhan.com/v1/timings/02-11-2026?latitude=24.7136&longitude=46.6753&method=3&school=0&timezonestring=Asia/Riyadh&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "ee462e5ed5bc50ddfd5c1cbfe0c38626f234f6ad8dd08d962754257e10700ea1",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-11-02T04:43:00+03:00",
+          "Sunrise": "2026-11-02T06:01:00+03:00",
+          "Dhuhr": "2026-11-02T11:37:00+03:00",
+          "Asr": "2026-11-02T14:49:00+03:00",
+          "Sunset": "2026-11-02T17:13:00+03:00",
+          "Maghrib": "2026-11-02T17:13:00+03:00",
+          "Isha": "2026-11-02T18:26:00+03:00",
+          "Imsak": "2026-11-02T04:33:00+03:00",
+          "Midnight": "2026-11-02T23:37:00+03:00",
+          "Firstthird": "2026-11-02T21:29:00+03:00",
+          "Lastthird": "2026-11-03T01:45:00+03:00"
+        },
+        "date": {
+          "readable": "02 Nov 2026",
+          "timestamp": "1793592000",
+          "hijri": {
+            "date": "22-05-1448",
+            "format": "DD-MM-YYYY",
+            "day": "22",
+            "weekday": {
+              "en": "Al Athnayn",
+              "ar": "الاثنين"
+            },
+            "month": {
+              "number": 5,
+              "en": "Jumādá al-ūlá",
+              "ar": "جُمادى الأولى",
+              "days": 30
+            },
+            "year": "1448",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "02-11-2026",
+            "format": "DD-MM-YYYY",
+            "day": "02",
+            "weekday": {
+              "en": "Monday"
+            },
+            "month": {
+              "number": 11,
+              "en": "November"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 24.7136,
+          "longitude": 46.6753,
+          "timezone": "Asia/Riyadh",
+          "method": {
+            "id": 3,
+            "name": "Muslim World League",
+            "params": {
+              "Fajr": 18,
+              "Isha": 17
+            },
+            "location": {
+              "latitude": 51.5194682,
+              "longitude": -0.1360365
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "STANDARD",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "london",
+    "date": "29-03-2026",
+    "method": 3,
+    "school": 0,
+    "url": "https://api.aladhan.com/v1/timings/29-03-2026?latitude=51.5074&longitude=-0.1278&method=3&school=0&timezonestring=Europe/London&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "4fbf5c9b1c00cd39f30d8f6f4a8298fc093374826964af35090672f8d768755d",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-03-29T04:46:00+01:00",
+          "Sunrise": "2026-03-29T06:43:00+01:00",
+          "Dhuhr": "2026-03-29T13:05:00+01:00",
+          "Asr": "2026-03-29T16:34:00+01:00",
+          "Sunset": "2026-03-29T19:29:00+01:00",
+          "Maghrib": "2026-03-29T19:29:00+01:00",
+          "Isha": "2026-03-29T21:19:00+01:00",
+          "Imsak": "2026-03-29T04:36:00+01:00",
+          "Midnight": "2026-03-30T02:06:00+01:00",
+          "Firstthird": "2026-03-29T23:13:00+01:00",
+          "Lastthird": "2026-03-30T02:58:00+01:00"
+        },
+        "date": {
+          "readable": "29 Mar 2026",
+          "timestamp": "1774767600",
+          "hijri": {
+            "date": "10-10-1447",
+            "format": "DD-MM-YYYY",
+            "day": "10",
+            "weekday": {
+              "en": "Al Ahad",
+              "ar": "الاحد"
+            },
+            "month": {
+              "number": 10,
+              "en": "Shawwāl",
+              "ar": "شَوّال",
+              "days": 29
+            },
+            "year": "1447",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "29-03-2026",
+            "format": "DD-MM-YYYY",
+            "day": "29",
+            "weekday": {
+              "en": "Sunday"
+            },
+            "month": {
+              "number": 3,
+              "en": "March"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 51.5074,
+          "longitude": -0.1278,
+          "timezone": "Europe/London",
+          "method": {
+            "id": 3,
+            "name": "Muslim World League",
+            "params": {
+              "Fajr": 18,
+              "Isha": 17
+            },
+            "location": {
+              "latitude": 51.5194682,
+              "longitude": -0.1360365
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "STANDARD",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  },
+  {
+    "city": "london",
+    "date": "25-10-2026",
+    "method": 3,
+    "school": 1,
+    "url": "https://api.aladhan.com/v1/timings/25-10-2026?latitude=51.5074&longitude=-0.1278&method=3&school=1&timezonestring=Europe/London&iso8601=true&calendarMethod=UAQ&latitudeAdjustmentMethod=3&midnightMode=0",
+    "retrievedOn": "2026-11-02",
+    "sha256": "a76c19fcef1cc216659713fbb19efd04155d1dd05671150a8d5baffaa3be38e6",
+    "response": {
+      "code": 200,
+      "status": "OK",
+      "data": {
+        "timings": {
+          "Fajr": "2026-10-25T04:49:00+00:00",
+          "Sunrise": "2026-10-25T06:42:00+00:00",
+          "Dhuhr": "2026-10-25T11:45:00+00:00",
+          "Asr": "2026-10-25T14:57:00+00:00",
+          "Sunset": "2026-10-25T16:47:00+00:00",
+          "Maghrib": "2026-10-25T16:47:00+00:00",
+          "Isha": "2026-10-25T18:32:00+00:00",
+          "Imsak": "2026-10-25T04:39:00+00:00",
+          "Midnight": "2026-10-25T23:44:00+00:00",
+          "Firstthird": "2026-10-25T21:25:00+00:00",
+          "Lastthird": "2026-10-26T02:03:00+00:00"
+        },
+        "date": {
+          "readable": "25 Oct 2026",
+          "timestamp": "1792908000",
+          "hijri": {
+            "date": "14-05-1448",
+            "format": "DD-MM-YYYY",
+            "day": "14",
+            "weekday": {
+              "en": "Al Ahad",
+              "ar": "الاحد"
+            },
+            "month": {
+              "number": 5,
+              "en": "Jumādá al-ūlá",
+              "ar": "جُمادى الأولى",
+              "days": 30
+            },
+            "year": "1448",
+            "designation": {
+              "abbreviated": "AH",
+              "expanded": "Anno Hegirae"
+            },
+            "holidays": [],
+            "adjustedHolidays": [],
+            "method": "UAQ"
+          },
+          "gregorian": {
+            "date": "25-10-2026",
+            "format": "DD-MM-YYYY",
+            "day": "25",
+            "weekday": {
+              "en": "Sunday"
+            },
+            "month": {
+              "number": 10,
+              "en": "October"
+            },
+            "year": "2026",
+            "designation": {
+              "abbreviated": "AD",
+              "expanded": "Anno Domini"
+            },
+            "lunarSighting": false
+          }
+        },
+        "meta": {
+          "latitude": 51.5074,
+          "longitude": -0.1278,
+          "timezone": "Europe/London",
+          "method": {
+            "id": 3,
+            "name": "Muslim World League",
+            "params": {
+              "Fajr": 18,
+              "Isha": 17
+            },
+            "location": {
+              "latitude": 51.5194682,
+              "longitude": -0.1360365
+            }
+          },
+          "latitudeAdjustmentMethod": "ANGLE_BASED",
+          "midnightMode": "STANDARD",
+          "school": "HANAFI",
+          "offset": {
+            "Imsak": 0,
+            "Fajr": 0,
+            "Sunrise": 0,
+            "Dhuhr": 0,
+            "Asr": 0,
+            "Maghrib": 0,
+            "Sunset": 0,
+            "Isha": 0,
+            "Midnight": 0
+          }
+        }
+      }
+    }
+  }
+]

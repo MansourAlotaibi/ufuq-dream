@@ -20,7 +20,9 @@ data class DisplaySettings(
     val photoCategory: Int = theme,
     val backgroundType: Int = 0,
     val fixedAssetId: String = "",
-    val clockPosition: Int = ClockPlacement.AUTOMATIC
+    val clockPosition: Int = ClockPlacement.AUTOMATIC,
+    val smart: com.ufuq.dream.smart.SmartSettings = com.ufuq.dream.smart.SmartSettings(),
+    val language: String = "ar"
 ) : java.io.Serializable
 
 class SettingsRepository(context: Context) {
@@ -47,13 +49,15 @@ class SettingsRepository(context: Context) {
         false, false, 0, prefs.getInt("scene_choice", -1).coerceIn(-1, 2),
         prefs.getInt("greeting_mode", 0).coerceIn(0, 3), prefs.getInt("greeting_preset", 0).coerceIn(0, 3),
         GreetingText.clean(prefs.getString("greeting_text", "").orEmpty()),
-        prefs.getBoolean("latin_digits", false), prefs.getBoolean("night_dim", false),
+        (prefs.getString("app_language","ar")=="en"), prefs.getBoolean("night_dim", false),
         prefs.getInt("image_mode",0).coerceIn(0,1),
         prefs.getString("image_id",BackgroundRepository.first(prefs.getInt("scene_choice",-1)).id).orEmpty().let{BackgroundRepository.find(it).id},
         prefs.getInt("rotation_minutes",3).let{if(it in listOf(0,1,3,5))it else 3},
         backgroundType=prefs.getInt("background_type",0).coerceIn(0,2),
         fixedAssetId=prefs.getString("fixed_asset_id","").orEmpty(),
-        clockPosition=prefs.getInt("clock_position",ClockPlacement.AUTOMATIC).let{if(it in -1..8)it else -1}
+        clockPosition=prefs.getInt("clock_position",ClockPlacement.AUTOMATIC).let{if(it in -1..8)it else -1},
+        smart=com.ufuq.dream.smart.SmartSettings.read(prefs),
+        language=AppLanguage.normalize(prefs.getString("app_language","ar").orEmpty())
     )
     /** Atomic snapshot write; unexposed legacy choices are not overwritten. */
     fun save(value: DisplaySettings) {
@@ -68,9 +72,11 @@ class SettingsRepository(context: Context) {
             .putInt("clock_position",value.clockPosition.let{if(it in -1..8)it else -1})
             .putInt("background_type",value.backgroundType.coerceIn(0,2)).putString("fixed_asset_id",value.fixedAssetId)
             .putInt("rotation_minutes",value.rotationMinutes).putBoolean("show_seconds",value.seconds)
-            .putBoolean("latin_digits", value.latinDigits).putBoolean("night_dim", value.nightDim)
+            .putString("app_language",AppLanguage.normalize(value.language))
+            .putBoolean("latin_digits", value.language=="en").putBoolean("night_dim", value.nightDim)
         // Mirror only a user-confirmed fixed scene for old-version compatibility.
         // Theme is independent of scene/category from 0.6 onward.
+        value.smart.write(edit)
         edit.apply()
     }
 

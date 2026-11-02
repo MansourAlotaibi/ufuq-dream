@@ -40,6 +40,8 @@ class ClockSceneRenderer(private val context:Context,private val scene:Int):Scen
   val shadow=listOf(0xb002100a.toInt(),0xb0160b04.toInt(),0xc0020710.toInt())[s.theme.coerceIn(0,2)]
   listOf(eyebrow,clock,seconds,period,first,second,greeting).forEach{it.setShadowLayer(dp(if(s.theme==2)6 else 5).toFloat(),0f,dp(1).toFloat(),shadow)}
  }
+ group.layoutDirection=AppLanguage.direction(s.language)
+ listOf(eyebrow,first,second,period).forEach{it.textDirection=if(s.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL}
  val labels=provider.labels(now,s)
  val night=NightMode.textFactor(now,s.nightDim)
  val base=listOf(68f,84f,100f)[s.size] * (if(s.theme==2)1.08f else 1f)
@@ -63,10 +65,11 @@ class ClockSceneRenderer(private val context:Context,private val scene:Int):Scen
  first.textSize=20f;second.textSize=18f
  first.setTextColor(NightMode.fade(theme.ink,night));second.setTextColor(NightMode.fade(if(s.clockPosition>=0)theme.ink else theme.muted,night))
  eyebrow.text=when(s.photoCategory){0->"أُفُق  /  الدرعية";1->"أُفُق  /  العلا";2->"أُفُق  /  ليل الرياض";else->"أُفُق  /  مشاهد سعودية"}
+ eyebrow.text=AppLanguage.text(eyebrow.text.toString(),s.language)
  eyebrow.visibility=View.VISIBLE;eyebrow.setTextColor(NightMode.fade(if(s.clockPosition>=0)theme.ink else theme.accent,night))
  val phrase=GreetingProvider.label(now,s)
- greeting.text=android.text.BidiFormatter.getInstance(true).unicodeWrap(phrase)
- greeting.textDirection=View.TEXT_DIRECTION_FIRST_STRONG_RTL
+ greeting.text=android.text.BidiFormatter.getInstance(s.language!="en").unicodeWrap(phrase)
+ greeting.textDirection=if(s.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL
  greeting.setTextColor(NightMode.fade(if(s.clockPosition>=0)theme.ink else theme.muted,night))
  greeting.visibility=if(phrase.isBlank()) View.GONE else View.VISIBLE
  greeting.maxLines=2

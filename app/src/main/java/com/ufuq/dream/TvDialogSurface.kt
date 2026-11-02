@@ -14,12 +14,12 @@ import android.widget.ScrollView
  * Short lists wrap; long lists scroll within the same TV-safe maximum. No fill-viewport footer.
  */
 internal object TvDialogSurface {
-    fun show(dialog:Dialog,content:View,theme:AmbientTheme,widthPx:Int){
+    fun show(dialog:Dialog,content:View,theme:AmbientTheme,widthPx:Int,direction:Int=View.LAYOUT_DIRECTION_RTL){
         val context=dialog.context
         fun dp(value:Int)=(value*context.resources.displayMetrics.density).toInt()
         content.background=null
         content.minimumHeight=0
-        content.layoutDirection=View.LAYOUT_DIRECTION_RTL
+        content.layoutDirection=direction
         content.tag="dialog_panel"
         val scroll=BoundedDialogScroll(context).apply{
             tag="dialog_scroll"
@@ -27,7 +27,7 @@ internal object TvDialogSurface {
             minimumHeight=0
             isFillViewport=false
             isFocusable=false
-            layoutDirection=View.LAYOUT_DIRECTION_RTL
+            layoutDirection=direction
             // D-pad focus and automatic scrolling provide navigation; omit phone-style edge chrome.
             isVerticalScrollBarEnabled=false
             isVerticalFadingEdgeEnabled=false
@@ -38,7 +38,7 @@ internal object TvDialogSurface {
         val surface=FrameLayout(context).apply{
             tag="dialog_surface"
             minimumHeight=0;minimumWidth=0
-            layoutDirection=View.LAYOUT_DIRECTION_RTL
+            layoutDirection=direction
             background=GradientDrawable().apply{setColor(theme.base);cornerRadius=dp(20).toFloat()}
             clipToOutline=true
             addView(scroll,FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT))

@@ -57,10 +57,12 @@ class SettingsActivity : Activity() {
     private val versionLabel by lazy {
         try { packageManager.getPackageInfo(packageName, 0).versionName ?: "" } catch (_: Exception) { "" }
     }
+    private val videoPickerAvailable by lazy { VideoPicker.resolve(this)!=null }
+    private fun tr(value:String)=AppLanguage.text(value,draft.current.language)
     private val canMotion get() = MediaLibrary.clips.isNotEmpty() && MotionSupport.decoder()!=null
     private val importWorker = java.util.concurrent.Executors.newSingleThreadExecutor()
     private var importing = false
-    private val groupNames = listOf("المظهر", "الساعة والتاريخ", "العبارة")
+    private val groupNames = listOf("المظهر", "الساعة والتاريخ", "العبارة", "المعلومات الذكية")
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
@@ -69,8 +71,8 @@ class SettingsActivity : Activity() {
         // A stale saved-instance parcel from a previous APK must not block startup.
         try { (state?.getSerializable("draft") as? DisplaySettings)?.let { draft.restore(it) } }
         catch (_: RuntimeException) { /* Saved preferences remain authoritative after upgrade. */ }
-        section = state?.getInt("section")?.coerceIn(0, 2) ?: 0
-        ui = SettingsUi(this)
+        section = state?.getInt("section")?.coerceIn(0, 3) ?: 0
+        ui = SettingsUi(this).apply { language=draft.current.language }
         buildScreen()
         showSection()
         tabs[section].requestFocus()
@@ -83,9 +85,10 @@ class SettingsActivity : Activity() {
     }
 
     private fun buildScreen() {
+        ui.language=draft.current.language
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            layoutDirection = View.LAYOUT_DIRECTION_RTL
+            layoutDirection = AppLanguage.direction(draft.current.language)
             setPadding(ui.dp(32), ui.dp(20), ui.dp(32), ui.dp(16))
         }
         root.addView(ui.text("أُفُق   /   هدوء المكان", 25f), LinearLayout.LayoutParams(-1, ui.dp(42)))
@@ -98,13 +101,13 @@ class SettingsActivity : Activity() {
         groupNames.forEachIndexed { index, name ->
             val tab = button(name, "section_$index") { firstRow?.requestFocus() }
             tab.id = View.generateViewId()
-            tab.textSize = 15f
+            tab.textSize = 13f
             tab.setOnFocusChangeListener { _, focus ->
                 tab.background = ui.surface(focus, section == index)
                 if (focus && !rebuilding && section != index) { section = index; showSection() }
             }
             tabs.add(tab)
-            tabBar.addView(tab, LinearLayout.LayoutParams(0, -1, 1f).apply { if (index < 2) marginEnd = ui.dp(5) })
+            tabBar.addView(tab, LinearLayout.LayoutParams(0, -1, 1f).apply { if (index < 3) marginEnd = ui.dp(5) })
         }
         val scroll = ScrollView(this).apply { isFocusable = false; isFillViewport = false }
         rows = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
@@ -120,14 +123,14 @@ class SettingsActivity : Activity() {
         save = button("حفظ التغييرات", "save") { persist(); updateUi("حُفظت إعداداتك") }
         actions.addView(save, LinearLayout.LayoutParams(ui.dp(210), ui.dp(44)).apply { marginEnd = ui.dp(10) })
         actions.addView(button("إلغاء التغييرات", "cancel") {
-            draft.revert(); showSection(); updateUi("أُلغيت التغييرات؛ تعرض المعاينة إعداداتك المحفوظة"); tabs[section].requestFocus()
+            draft.revert(); rebuildStudio(); updateUi("أُلغيت التغييرات؛ تعرض المعاينة إعداداتك المحفوظة"); tabs[section].requestFocus()
         }, LinearLayout.LayoutParams(ui.dp(180), ui.dp(44)))
         root.addView(actions, LinearLayout.LayoutParams(-1, ui.dp(52)))
         help = ui.text("أُفُق $versionLabel  ·  اختر ما يناسب بيتك؛ لا يُحفظ شيء قبل التأكيد.", 13f, true).apply { maxLines = 2 }
         root.addView(help, LinearLayout.LayoutParams(-1, ui.dp(34)))
         help.isFocusable=true;help.isClickable=true
-        help.contentDescription="الصور وحقوق الاستخدام"
-        help.setOnFocusChangeListener { _,focus ->help.background=ui.surface(focus);if(focus)help.text="أُفُق $versionLabel · الصور وحقوق الاستخدام · اضغط موافق" }
+        help.contentDescription=tr("الصور وحقوق الاستخدام")
+        help.setOnFocusChangeListener { _,focus ->help.background=ui.surface(focus);if(focus)help.text=tr("أُفُق $versionLabel · الصور وحقوق الاستخدام · اضغط موافق") }
         help.setOnClickListener { photoCredits() }
         setContentView(root)
     }
@@ -145,9 +148,16 @@ class SettingsActivity : Activity() {
         tabs[section].requestFocus()
         rows.removeAllViews(); firstRow = null
         val s = draft.current
+        ui.language=s.language
         palette()
         when (section) {
             0 -> {
+                row("language","اللغة","اختر لغة التطبيق؛ الأرقام تتبع اللغة تلقائيًا.",if(s.language=="en")"English" else "العربية") {
+                    choose("اللغة",listOf("العربية","English"),if(s.language=="en")1 else 0){index ->
+                        draft.update(draft.current.copy(language=if(index==1)"en" else "ar",latinDigits=index==1))
+                        rebuildStudio("language");updateUi("تغيّرت لغة المعاينة؛ احفظ للتأكيد")
+                    }
+                }
                 row("theme", "الثيم", "ألوان النص والواجهة، مستقلة عن الصور.", themeName(s.theme)) {
                     choose("الثيم",listOf("الأخضر السعودي","أرض الصحراء","ليل الرياض"),s.theme){index->
                         change("theme","الثيم: ${themeName(index)}"){copy(theme=index)}
@@ -182,16 +192,22 @@ class SettingsActivity : Activity() {
                 row("night", "خفض السطوع ليلاً", "يخفّت الصورة والنص تدريجياً بعد العاشرة مساءً.", if (s.nightDim) "مفعّل" else "متوقف") {
                     change("night", if (s.nightDim) "أُوقف خفض السطوع الليلي" else "فُعّل خفض السطوع الليلي") { copy(nightDim = !nightDim) }
                 }
-                row("import_video", "إضافة فيديو من ملفاتك", "MP4 صامت · H.264 · حتى ١٠٨٠p و٣ دقائق و١٢٨ MiB.", if (importing) "جارٍ الفحص" else "اختيار") {
+                if(videoPickerAvailable) row("import_video", "إضافة فيديو من ملفاتك", "MP4 صامت · H.264 · حتى ١٠٨٠p و٣ دقائق و١٢٨ MiB.", if (importing) "جارٍ الفحص" else "اختيار") {
                     if (!importing) choose("لدي حق استخدام الفيديو محليًا", listOf("رجوع", "اختيار فيديو"), 0) {
-                        if (it == 1) try {
-                            startActivityForResult(android.content.Intent(android.content.Intent.ACTION_OPEN_DOCUMENT).apply {
-                                addCategory(android.content.Intent.CATEGORY_OPENABLE); type = "video/mp4"
-                                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            }, 730)
-                        } catch (_: android.content.ActivityNotFoundException) { updateUi("لا يوجد منتقي ملفات على هذا التلفزيون؛ راجع دليل الفيديو المحلي") }
+                        if (it == 1) {
+                            val picker=VideoPicker.resolve(this)
+                            if(picker==null) {
+                                android.app.AlertDialog.Builder(this)
+                                    .setTitle(tr("اختيار الفيديو غير متاح"))
+                                    .setMessage("هذا التلفزيون لا يتضمن منتقي ملفات فعليًا. يلزم تطبيق موثوق يدعم اختيار ملفات الفيديو. لم يتغير أي فيديو أو إعداد؛ المقاطع المضافة سابقًا ما زالت متاحة.")
+                                    .setPositiveButton(tr("فهمت"),null).show()
+                            } else try { startActivityForResult(picker,730) }
+                            catch (_: android.content.ActivityNotFoundException) { updateUi("تعذّر فتح منتقي الملفات؛ لم يتغير شيء") }
+                            catch (_: SecurityException) { updateUi("منتقي الملفات لا يسمح بالوصول؛ لم يتغير شيء") }
+                        }
                     }
                 }
+                if(!videoPickerAvailable && canMotion && (s.imageMode==1 || s.rotationMinutes==0)) row("video_library","مكتبة الفيديو","المقاطع المضافة متاحة من اختيار الخلفية.","اختيار") { pickVideo() }
             }
             1 -> {
                 row("time", "صيغة الوقت", "بنظام اليوم الكامل أو مع ص / م.", if (s.hour24) "٢٤ ساعة" else "١٢ ساعة") {
@@ -214,11 +230,7 @@ class SettingsActivity : Activity() {
                 row("seconds","الثواني","تظهر بحجم أصغر بجانب الساعة.",if(s.seconds)"ظاهرة" else "مخفية") {
                     change("seconds",if(s.seconds)"أُخفيت الثواني" else "ظهرت الثواني"){copy(seconds=!seconds)}
                 }
-                row("digits", "شكل الأرقام", "عربية ٢١:٤١ أو إنجليزية 21:41.", if (s.latinDigits) "إنجليزية" else "عربية") {
-                    choose("شكل الأرقام", listOf("عربية  ٠١٢٣", "إنجليزية  0123"), if (s.latinDigits) 1 else 0) {
-                        change("digits", "الأرقام: ${if (it == 1) "إنجليزية" else "عربية"}") { copy(latinDigits = it == 1) }
-                    }
-                }
+
             }
             2 -> {
                 val kinds = listOf("تلقائية", "عبارة سعودية", "نص خاص", "مخفية")
@@ -235,6 +247,45 @@ class SettingsActivity : Activity() {
                 }
                 if (s.greetingMode == 2) row("custom", "نصك الخاص", "حتى ٤٠ حرفاً؛ عربي أو إنجليزي.", if (s.greetingText.isBlank()) "اكتب" else "تعديل") { customText() }
             }
+            3 -> {
+                val smart=s.smart
+                fun city(key:String,title:String,value:String,prayer:Boolean) {
+                    row(key,title,"مدينة تختارها؛ بلا إذن موقع.",com.ufuq.dream.smart.SaudiCities.find(value).arabic) {
+                        val cities=com.ufuq.dream.smart.SaudiCities.all
+                        choose(title,cities.map{it.arabic},cities.indexOfFirst{it.id==value}.coerceAtLeast(0)){index ->
+                            change(key,"المدينة: ${cities[index].arabic}"){copy(smart=if(prayer)smart.copy(prayerCity=cities[index].id) else smart.copy(weatherCity=cities[index].id))}
+                        }
+                    }
+                }
+                row("prayers","مواقيت الصلاة","AlAdhan أو حساب محلي؛ طابق الأوقات مع مسجدك.",if(smart.prayers)"مفعّلة" else "متوقفة") {
+                    change("prayers","تغيّرت معاينة مواقيت الصلاة"){copy(smart=smart.copy(prayers=!smart.prayers))}
+                }
+                if(smart.prayers){
+                    row("prayer_source","مصدر المواقيت","الخدمة تحسب المواقيت أيضًا؛ ليست جدولًا رسميًا معتمدًا.",if(smart.prayerSource==0)"AlAdhan عبر الإنترنت" else "حساب محلي دون إنترنت") {
+                        choose("مصدر المواقيت",listOf("AlAdhan · يتصل بعد الحفظ","حساب محلي تقريبي"),smart.prayerSource){i -> change("prayer_source","تغيّر مصدر المواقيت؛ لن يُحفظ حتى تختار الحفظ"){copy(smart=smart.copy(prayerSource=i))} }
+                    }
+                    city("prayer_city","مدينة الصلاة",smart.prayerCity,true)
+                    row("prayer_method","طريقة الحساب","عشاء أم القرى: ٩٠ دقيقة، و١٢٠ في رمضان حسابيًا.",if(smart.prayerMethod==0)"أم القرى" else "رابطة العالم الإسلامي") {
+                        choose("حساب تقريبي؛ طابق جدول مسجدك",listOf("أم القرى · فجر ١٨٫٥°","رابطة العالم الإسلامي"),smart.prayerMethod){i -> change("prayer_method","تغيّرت طريقة حساب الصلاة"){copy(smart=smart.copy(prayerMethod=i))} }
+                    }
+                    row("asr","حساب العصر","ظل واحد للجمهور أو ظلان للمذهب الحنفي.",if(smart.hanafiAsr)"ظلان" else "ظل واحد") {
+                        change("asr","تغيّر حساب العصر"){copy(smart=smart.copy(hanafiAsr=!smart.hanafiAsr))}
+                    }
+                }
+                row("weather","الطقس","Open-Meteo؛ إنترنت عند الحفظ والظهور فقط، بلا موقع دقيق.",if(smart.weather)"مفعّل" else "متوقف") {
+                    change("weather","المعاينة لا ترسل طلب طقس قبل حفظ الاختيار"){copy(smart=smart.copy(weather=!smart.weather))}
+                }
+                if(smart.weather){
+                    city("weather_city","مدينة الطقس",smart.weatherCity,false)
+                    row("weather_units","درجة الحرارة","تغيير الوحدة لا يجلب بيانات جديدة.",if(smart.fahrenheit)"فهرنهايت" else "مئوية") {
+                        change("weather_units","تغيّرت وحدة الحرارة"){copy(smart=smart.copy(fahrenheit=!smart.fahrenheit))}
+                    }
+                    row("weather_refresh","تحديث الطقس","عندما تكون المعاينة أو شاشة التوقف ظاهرة فقط.","${smart.weatherRefreshMinutes} دقيقة") {
+                        val minutes=listOf(30,60,180)
+                        choose("تحديث الطقس",listOf("كل نصف ساعة","كل ساعة","كل ٣ ساعات"),minutes.indexOf(smart.weatherRefreshMinutes)){i -> change("weather_refresh","تغيّر تكرار التحديث"){copy(smart=smart.copy(weatherRefreshMinutes=minutes[i]))} }
+                    }
+                }
+            }
         }
         if (restore != null) rows.findViewWithTag<View>(restore)?.requestFocus()
         rebuilding = false
@@ -242,11 +293,11 @@ class SettingsActivity : Activity() {
     }
 
     private fun row(key: String, title: String, description: String, value: String, click: () -> Unit) {
-        val item = ui.row(title, description, value, { help.text = "أُفُق $versionLabel  ·  $it" }, click).apply {
+        val item = ui.row(title, description, value, { help.text = tr("أُفُق $versionLabel  ·  $it") }, click).apply {
             tag = key; id = View.generateViewId()
         }
         item.setOnKeyListener { _, code, event ->
-            if (event.action == KeyEvent.ACTION_DOWN && code == KeyEvent.KEYCODE_DPAD_RIGHT) { tabs[section].requestFocus(); true } else false
+            if (event.action == KeyEvent.ACTION_DOWN && (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_RIGHT)) { tabs[section].requestFocus(); true } else false
         }
         // Long custom strings belong in the editor, not a narrow badge.
         rows.addView(item, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = ui.dp(8) })
@@ -259,6 +310,9 @@ class SettingsActivity : Activity() {
         showSection(key)
         updateUi(message)
     }
+    private fun rebuildStudio(restore:String?=null) {
+        studio.stop();tabs.clear();buildScreen();showSection(restore);studio.start()
+    }
     private fun palette() {
         // Automatic stays neutral even when its live image changes.
         ui.themeIndex = draft.current.theme
@@ -266,7 +320,7 @@ class SettingsActivity : Activity() {
         tabs.forEachIndexed { index, tab -> tab.background = ui.surface(tab.hasFocus(), index == section) }
     }
     private fun updateUi(message: String? = null) {
-        if (message != null) feedback.text = message
+        if (message != null) feedback.text = tr(message)
         actions.visibility = if (draft.dirty) View.VISIBLE else View.GONE
         save.background = ui.surface(save.hasFocus(), true)
         val last = if(rows.childCount>0)rows.getChildAt(rows.childCount-1) else null
@@ -289,7 +343,7 @@ class SettingsActivity : Activity() {
     private fun choose(title: String, labels: List<String>, selected: Int, scenes: Boolean = false, photos:List<BackgroundImage>?=null, available:Set<Int>?=null, commit: (Int) -> Unit) {
         val dialog = newDialog().apply { requestWindowFeature(Window.FEATURE_NO_TITLE) }
         val panel = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL; layoutDirection = View.LAYOUT_DIRECTION_RTL
+            orientation = LinearLayout.VERTICAL; layoutDirection = AppLanguage.direction(draft.current.language)
             setPadding(ui.dp(20), ui.dp(16), ui.dp(20), ui.dp(16)); setBackgroundColor(ThemeManager.get(ui.themeIndex).base)
         }
         panel.addView(ui.text(title, 22f), LinearLayout.LayoutParams(-1, ui.dp(46)))
@@ -308,7 +362,7 @@ class SettingsActivity : Activity() {
             panel.addView(item, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = if(index<labels.lastIndex)ui.dp(6) else 0 })
             if (index == selected) focused = item
         }
-        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(590))
+        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(590),AppLanguage.direction(draft.current.language))
         focused?.requestFocus()
     }
 
@@ -329,6 +383,15 @@ class SettingsActivity : Activity() {
 
     private fun themeName(value:Int)=listOf("الأخضر السعودي","أرض الصحراء","ليل الرياض")[value.coerceIn(0,2)]
     private fun intervalName(value:Int)=when(value){1->"دقيقة";3->"٣ دقائق · موصى به";5->"٥ دقائق";else->"ثابتة"}
+    private fun pickVideo() {
+        val clips=MediaLibrary.items(-1,1).filter{it.clip!=null}
+        if(clips.isEmpty())return
+        choose("مكتبة الفيديو",clips.map{it.title},clips.indexOfFirst{it.id==draft.current.fixedAssetId}.coerceAtLeast(0),photos=clips.map{it.photo}){index ->
+            change("video_library","الخلفية: ${clips[index].title}"){
+                copy(sceneChoice=-1,backgroundType=1,imageMode=1,fixedAssetId=clips[index].id,imageId=clips[index].photo.id)
+            }
+        }
+    }
     private fun pickImage(){
         val items=MediaLibrary.items(draft.current.sceneChoice,draft.current.backgroundType)
         val selected=MediaLibrary.selected(draft.current,0).id
@@ -342,14 +405,17 @@ class SettingsActivity : Activity() {
         panel.addView(ui.text("الصور وحقوق الاستخدام",24f))
         for(i in 0 until data.length()){
             val item=data.getJSONObject(i)
-            val label=listOf(item.getString("title"),item.optString("originalTitle"),item.getString("author"),item.getString("license"),item.getString("source"),item.getString("licenseUrl"),item.optString("publisherSource"),item.optString("conditions"),"تعديل: قصّ ١٦:٩ وتصغير وضغط الصورة.").joinToString("\n")
-            panel.addView(ui.text(label,15f).apply{isFocusable=true;setPadding(0,ui.dp(12),0,ui.dp(12));setOnFocusChangeListener{_,focus->background=ui.surface(focus)}})
+            val label=listOf(tr(item.getString("title")),item.optString("originalTitle"),item.getString("author"),item.getString("license"),item.getString("source"),item.getString("licenseUrl"),item.optString("publisherSource"),item.optString("conditions"),tr("تعديل: قصّ ١٦:٩ وتصغير وضغط الصورة.")).joinToString("\n")
+            panel.addView(ui.text("",15f).apply{text=label;isFocusable=true;setPadding(0,ui.dp(12),0,ui.dp(12));setOnFocusChangeListener{_,focus->background=ui.surface(focus)}})
         }
+        panel.addView(ui.text("الطقس: Open-Meteo · بيانات CC BY 4.0\nhttps://open-meteo.com/\nhttps://creativecommons.org/licenses/by/4.0/\nالخدمة المجانية للاستخدام غير التجاري.\nمواقيت الإنترنت: AlAdhan · https://aladhan.com/prayer-times-api\nأوقات محسوبة وليست جدول مسجد رسميًا.\nالحساب المحلي: Adhan Java 1.2.1 · Batoul Apps · MIT\nhttps://github.com/batoulapps/adhan-kotlin/tree/v1.2.1",15f).apply{isFocusable=true})
+        val diagnostics=com.ufuq.dream.smart.SmartDiagnostics(this)
+        panel.addView(ui.text("تفاصيل المصادر: الصلاة أوقات محسوبة وليست جدولًا رسميًا للمسجد.\nحالة الصلاة: ${diagnostics.detail("prayer")}\nحالة الطقس: ${diagnostics.detail("weather")}\nأوقات الصلاة تُحفظ لنحو ٣٠ يومًا. الطقس قد يعرض قراءة سابقة عند انقطاع الاتصال.",15f).apply{isFocusable=true})
         val dialog=newDialog().apply{requestWindowFeature(Window.FEATURE_NO_TITLE)}
-        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),(resources.displayMetrics.widthPixels*.8f).toInt())
+        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),(resources.displayMetrics.widthPixels*.8f).toInt(),AppLanguage.direction(draft.current.language))
     }
 
-    @android.annotation.SuppressLint("RtlHardcoded") // Physical right keeps the left Studio visible in both locales.
+    @android.annotation.SuppressLint("RtlHardcoded") // Align with the controls side so the Studio remains visible.
     private fun positionDialog(){
         val before=draft.current
         var confirmed=false
@@ -393,10 +459,10 @@ class SettingsActivity : Activity() {
             dialogDismissed(dialog)
             if(!confirmed&&!destroying){draft.update(before);showSection("position");updateUi("أُلغيت معاينة الموضع")}
         }
-        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(360))
+        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(360),AppLanguage.direction(draft.current.language))
         // Keep the large Studio preview visible while the remote explores physical positions.
         dialog.window?.apply {
-            setGravity(Gravity.RIGHT or Gravity.CENTER_VERTICAL)
+            setGravity((if(draft.current.language=="en")Gravity.LEFT else Gravity.RIGHT) or Gravity.CENTER_VERTICAL)
             attributes=attributes.apply { horizontalMargin=.035f;dimAmount=0f }
         }
         if(before.clockPosition<0)automatic.requestFocus() else tiles[before.clockPosition].requestFocus()
@@ -407,14 +473,14 @@ class SettingsActivity : Activity() {
         val dialog = newDialog().apply { requestWindowFeature(Window.FEATURE_NO_TITLE) }
         var confirmed = false
         val panel = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL; layoutDirection = View.LAYOUT_DIRECTION_RTL
+            orientation = LinearLayout.VERTICAL; layoutDirection = AppLanguage.direction(draft.current.language)
             setPadding(ui.dp(24), ui.dp(20), ui.dp(24), ui.dp(20)); setBackgroundColor(ThemeManager.get(ui.themeIndex).base)
         }
         panel.addView(ui.text("عبارتك الخاصة", 24f))
         val count = ui.text("حتى ٤٠ حرفاً", 15f, true)
         val editor = EditText(this).apply {
             tag = "greeting_editor"; textSize = 23f; setTextColor(ui.ink); setSingleLine(true)
-            textDirection = View.TEXT_DIRECTION_FIRST_STRONG_RTL
+            textDirection = if(draft.current.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
             filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
                 val candidate = dest.substring(0, dstart) + source.subSequence(start, end) + dest.substring(dend)
@@ -432,14 +498,14 @@ class SettingsActivity : Activity() {
             override fun onTextChanged(s: CharSequence?, start: Int, beforeCount: Int, added: Int) {
                 val text = GreetingText.clean(s.toString())
                 draft.update(draft.current.copy(greetingMode = 2, greetingText = text))
-                count.text = "${text.codePointCount(0, text.length)} / ٤٠"
+                count.text = tr("${text.codePointCount(0, text.length)} / ٤٠")
                 updateUi("تعاين الآن عبارتك الخاصة؛ لم تُحفظ بعد")
             }
             override fun afterTextChanged(s: Editable?) {}
         })
         val confirm = button("تم", "custom_done") {
             val value = GreetingText.clean(editor.text.toString())
-            if (value.isBlank()) { count.text = "اكتب عبارة، أو اختر مخفية."; return@button }
+            if (value.isBlank()) { count.text = tr("اكتب عبارة، أو اختر مخفية."); return@button }
             confirmed = true
             draft.update(draft.current.copy(greetingMode = 2, greetingText = value))
             dialog.dismiss(); showSection("custom"); updateUi("عبارتك جاهزة؛ اختر حفظ التغييرات لتأكيدها")
@@ -450,7 +516,7 @@ class SettingsActivity : Activity() {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(editor.windowToken, 0)
             if (!confirmed && !destroying) { draft.update(before); showSection("greeting"); updateUi("أُلغي تعديل العبارة") }
         }
-        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(560))
+        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(560),AppLanguage.direction(draft.current.language))
         dialog.window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         editor.requestFocus()
         editor.post { (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(editor, InputMethodManager.SHOW_IMPLICIT) }

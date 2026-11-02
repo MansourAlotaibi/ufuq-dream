@@ -86,7 +86,7 @@ def main():
         aligned = args.output.with_suffix('.aligned.tmp.apk')
         try:
             subprocess.run([str(tools / 'zipalign'), '-f', '-p', '4', str(args.input), str(aligned)], check=True)
-            subprocess.run([str(tools / 'apksigner'), 'sign', '--ks', str(KEYSTORE), '--ks-key-alias', ALIAS, '--ks-pass', 'env:UFUQ_SIGNING_PASSWORD', '--key-pass', 'env:UFUQ_SIGNING_PASSWORD', '--out', str(args.output), str(aligned)], env=env, check=True)
+            subprocess.run([str(tools / 'apksigner'), 'sign', '--v1-signing-enabled', 'false', '--v2-signing-enabled', 'true', '--v3-signing-enabled', 'true', '--v4-signing-enabled', 'false', '--ks', str(KEYSTORE), '--ks-key-alias', ALIAS, '--ks-pass', 'env:UFUQ_SIGNING_PASSWORD', '--key-pass', 'env:UFUQ_SIGNING_PASSWORD', '--out', str(args.output), str(aligned)], env=env, check=True)
             subprocess.run([str(tools / 'apksigner'), 'verify', '--verbose', '--print-certs', str(args.output)], env=env, check=True)
         finally: aligned.unlink(missing_ok=True)
     env.pop('UFUQ_SIGNING_PASSWORD', None)

@@ -1,0 +1,9 @@
+Ufuq Dream production signing identity v1
+Package: com.ufuq.dream
+Subject: CN=Ufuq Dream Production, O=Ufuq Dream, C=SA
+Key: RSA 4096
+Certificate SHA-256: de13674be215040bafb029fe637a74e9e981accfa5a763bba62ad99dbcda5169
+First public candidate: 0.8.3-rc1, versionCode 15
+Android minimum: API 28
+APK signing: v2 and v3; default API28+ verification uses v3.
+Private key/password: not in source or CI. Public fingerprint only.

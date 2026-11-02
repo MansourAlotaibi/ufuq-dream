@@ -10,7 +10,10 @@ def main():
     sdk=Path(os.environ['ANDROID_HOME'])/'build-tools/34.0.0'
     cert=subprocess.check_output([str(sdk/'apksigner'),'verify','--verbose','--print-certs',str(a.apk)],text=True)
     assert a.certificate.lower() in cert.lower(), 'Unexpected signing certificate'
-    assert 'Verified using v2 scheme (APK Signature Scheme v2): true' in cert
+    assert 'Verified using v3 scheme (APK Signature Scheme v3): true' in cert
+    # Default verification uses v3 for minSdk28; verify the v2 block separately. This does not lower the app's minimum API.
+    v2=subprocess.check_output([str(sdk/'apksigner'),'verify','--verbose','--min-sdk-version','24','--max-sdk-version','27',str(a.apk)],text=True)
+    assert 'Verified using v2 scheme (APK Signature Scheme v2): true' in v2
     badging=subprocess.check_output([str(sdk/'aapt'),'dump','badging',str(a.apk)],text=True)
     assert "name='com.ufuq.dream'" in badging and "versionCode='15'" in badging and "versionName='0.8.3-rc1'" in badging
     assert "sdkVersion:'28'" in badging and "targetSdkVersion:'34'" in badging
@@ -29,6 +32,6 @@ def main():
         for item in photos: assert hashlib.sha256(z.read('assets/cinematic/'+item['fileName'])).hexdigest()==item['sha256']
         assert z.read('assets/photo-provenance.json')==(root/'app/src/main/assets/photo-provenance.json').read_bytes()
         assert 'assets/licenses/APACHE-2.0.txt' in names and 'assets/licenses/UFUQ-MIT.txt' in names
-    result={'apk':a.apk.name,'bytes':a.apk.stat().st_size,'sha256':hashlib.sha256(a.apk.read_bytes()).hexdigest(),'package':'com.ufuq.dream','versionName':'0.8.3-rc1','versionCode':15,'minSdk':28,'targetSdk':34,'sourceCommit':a.commit,'certificateSha256':a.certificate,'signatureVerified':True,'debuggable':False,'bundledPhotos':13,'bundledVideos':0,'photoHashesMatchSource':True,'checks':'Identity, v2 signature, manifest, source marker, licensed photo hashes and no private media/key files'}
+    result={'apk':a.apk.name,'bytes':a.apk.stat().st_size,'sha256':hashlib.sha256(a.apk.read_bytes()).hexdigest(),'package':'com.ufuq.dream','versionName':'0.8.3-rc1','versionCode':15,'minSdk':28,'targetSdk':34,'sourceCommit':a.commit,'certificateSha256':a.certificate,'signatureVerified':True,'debuggable':False,'bundledPhotos':13,'bundledVideos':0,'photoHashesMatchSource':True,'checks':'Identity, v2/v3 signatures, manifest, source marker, licensed photo hashes and no private media/key files'}
     a.output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
 if __name__=='__main__': main()

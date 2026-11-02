@@ -1,3 +1,7 @@
+# Current release readiness
+
+For v0.9.0-rc1 see [public QA and limitations](../0.9.0/STABILITY-RC.md), [Smart Ambient](../0.9.0/SMART-AMBIENT.md) and the release QA attachment. This is a prerelease. The historical0.8.3 preparation notes follow, not claims about fresh0.9 runtime testing.
+
 # 0.8.3-rc1 release readiness
 
 Release candidate, not a stable certification. Package com.ufuq.dream, code15, min28, target/compile34. Source derived from public commit 9a64eea; no history/tag rewrite. The owner's accepted 0.8.2 APK/source are backed up separately and unchanged. No device access occurred during release preparation.

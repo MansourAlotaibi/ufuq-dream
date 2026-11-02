@@ -17,6 +17,8 @@ class AmbientDisplay @JvmOverloads constructor(
  internal val backgroundRenderer=BackgroundRenderer(context,imageLimit)
  internal val motionLayer=MotionLayer(context)
  private val zone=FrameLayout(context)
+ internal val smartPanel=com.ufuq.dream.smart.SmartPanel(context){if(alive)refresh()}
+ private fun widgetZones(w:Int,h:Int)=com.ufuq.dream.smart.SmartLayout.zones(w,h,resources.displayMetrics.density,settings)
  internal val contrastVeil=TextContrastVeil(context)
  private var isMotionBackground=false
  private var rawNight=0f
@@ -46,14 +48,14 @@ class AmbientDisplay @JvmOverloads constructor(
  var testNow:Date?=null
  internal val settingsSnapshot get()=settings
  val isRunning get()=alive
- init{addView(backgroundRenderer,LayoutParams(-1,-1));addView(motionLayer,LayoutParams(-1,-1));addView(contrastVeil,LayoutParams(-1,-1));addView(zone,LayoutParams(1,1));setWillNotDraw(false);motionLayer.onLoopBoundary={if(alive)refresh(atMotionBoundary=true)}}
+ init{addView(backgroundRenderer,LayoutParams(-1,-1));addView(motionLayer,LayoutParams(-1,-1));addView(contrastVeil,LayoutParams(-1,-1));addView(zone,LayoutParams(1,1));addView(smartPanel,LayoutParams(-1,-2));setWillNotDraw(false);motionLayer.onLoopBoundary={if(alive)refresh(atMotionBoundary=true)}}
  private val tick=object:Runnable{override fun run(){if(!alive)return;refresh();val period=if(settings.seconds)1000L else 60_000L;handler.postDelayed(this,period-Math.floorMod(System.currentTimeMillis(),period))}}
  private val rotate = object:Runnable { override fun run(){ if(alive)refresh() }}
  private val movement=object:Runnable{override fun run(){if(!alive)return
   renderer?.let{burn.apply(zone,it.view,settings)}
   handler.postDelayed(this,60_000L)
  }}
- fun start(fadeIn:Boolean=false){stop();zone.alpha=1f;backgroundRenderer.alpha=1f;alpha=if(fadeIn)0f else 1f;alive=true;waitingForImage=fadeIn;
+ fun start(fadeIn:Boolean=false){stop();zone.alpha=1f;backgroundRenderer.alpha=1f;alpha=if(fadeIn)0f else 1f;alive=true;smartPanel.start();waitingForImage=fadeIn;
  backgroundRenderer.onReady={if(alive){requestLayout();if(waitingForImage)reveal()}};rotation.resume(android.os.SystemClock.elapsedRealtime());lastImage="";scene=-1;burn.reset();handler.post(tick);handler.postDelayed(movement,60_000L)}
  fun refresh(atMotionBoundary:Boolean=false){
   if(transitioning)return
@@ -86,6 +88,7 @@ class AmbientDisplay @JvmOverloads constructor(
   backgroundRenderer.nightLevel=if(isMotionBackground)MotionContrastPolicy.nightDim(rawNight,currentLuminance)else rawNight
   motionLayer.configure(if(alive)media.clip else null,if(photo.composition.left>.5f)0 else 1,backgroundRenderer.nightLevel)
   renderer?.update(clockNow,settings,theme)
+  smartPanel.update(clockNow.toInstant(),settings,theme)
   handler.removeCallbacks(rotate);handler.removeCallbacks(prefetch)
   if(alive&&saved.imageMode==0&&saved.rotationMinutes>0){
    val remaining=rotation.remaining(now,saved.rotationMinutes)
@@ -109,7 +112,7 @@ class AmbientDisplay @JvmOverloads constructor(
  backgroundRenderer.measure(MeasureSpec.makeMeasureSpec(width,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY))
  motionLayer.measure(MeasureSpec.makeMeasureSpec(width,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY))
  contrastVeil.measure(MeasureSpec.makeMeasureSpec(width,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY))
- val spec=ClockPlacement.spec(width,height,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
+ val spec=ClockPlacement.spec(width,widgetZones(width,height).clockHeight,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
  renderer?.let{
   if(measuredContentWidth!=spec.contentWidth){
    measuredContentWidth=spec.contentWidth;it.setAvailableWidth(spec.contentWidth)
@@ -120,12 +123,15 @@ class AmbientDisplay @JvmOverloads constructor(
  zone.measure(MeasureSpec.makeMeasureSpec(spec.zone.width(),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(spec.zone.height(),MeasureSpec.EXACTLY))
  // Measure natural height before applying a coherent whole-group fit, rather than clipping long dates/greetings.
  renderer?.view?.measure(MeasureSpec.makeMeasureSpec(spec.contentWidth,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED))
+ val panel=widgetZones(width,height).panel
+ smartPanel.measure(MeasureSpec.makeMeasureSpec(panel.width().coerceAtLeast(0),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(panel.height().coerceAtLeast(0),MeasureSpec.EXACTLY))
  setMeasuredDimension(width,height)
  }
  override fun onLayout(changed:Boolean,l:Int,t:Int,r:Int,b:Int){
  backgroundRenderer.layout(0,0,width,height);motionLayer.layout(0,0,width,height);contrastVeil.layout(0,0,width,height)
- val spec=ClockPlacement.spec(width,height,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
+ val spec=ClockPlacement.spec(width,widgetZones(width,height).clockHeight,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
  zone.layout(spec.zone.left,spec.zone.top,spec.zone.right,spec.zone.bottom)
+ val panel=widgetZones(width,height).panel;smartPanel.layout(panel.left,panel.top,panel.right,panel.bottom)
  val child=renderer?.view?:return
  val (bounds,scale)=ClockPlacement.visualBounds(spec,child.measuredWidth,child.measuredHeight)
  if(visualContentBounds!=bounds){child.animate().cancel();child.translationX=0f;child.translationY=0f}
@@ -143,6 +149,6 @@ class AmbientDisplay @JvmOverloads constructor(
  }
  fun contentBounds():Rect {val v=renderer?.view?:return Rect();return Rect(v.left,v.top,v.right,v.bottom)}
  fun reschedule(){handler.removeCallbacks(tick);if(alive)handler.post(tick)}
- fun stop(){epoch++;animate().cancel();backgroundRenderer.onReady=null;waitingForImage=false;transitioning=false;rotation.pause(android.os.SystemClock.elapsedRealtime());backgroundRenderer.animate().cancel();alive=false;zone.animate().cancel();handler.removeCallbacksAndMessages(null);renderer?.dispose();motionLayer.stop();contrastVeil.clear();backgroundRenderer.release()}
+ fun stop(){epoch++;animate().cancel();backgroundRenderer.onReady=null;waitingForImage=false;transitioning=false;rotation.pause(android.os.SystemClock.elapsedRealtime());backgroundRenderer.animate().cancel();alive=false;zone.animate().cancel();handler.removeCallbacksAndMessages(null);renderer?.dispose();smartPanel.stop();motionLayer.stop();contrastVeil.clear();backgroundRenderer.release()}
  override fun onDetachedFromWindow(){stop();super.onDetachedFromWindow()}
 }

@@ -3,7 +3,7 @@ android {
     namespace = "com.ufuq.dream"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.ufuq.dream"; minSdk = 28; targetSdk = 34; versionCode = 15; versionName = "0.8.3-rc1"
+        applicationId = "com.ufuq.dream"; minSdk = 28; targetSdk = 34; versionCode = 22; versionName = "0.9.0-rc1"
         val sourceCommit = providers.environmentVariable("UFUQ_SOURCE_COMMIT").orElse("development").get()
         require(sourceCommit == "development" || sourceCommit.matches(Regex("[0-9a-f]{40}")))
         resValue("string", "source_commit", sourceCommit)
@@ -14,4 +14,4 @@ android {
     kotlinOptions { jvmTarget = "17" }
 }
 
-dependencies { testImplementation("junit:junit:4.13.2"); testImplementation("org.robolectric:robolectric:4.14.1") }
+dependencies { implementation("com.batoulapps.adhan:adhan:1.2.1"); testImplementation("junit:junit:4.13.2"); testImplementation("org.robolectric:robolectric:4.14.1") }

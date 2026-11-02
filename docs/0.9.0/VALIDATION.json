@@ -1,0 +1,50 @@
+{
+  "version": "0.9.0-dev1",
+  "versionCode": 16,
+  "baseCommit": "cd9f82363112c9710f8eaacb80334069bbe59c5e",
+  "cleanGradleCommands": [
+    "assembleDebug",
+    "assembleRelease",
+    "lintDebug",
+    "lintRelease",
+    "testDebugUnitTest"
+  ],
+  "build": "success",
+  "androidTests": {
+    "tests": 89,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "debug": {
+      "Error": 0,
+      "Warning": 16
+    },
+    "release": {
+      "Error": 0,
+      "Warning": 16
+    }
+  },
+  "hostMediaTests": {
+    "tests": 5,
+    "failures": 0,
+    "skipped": 0
+  },
+  "providerSmoke": "HTTPS response from Open-Meteo fetched for a fixed public city centre; no Android/device network certification",
+  "prayerReferences": "Three published computed schedules within 180seconds,not official Saudi acceptance",
+  "physicalTvTested": false,
+  "productionBackupRestoreVerified": false,
+  "productionRcPromotedToStable": false,
+  "existingMiBoxModified": false,
+  "apkBytes": {
+    "app-release-unsigned.apk": 8373946,
+    "app-debug.apk": 8770426
+  },
+  "limits": [
+    "No second device or installed AVD/system image",
+    "Owner has not completed independent key/password backup/recovery",
+    "No native decoder/sleep-wake/overnight PSS/CPU measurement for this build"
+  ],
+  "networkConsent": "Saved city, enabled status AND saved refresh cadence only; temporary edits cannot change network policy"
+}

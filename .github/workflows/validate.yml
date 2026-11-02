@@ -23,7 +23,7 @@ jobs:
           python3 tools/check_public_assets.py
           python3 tools/check_repository.py
       - name: Build, lint and unit tests
-        run: ./gradlew --no-daemon assembleDebug assembleRelease lintDebug lintRelease testDebugUnitTest
+        run: ./gradlew --no-daemon assembleDebug assembleRelease lintDebug lintRelease test
       - name: Host video pipeline
         run: |
           sudo apt-get update
@@ -37,5 +37,5 @@ jobs:
           path: |
             app/build/outputs/apk/release/app-release-unsigned.apk
             app/build/reports/lint-results-*.html
-            app/build/test-results/testDebugUnitTest/*.xml
+            app/build/test-results/test*UnitTest/*.xml
           retention-days: 14

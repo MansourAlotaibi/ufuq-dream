@@ -15,3 +15,7 @@ The public APK includes 13 licensed Saudi photographs and the working hardware-v
 - Canceling the picker changes nothing. Invalid files leave the old catalog intact. Import runs off the UI thread; at most one poster frame (640×360) is created and recycled. On Activity destruction the worker is interrupted. A killed process can leave an unreferenced temporary file; no automatic deletion of user library files is performed.
 
 A system document provider can use its own network connection; Ufuq itself has no Internet permission. A non-responsive provider may delay background import; this must be tested on real TVs. Host-side tests cannot validate native media extraction, codecs, picker availability or seamless loops.
+
+
+### أجهزة تتضمن واجهة ملفات وهمية
+بعض أجهزة Mi Box تستقبل طلب الاختيار في `com.google.android.tv.frameworkpackagestubs/.Stubs$DocumentsStub` وتعرض رسالة إنجليزية بدل منتقي ملفات. يتحقق التطبيق من وجود منتقي حقيقي، ثم يجرب OPEN_DOCUMENT وبعده GET_CONTENT، دون طلب صلاحية التخزين العامة. عند غياب منتقي فعلي يظهر تفسير عربي ولا تتغير المقاطع الحالية. يلزم مزوّد اختيار ملفات موثوق ومتوافق مع التلفزيون؛ لا يثبته التطبيق ولا يمنح له صلاحيات تلقائيًا.

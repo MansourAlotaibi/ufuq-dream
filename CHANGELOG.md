@@ -1,3 +1,10 @@
+# 0.9.0-dev1 (unreleased)
+- Optional offline prayer panel with next prayer,Saudi-first cities,Umm al-Qura/MWL and Asr parameters; calculated/not official labels.
+- Optional Open-Meteo weather,temperature units,age/cache,failure fallback and saved-opt-in network lifecycle.
+- Registry-driven information safe band,shared live preview,staged smart preferences and4th Arabic section.
+- INTERNET permission for weather only; no location/tracking SDK. Native icon graphics.
+-0.8.3 remains RC: owner reports no independent signing backup/recovery and no isolated second TV; no current Mi Box changes.
+
 # 0.8.3-rc1
 
 - First production-signed, installable public release candidate; package unchanged, versionCode15.

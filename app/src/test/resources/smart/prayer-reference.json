@@ -1,0 +1,83 @@
+[
+  {
+    "city": "riyadh",
+    "date": "02-11-2026",
+    "source": "https://api.aladhan.com/v1/timings/02-11-2026?latitude=24.7136&longitude=46.6753&method=4&school=0&timezonestring=Asia%2FRiyadh",
+    "retrievedOn": "2026-11-02",
+    "sourceSha256": "bcabe740f5e87d9f4dacf27fd0f10bff2b019d97a6dcfed399662e988abfd7be",
+    "method": {
+      "id": 4,
+      "name": "Umm Al-Qura University, Makkah",
+      "params": {
+        "Fajr": 18.5,
+        "Isha": "90 min"
+      },
+      "location": {
+        "latitude": 21.3890824,
+        "longitude": 39.8579118
+      }
+    },
+    "timings": {
+      "Fajr": "04:41",
+      "Dhuhr": "11:37",
+      "Asr": "14:50",
+      "Maghrib": "17:13",
+      "Isha": "18:43"
+    },
+    "scope": "Published computed AlAdhan schedule, not official Saudi verification"
+  },
+  {
+    "city": "makkah",
+    "date": "02-11-2026",
+    "source": "https://api.aladhan.com/v1/timings/02-11-2026?latitude=21.4225&longitude=39.8262&method=4&school=0&timezonestring=Asia%2FRiyadh",
+    "retrievedOn": "2026-11-02",
+    "sourceSha256": "163ff04e05821241217efd6f732d9d1ea9cf9ab82070ffa26230516da96ac671",
+    "method": {
+      "id": 4,
+      "name": "Umm Al-Qura University, Makkah",
+      "params": {
+        "Fajr": 18.5,
+        "Isha": "90 min"
+      },
+      "location": {
+        "latitude": 21.3890824,
+        "longitude": 39.8579118
+      }
+    },
+    "timings": {
+      "Fajr": "05:06",
+      "Dhuhr": "12:04",
+      "Asr": "15:20",
+      "Maghrib": "17:44",
+      "Isha": "19:14"
+    },
+    "scope": "Published computed AlAdhan schedule, not official Saudi verification"
+  },
+  {
+    "city": "jeddah",
+    "date": "15-03-2026",
+    "source": "https://api.aladhan.com/v1/timings/15-03-2026?latitude=21.5433&longitude=39.1728&method=4&school=0&timezonestring=Asia%2FRiyadh",
+    "retrievedOn": "2026-11-02",
+    "sourceSha256": "73d1164198a063daeda9b12de955db8592462dc24c3692e9e62edfa0f238d008",
+    "method": {
+      "id": 4,
+      "name": "Umm Al-Qura University, Makkah",
+      "params": {
+        "Fajr": 18.5,
+        "Isha": "90 min"
+      },
+      "location": {
+        "latitude": 21.3890824,
+        "longitude": 39.8579118
+      }
+    },
+    "timings": {
+      "Fajr": "05:16",
+      "Dhuhr": "12:32",
+      "Asr": "15:55",
+      "Maghrib": "18:33",
+      "Isha": "20:33"
+    },
+    "scope": "Published computed AlAdhan schedule, not official Saudi verification"
+  }
+]

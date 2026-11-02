@@ -60,7 +60,7 @@ class SettingsActivity : Activity() {
     private val canMotion get() = MediaLibrary.clips.isNotEmpty() && MotionSupport.decoder()!=null
     private val importWorker = java.util.concurrent.Executors.newSingleThreadExecutor()
     private var importing = false
-    private val groupNames = listOf("المظهر", "الساعة والتاريخ", "العبارة")
+    private val groupNames = listOf("المظهر", "الساعة والتاريخ", "العبارة", "المعلومات الذكية")
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
@@ -69,7 +69,7 @@ class SettingsActivity : Activity() {
         // A stale saved-instance parcel from a previous APK must not block startup.
         try { (state?.getSerializable("draft") as? DisplaySettings)?.let { draft.restore(it) } }
         catch (_: RuntimeException) { /* Saved preferences remain authoritative after upgrade. */ }
-        section = state?.getInt("section")?.coerceIn(0, 2) ?: 0
+        section = state?.getInt("section")?.coerceIn(0, 3) ?: 0
         ui = SettingsUi(this)
         buildScreen()
         showSection()
@@ -98,13 +98,13 @@ class SettingsActivity : Activity() {
         groupNames.forEachIndexed { index, name ->
             val tab = button(name, "section_$index") { firstRow?.requestFocus() }
             tab.id = View.generateViewId()
-            tab.textSize = 15f
+            tab.textSize = 13f
             tab.setOnFocusChangeListener { _, focus ->
                 tab.background = ui.surface(focus, section == index)
                 if (focus && !rebuilding && section != index) { section = index; showSection() }
             }
             tabs.add(tab)
-            tabBar.addView(tab, LinearLayout.LayoutParams(0, -1, 1f).apply { if (index < 2) marginEnd = ui.dp(5) })
+            tabBar.addView(tab, LinearLayout.LayoutParams(0, -1, 1f).apply { if (index < 3) marginEnd = ui.dp(5) })
         }
         val scroll = ScrollView(this).apply { isFocusable = false; isFillViewport = false }
         rows = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
@@ -235,6 +235,42 @@ class SettingsActivity : Activity() {
                 }
                 if (s.greetingMode == 2) row("custom", "نصك الخاص", "حتى ٤٠ حرفاً؛ عربي أو إنجليزي.", if (s.greetingText.isBlank()) "اكتب" else "تعديل") { customText() }
             }
+            3 -> {
+                val smart=s.smart
+                fun city(key:String,title:String,value:String,prayer:Boolean) {
+                    row(key,title,"مدينة تختارها؛ بلا إذن موقع.",com.ufuq.dream.smart.SaudiCities.find(value).arabic) {
+                        val cities=com.ufuq.dream.smart.SaudiCities.all
+                        choose(title,cities.map{it.arabic},cities.indexOfFirst{it.id==value}.coerceAtLeast(0)){index ->
+                            change(key,"المدينة: ${cities[index].arabic}"){copy(smart=if(prayer)smart.copy(prayerCity=cities[index].id) else smart.copy(weatherCity=cities[index].id))}
+                        }
+                    }
+                }
+                row("prayers","مواقيت الصلاة","حساب محلي تقريبي؛ ليست مواقيت رسمية.",if(smart.prayers)"مفعّلة" else "متوقفة") {
+                    change("prayers","تغيّرت معاينة مواقيت الصلاة"){copy(smart=smart.copy(prayers=!smart.prayers))}
+                }
+                if(smart.prayers){
+                    city("prayer_city","مدينة الصلاة",smart.prayerCity,true)
+                    row("prayer_method","طريقة الحساب","عشاء أم القرى: ٩٠ دقيقة، و١٢٠ في رمضان حسابيًا.",if(smart.prayerMethod==0)"أم القرى" else "رابطة العالم الإسلامي") {
+                        choose("حساب تقريبي؛ طابق جدول مسجدك",listOf("أم القرى · فجر ١٨٫٥°","رابطة العالم الإسلامي"),smart.prayerMethod){i -> change("prayer_method","تغيّرت طريقة حساب الصلاة"){copy(smart=smart.copy(prayerMethod=i))} }
+                    }
+                    row("asr","حساب العصر","ظل واحد للجمهور أو ظلان للمذهب الحنفي.",if(smart.hanafiAsr)"ظلان" else "ظل واحد") {
+                        change("asr","تغيّر حساب العصر"){copy(smart=smart.copy(hanafiAsr=!smart.hanafiAsr))}
+                    }
+                }
+                row("weather","الطقس","Open-Meteo؛ إنترنت عند الحفظ والظهور فقط، بلا موقع دقيق.",if(smart.weather)"مفعّل" else "متوقف") {
+                    change("weather","المعاينة لا ترسل طلب طقس قبل حفظ الاختيار"){copy(smart=smart.copy(weather=!smart.weather))}
+                }
+                if(smart.weather){
+                    city("weather_city","مدينة الطقس",smart.weatherCity,false)
+                    row("weather_units","درجة الحرارة","تغيير الوحدة لا يجلب بيانات جديدة.",if(smart.fahrenheit)"فهرنهايت" else "مئوية") {
+                        change("weather_units","تغيّرت وحدة الحرارة"){copy(smart=smart.copy(fahrenheit=!smart.fahrenheit))}
+                    }
+                    row("weather_refresh","تحديث الطقس","عندما تكون المعاينة أو شاشة التوقف ظاهرة فقط.","${smart.weatherRefreshMinutes} دقيقة") {
+                        val minutes=listOf(30,60,180)
+                        choose("تحديث الطقس",listOf("كل نصف ساعة","كل ساعة","كل ٣ ساعات"),minutes.indexOf(smart.weatherRefreshMinutes)){i -> change("weather_refresh","تغيّر تكرار التحديث"){copy(smart=smart.copy(weatherRefreshMinutes=minutes[i]))} }
+                    }
+                }
+            }
         }
         if (restore != null) rows.findViewWithTag<View>(restore)?.requestFocus()
         rebuilding = false
@@ -345,6 +381,7 @@ class SettingsActivity : Activity() {
             val label=listOf(item.getString("title"),item.optString("originalTitle"),item.getString("author"),item.getString("license"),item.getString("source"),item.getString("licenseUrl"),item.optString("publisherSource"),item.optString("conditions"),"تعديل: قصّ ١٦:٩ وتصغير وضغط الصورة.").joinToString("\n")
             panel.addView(ui.text(label,15f).apply{isFocusable=true;setPadding(0,ui.dp(12),0,ui.dp(12));setOnFocusChangeListener{_,focus->background=ui.surface(focus)}})
         }
+        panel.addView(ui.text("الطقس: Open-Meteo · بيانات CC BY 4.0\nhttps://open-meteo.com/\nhttps://creativecommons.org/licenses/by/4.0/\nالخدمة المجانية للاستخدام غير التجاري.\nحساب الصلاة: Adhan Java 1.2.1 · Batoul Apps · MIT\nhttps://github.com/batoulapps/adhan-kotlin/tree/v1.2.1",15f).apply{isFocusable=true})
         val dialog=newDialog().apply{requestWindowFeature(Window.FEATURE_NO_TITLE)}
         TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),(resources.displayMetrics.widthPixels*.8f).toInt())
     }

@@ -1,0 +1,20 @@
+{
+  "source": "https://api.open-meteo.com/v1/forecast?latitude=24.7136&longitude=46.6753&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&timeformat=unixtime&timezone=GMT",
+  "checkedOn": "2026-11-02",
+  "result": "Live HTTPS success",
+  "current_units": {
+    "time": "unixtime",
+    "interval": "seconds",
+    "temperature_2m": "\u00b0C",
+    "weather_code": "wmo code",
+    "is_day": ""
+  },
+  "current": {
+    "time": 1793619900,
+    "interval": 900,
+    "temperature_2m": 34.8,
+    "weather_code": 0,
+    "is_day": 1
+  },
+  "attribution": "Weather data by Open-Meteo, CC BY4.0; non-commercial free endpoint"
+}

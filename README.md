@@ -1,12 +1,12 @@
 # أُفُق · Ufuq Dream
 
-شاشة توقف سعودية هادئة لـ Android TV، مصممة للبيت والريموت. مجانية، بلا إعلانات، وتعمل دون إنترنت.
+شاشة توقف سعودية هادئة لـ Android TV، مصممة للبيت والريموت. مجانية وبلا إعلانات. التجربة الأساسية والصلاة دون إنترنت؛ الطقس اختياري.
 
-A Saudi cinematic screensaver for Android TV. Native Kotlin Views, Arabic-first, offline, no ads or analytics.
+A Saudi cinematic screensaver for Android TV. Native Kotlin Views, Arabic-first, offline core and prayer calculations, opt-in weather, no ads or analytics.
 
 ## الحالة / Status
 
-**0.8.3-rc1 — installable production-signed release candidate.** Tested on Xiaomi Mi Box S (MIBOX4 / oneday), Android 9 / API 28. Broader Android TV / Google TV compatibility remains a testing goal, not a certification. The accepted 0.8.2 installation is preserved; publication does not update anyone's TV. The new local-video picker and production APK await physical-TV acceptance.
+**0.9.0-dev1 — feature branch, review only; current production release remains 0.8.3-rc1.** Tested on Xiaomi Mi Box S (MIBOX4 / oneday), Android 9 / API 28. Broader Android TV / Google TV compatibility remains a testing goal, not a certification. The accepted 0.8.2 installation is preserved; publication does not update anyone's TV. The new local-video picker and production APK await physical-TV acceptance.
 
 ## ما تتضمنه النسخة العامة
 
@@ -48,7 +48,7 @@ Install your build using your TV's normal APK installer, or an explicitly author
 
 ## Privacy and safety
 
-No app-requested permissions, Internet access, account, telemetry, microphone, location or wake-lock permission. Preferences and user-selected local media stay in app-internal storage. No root, firmware operation, launcher change or adopted-storage operation is performed. Uninstalling removes app-local settings/media. See [privacy](PRIVACY.md).
+Development branch requests INTERNET only for saved opt-in weather; no account,telemetry,microphone,location or wake-lock permission. Preferences and user-selected local media stay in app-internal storage. No root, firmware operation, launcher change or adopted-storage operation is performed. Uninstalling removes app-local settings/media. See [privacy](PRIVACY.md).
 
 ## Documentation
 
@@ -65,3 +65,8 @@ No app-requested permissions, Internet access, account, telemetry, microphone, l
 ## License
 
 Application code and project-authored documentation: [MIT](LICENSE). Photographs and their thumbnails retain their individual **CC BY / CC BY-SA** licenses; they are not relicensed under MIT. Preserve creator/title/source/license/change notices when redistributing. Third-party build tools and dependencies retain their own licenses. No endorsement by Saudi tourism bodies, photo creators or device manufacturers is implied.
+
+## Smart Ambient / المعلومات الذكية (0.9 development)
+Optional calculated prayer times,next prayer/countdown,manual Saudi-first cities; optional Open-Meteo weather,C/F,age and offline cache. Both default off and require Save. The Studio labels weather sample data explicitly; uncommitted edits do not send network requests. [Implementation,methods,provider terms and limitations](docs/0.9.0/SMART-AMBIENT.md) · [0.8.3 stable blockers](docs/0.9.0/STABILIZATION.md). No0.9Stable release or Mi Box deployment is authorized by this branch.
+
+[Smart Ambient visual review gallery](docs/0.9.0/gallery.html) | [1080p Studio screenshot](docs/0.9.0/images/studio-smart.png) (host-rendered,not a physical-TV test).

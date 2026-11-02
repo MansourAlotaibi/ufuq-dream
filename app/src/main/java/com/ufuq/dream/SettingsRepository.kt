@@ -20,7 +20,8 @@ data class DisplaySettings(
     val photoCategory: Int = theme,
     val backgroundType: Int = 0,
     val fixedAssetId: String = "",
-    val clockPosition: Int = ClockPlacement.AUTOMATIC
+    val clockPosition: Int = ClockPlacement.AUTOMATIC,
+    val smart: com.ufuq.dream.smart.SmartSettings = com.ufuq.dream.smart.SmartSettings()
 ) : java.io.Serializable
 
 class SettingsRepository(context: Context) {
@@ -53,7 +54,8 @@ class SettingsRepository(context: Context) {
         prefs.getInt("rotation_minutes",3).let{if(it in listOf(0,1,3,5))it else 3},
         backgroundType=prefs.getInt("background_type",0).coerceIn(0,2),
         fixedAssetId=prefs.getString("fixed_asset_id","").orEmpty(),
-        clockPosition=prefs.getInt("clock_position",ClockPlacement.AUTOMATIC).let{if(it in -1..8)it else -1}
+        clockPosition=prefs.getInt("clock_position",ClockPlacement.AUTOMATIC).let{if(it in -1..8)it else -1},
+        smart=com.ufuq.dream.smart.SmartSettings.read(prefs)
     )
     /** Atomic snapshot write; unexposed legacy choices are not overwritten. */
     fun save(value: DisplaySettings) {
@@ -71,6 +73,7 @@ class SettingsRepository(context: Context) {
             .putBoolean("latin_digits", value.latinDigits).putBoolean("night_dim", value.nightDim)
         // Mirror only a user-confirmed fixed scene for old-version compatibility.
         // Theme is independent of scene/category from 0.6 onward.
+        value.smart.write(edit)
         edit.apply()
     }
 

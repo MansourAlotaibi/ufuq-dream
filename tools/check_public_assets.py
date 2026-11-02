@@ -24,7 +24,7 @@ def main():
         assert hashlib.sha256(photo.read_bytes()).hexdigest() == item["sha256"], photo.name
         assert (assets / "thumbnails" / item["fileName"]).stat().st_size < 200_000
     manifest = ET.parse(ROOT / "app/src/main/AndroidManifest.xml").getroot()
-    assert not manifest.findall("uses-permission"), "Review newly requested app permissions"
+    assert {x.get("{http://schemas.android.com/apk/res/android}name") for x in manifest.findall("uses-permission")} == {"android.permission.INTERNET"}, "Only opt-in weather network permission is allowed"
     ns = "{http://schemas.android.com/apk/res/android}"
     service = manifest.find("application/service")
     assert service.get(ns + "permission") == "android.permission.BIND_DREAM_SERVICE"

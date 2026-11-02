@@ -27,6 +27,7 @@ import java.io.File
 @Config(sdk=[28],qualifiers="w960dp-h540dp-land-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class PhotoLibraryTest {
+ @get:org.junit.Rule val saudiTimeZone = SaudiTimeZoneRule()
  private val context get()=RuntimeEnvironment.getApplication()
  @Before fun clear(){context.getSharedPreferences("dream_settings",0).edit().clear().commit()}
  private fun idle()=shadowOf(Looper.getMainLooper()).idle()

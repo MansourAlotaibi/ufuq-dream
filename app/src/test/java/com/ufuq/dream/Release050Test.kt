@@ -20,6 +20,7 @@ import java.util.TimeZone
 @Config(sdk=[28],qualifiers="w960dp-h540dp-land-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class Release050Test {
+ @get:org.junit.Rule val saudiTimeZone = SaudiTimeZoneRule()
  private val context get()=RuntimeEnvironment.getApplication()
  private val prefs get()=context.getSharedPreferences("dream_settings",0)
  @Before fun clear(){prefs.edit().clear().commit()}

@@ -4,7 +4,7 @@
 Preserve the working Mi Box experience. Publish only the curated source and licensed photos, with honest limitations. Personal video stays separate.
 
 ## Next maintenance milestone
-- Run a clean Linux CI build, review Actions dependencies and pin them to reviewed commit SHAs before accepting external workflows.
+- Maintain the clean Linux CI build and review updates to SHA-pinned Actions dependencies.
 - Production signing decision and a documented migration from personal debug installs; never promise a signed-key switch preserves upgrades automatically.
 - TV text scaling/TalkBack audit, 720p/1080p/4K checks, remote Save/Cancel/Back and keyboard tests.
 - Long-run playback, sleep/wake, rapid Dream start/stop, fallback and resource profiling on API28 and a modern Google TV.

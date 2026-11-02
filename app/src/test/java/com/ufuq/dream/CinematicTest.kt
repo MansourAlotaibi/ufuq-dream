@@ -27,6 +27,7 @@ import java.time.Duration
 @Config(sdk=[28],qualifiers="w960dp-h540dp-land-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class CinematicTest {
+ @get:org.junit.Rule val saudiTimeZone = SaudiTimeZoneRule()
     private val context get() = RuntimeEnvironment.getApplication()
     private fun idle() = shadowOf(Looper.getMainLooper()).idle()
     private fun fresh(): SettingsRepository {

@@ -1,0 +1,15 @@
+<resources><style name="AppTheme" parent="android:style/Theme.Material.NoActionBar"><item name="android:fontFamily">sans</item><item name="android:windowLightStatusBar">false</item><item name="android:colorAccent">#B9CFC7</item><item name="android:windowActionModeOverlay">true</item><item name="android:windowBackground">#080F18</item></style>
+<style name="UfuqDialogTheme" parent="android:style/Theme.Material.Dialog">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowBackgroundFallback">@null</item>
+    <item name="android:colorBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowMinWidthMajor">0dp</item>
+    <item name="android:windowMinWidthMinor">0dp</item>
+    <item name="android:backgroundDimEnabled">true</item>
+    <item name="android:backgroundDimAmount">0.6</item>
+</style>
+</resources>

@@ -1,0 +1,24 @@
+local.properties
+.gradle/
+.kotlin/
+**/build/
+.idea/
+*.iml
+.DS_Store
+__pycache__/
+*.pyc
+# Local signing material and credentials
+*.jks
+*.keystore
+keystore.properties
+.env
+.env.*
+# Never publish personal media, device backups or diagnostics
+*.apk
+*.aab
+*.mp4
+*.webm
+personal-motion*/
+validation/
+artwork/
+*.log

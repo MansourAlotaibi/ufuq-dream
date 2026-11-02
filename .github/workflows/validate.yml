@@ -1,0 +1,27 @@
+name: Validate source
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Android platform
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0"'
+      - name: Public asset integrity
+        run: python3 tools/check_public_assets.py
+      - name: Build, lint and unit tests
+        run: ./gradlew --no-daemon assembleDebug lintDebug testDebugUnitTest
+      - name: Host video pipeline
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python3 -m unittest discover -s tools -p 'test_*.py'

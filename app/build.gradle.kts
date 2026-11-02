@@ -2,7 +2,12 @@ plugins { id("com.android.application"); id("org.jetbrains.kotlin.android") }
 android {
     namespace = "com.ufuq.dream"
     compileSdk = 34
-    defaultConfig { applicationId = "com.ufuq.dream"; minSdk = 28; targetSdk = 34; versionCode = 14; versionName = "0.8.2" }
+    defaultConfig {
+        applicationId = "com.ufuq.dream"; minSdk = 28; targetSdk = 34; versionCode = 15; versionName = "0.8.3-rc1"
+        val sourceCommit = providers.environmentVariable("UFUQ_SOURCE_COMMIT").orElse("development").get()
+        require(sourceCommit == "development" || sourceCommit.matches(Regex("[0-9a-f]{40}")))
+        resValue("string", "source_commit", sourceCommit)
+    }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     androidResources { noCompress += "mp4" }
     testOptions { unitTests.isIncludeAndroidResources = true }

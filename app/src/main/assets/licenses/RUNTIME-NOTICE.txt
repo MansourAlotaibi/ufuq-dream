@@ -1,0 +1,10 @@
+Kotlin standard library 2.0.21 and JetBrains annotations 13.0
+Copyright JetBrains s.r.o. and Kotlin contributors
+Apache License 2.0 (APACHE-2.0.txt)
+https://github.com/JetBrains/kotlin/tree/v2.0.21/license
+https://github.com/JetBrains/java-annotations
+
+Application code: Ufuq Dream contributors, MIT (UFUQ-MIT.txt).
+System fonts/framework supplied by Android, not bundled fonts.
+Photographs and thumbnails: individual licenses in photo-provenance.json.
+No private motion video is included.

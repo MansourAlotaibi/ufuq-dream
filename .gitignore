@@ -22,3 +22,7 @@ personal-motion*/
 validation/
 artwork/
 *.log
+
+*.p12
+*.pem
+*.key

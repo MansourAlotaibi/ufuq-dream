@@ -13,3 +13,6 @@
 `CinematicRotation` counts active time. A video due for rotation finishes its current cycle before changing; a photo advances at the interval. Transitions use fade-through-black, not two simultaneous video decoders or a guarantee of seamless looping.
 
 `PersonalMotionStore` is optional internal developer infrastructure. No private videos ship publicly, and no consumer import UI exists. General scenery uses category -1 (All only), avoiding false AlUla/Diriyah/Riyadh labels.
+
+## Public candidate media boundary
+LocalVideoImport receives only a user-selected content URI, streams at most128MiB on an Activity-owned worker, validates silent AVC/16:9/size/duration, extracts one640×360 poster, and publishes the existing internal catalog with AtomicFile. No persistent URI grant/network/broad storage permission. Existing MediaLibrary/HardwareMotionBackend consumes the same catalog; the theme, renderer, rotation and preference keys are unchanged. Canceling display changes never commits settings; import is a distinct explicit library action. UI teardown interrupts import and stops the shared preview. See LOCAL-VIDEO.md for provider and native validation limitations.

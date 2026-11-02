@@ -12,7 +12,7 @@ Preserve the working Mi Box experience. Publish only the curated source and lice
 - Defensive invalid-composition fallback; bounds-first personal thumbnail decoding; preference type/schema validation.
 
 ## Later, only after stability
-- A simple Storage Access Framework media import flow if needed, without ADB or broad storage access. Imported files must not silently become public assets.
+- Validate the new scoped media import across TV document providers; imported files never become public assets.
 - Curated additional Saudi photographs and original motion footage with independently established rights.
 - Localization resources and a deliberate English experience if supported; Arabic remains the primary product language.
 

@@ -1,0 +1,7 @@
+name: Prepare unsigned release candidate
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  verify-and-build:
+    uses: ./.github/workflows/validate.yml

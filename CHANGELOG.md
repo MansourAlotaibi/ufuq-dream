@@ -1,3 +1,11 @@
+# 0.8.3-rc1
+
+- First production-signed, installable public release candidate; package unchanged, versionCode15.
+- Scoped local video import without ADB; existing hardware playback, fallback and Save/Cancel retained. No video redistributed without rights.
+- All 13 photo licenses rechecked; rights evidence retained.
+- Release/debug builds in CI, read-only unsigned artifacts, issue/PR templates, Dependabot and tracked-file disclosure checks.
+- Pending physical-TV import acceptance, independent signing backup and broader TV testing; not a stable certification.
+
 # Changelog
 
 ## 0.8.2

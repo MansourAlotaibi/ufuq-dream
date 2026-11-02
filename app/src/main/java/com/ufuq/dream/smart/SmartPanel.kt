@@ -102,8 +102,9 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
         if(!options.weather) { weatherSession.stop();if(active)weatherSession.start();return }
         val city=SaudiCities.find(options.weatherCity);val millis=now.toEpochMilli()
         val saved=SettingsRepository(context).load().smart
-        val permitted=saved.weather && saved.weatherCity==city.id
-        if(active&&permitted)weatherSession.refresh(city,millis,options.weatherRefreshMinutes,true)
+        val policy=WeatherConsent.policy(options,saved)
+        val permitted=policy!=null
+        if(active&&policy!=null)weatherSession.refresh(city,millis,policy.intervalMinutes,true)
         val reading=weatherSession.reading(city,millis)
         // Staged enable/city change never grants network consent. A labeled sample is intentional.
         val sample=reading==null&&!permitted

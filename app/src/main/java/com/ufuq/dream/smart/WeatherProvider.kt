@@ -45,6 +45,12 @@ object WeatherParsing {
         in 51..67, in 80..82 -> "أمطار";in 71..77,85,86 -> "ثلوج";95,96,99 -> "عواصف رعدية";else -> "غير متاح"
     }
 }
+data class WeatherNetworkPolicy(val cityId:String,val intervalMinutes:Int)
+object WeatherConsent {
+    fun policy(draft:SmartSettings,saved:SmartSettings):WeatherNetworkPolicy? =
+        if(draft.weather&&saved.weather&&draft.weatherCity==saved.weatherCity)
+            WeatherNetworkPolicy(saved.weatherCity,saved.weatherRefreshMinutes) else null
+}
 interface WeatherTransport { fun fetch(city: AmbientCity): String }
 class OpenMeteoTransport : WeatherTransport {
     override fun fetch(city: AmbientCity): String {

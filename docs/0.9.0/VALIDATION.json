@@ -11,7 +11,7 @@
   ],
   "build": "success",
   "androidTests": {
-    "tests": 88,
+    "tests": 89,
     "errors": 0,
     "failures": 0,
     "skipped": 0
@@ -38,12 +38,13 @@
   "productionRcPromotedToStable": false,
   "existingMiBoxModified": false,
   "apkBytes": {
-    "app-release-unsigned.apk": 8372270,
-    "app-debug.apk": 8768590
+    "app-release-unsigned.apk": 8373946,
+    "app-debug.apk": 8770426
   },
   "limits": [
     "No second device or installed AVD/system image",
     "Owner has not completed independent key/password backup/recovery",
     "No native decoder/sleep-wake/overnight PSS/CPU measurement for this build"
-  ]
+  ],
+  "networkConsent": "Saved city, enabled status AND saved refresh cadence only; temporary edits cannot change network policy"
 }

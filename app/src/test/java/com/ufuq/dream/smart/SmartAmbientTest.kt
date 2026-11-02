@@ -84,6 +84,14 @@ class SmartAmbientTest {
         assertTrue(r.stale(time+4*3600000));assertTrue(r.stale(time-1000));assertNull(cache.read(city,time+49*3600000L))
         for(body in listOf(response(time,"1000"),response(time,code=999),"{}",response(time+3600000))){try{WeatherParsing.response(body,city,time);fail("Invalid weather accepted")}catch(_:Exception){}}
     }
+    @Test fun draftRefreshFrequencyCannotChangeSavedNetworkPolicy(){
+        val saved=SmartSettings(weather=true,weatherRefreshMinutes=180)
+        assertEquals(180,WeatherConsent.policy(saved.copy(weatherRefreshMinutes=30),saved)!!.intervalMinutes)
+        assertNull(WeatherConsent.policy(saved.copy(weatherCity="jeddah"),saved))
+        assertNull(WeatherConsent.policy(saved.copy(weather=false),saved))
+        assertNull(WeatherConsent.policy(saved,saved.copy(weather=false)))
+        assertEquals(30,WeatherConsent.policy(saved.copy(weatherRefreshMinutes=30),saved.copy(weatherRefreshMinutes=30))!!.intervalMinutes)
+    }
     @Test fun rateLimitSurvivesRestartAndEnforcesSingleRequest(){
         val first=WeatherRateLimit.acquire(city.id,1000,30)!!;assertNull(WeatherRateLimit.acquire("jeddah",1000,30));WeatherRateLimit.release(first)
         assertNull(WeatherRateLimit.acquire(city.id,1799999,30));val second=WeatherRateLimit.acquire(city.id,1801000,30)!!

@@ -122,3 +122,7 @@ MIT applies to application code, not these photographs or thumbnails. Retain the
 ## Build components
 
 Gradle wrapper: Apache-2.0; Kotlin: Apache-2.0; Android Gradle Plugin: Apache-2.0. JUnit4: EPL-1.0; Robolectric: MIT (test-only). Resolve dependency POM/license notices before distributing development tools or a production artifact; their licenses are not replaced by MIT. Android platform libraries are supplied by the device. This app has no third-party runtime playback framework.
+
+## Code, fonts and build tools
+
+Application code is MIT. Kotlin runtime (including stdlib, if packaged) is Apache-2.0: https://github.com/JetBrains/kotlin/blob/master/license/LICENSE.txt ; copyright JetBrains s.r.o. and Kotlin contributors. Android framework APIs and system Arabic fonts are supplied by the OS, not bundled font files. Android Gradle Plugin/Gradle/JDK, JUnit and Robolectric are build/test tools with their own licenses; test frameworks are not APK dependencies. No third-party player, advertising or network SDK is bundled. See the release dependency report for the actual runtime configuration.

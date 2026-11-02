@@ -57,7 +57,9 @@ class SettingsActivity : Activity() {
     private val versionLabel by lazy {
         try { packageManager.getPackageInfo(packageName, 0).versionName ?: "" } catch (_: Exception) { "" }
     }
-    private val canMotion by lazy { MediaLibrary.clips.isNotEmpty() && MotionSupport.decoder()!=null }
+    private val canMotion get() = MediaLibrary.clips.isNotEmpty() && MotionSupport.decoder()!=null
+    private val importWorker = java.util.concurrent.Executors.newSingleThreadExecutor()
+    private var importing = false
     private val groupNames = listOf("المظهر", "الساعة والتاريخ", "العبارة")
 
     override fun onCreate(state: Bundle?) {
@@ -179,6 +181,16 @@ class SettingsActivity : Activity() {
                 }
                 row("night", "خفض السطوع ليلاً", "يخفّت الصورة والنص تدريجياً بعد العاشرة مساءً.", if (s.nightDim) "مفعّل" else "متوقف") {
                     change("night", if (s.nightDim) "أُوقف خفض السطوع الليلي" else "فُعّل خفض السطوع الليلي") { copy(nightDim = !nightDim) }
+                }
+                row("import_video", "إضافة فيديو من ملفاتك", "MP4 صامت · H.264 · حتى ١٠٨٠p و٣ دقائق و١٢٨ MiB.", if (importing) "جارٍ الفحص" else "اختيار") {
+                    if (!importing) choose("لدي حق استخدام الفيديو محليًا", listOf("رجوع", "اختيار فيديو"), 0) {
+                        if (it == 1) try {
+                            startActivityForResult(android.content.Intent(android.content.Intent.ACTION_OPEN_DOCUMENT).apply {
+                                addCategory(android.content.Intent.CATEGORY_OPENABLE); type = "video/mp4"
+                                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            }, 730)
+                        } catch (_: android.content.ActivityNotFoundException) { updateUi("لا يوجد منتقي ملفات على هذا التلفزيون؛ راجع دليل الفيديو المحلي") }
+                    }
                 }
             }
             1 -> {
@@ -444,9 +456,24 @@ class SettingsActivity : Activity() {
         editor.post { (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(editor, InputMethodManager.SHOW_IMPLICIT) }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != 730 || resultCode != RESULT_OK || importing) return
+        val uri = data?.data ?: return
+        importing = true; showSection(); updateUi("جارٍ فحص الفيديو وإضافته؛ إعدادات العرض لم تتغير")
+        val app = applicationContext
+        importWorker.submit {
+            val message = try { LocalVideoImport.import(app, uri) }
+            catch (_: Exception) { "لم يُضف الفيديو؛ تحقق من الصيغة والحجم والمساحة. لم تتغير إعداداتك" }
+            runOnUiThread {
+                importing = false
+                if (!destroying && !isFinishing) { showSection("import_video"); updateUi(message) }
+            }
+        }
+    }
     override fun onResume() { super.onResume(); studio.start() }
     override fun onPause() { studio.stop(); super.onPause() }
-    override fun onDestroy() { destroying=true;dialogs.toList().forEach{it.dismiss()};dialogs.clear();dialogFocus.clear();studio.stop();thumbs.clear();super.onDestroy() }
+    override fun onDestroy() { destroying=true;importWorker.shutdownNow();dialogs.toList().forEach{it.dismiss()};dialogs.clear();dialogFocus.clear();studio.stop();thumbs.clear();super.onDestroy() }
     override fun onBackPressed() {
         if (tabs.none { it.hasFocus() }) { tabs[section].requestFocus(); return }
         if (!draft.dirty) { super.onBackPressed(); return }

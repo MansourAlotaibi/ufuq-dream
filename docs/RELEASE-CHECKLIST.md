@@ -1,17 +1,21 @@
-# Public release gate
+# Release gates
 
-Source/community preview and a production binary are different gates.
+## Completed preparation
+- [x] Preserve public history and v0.8.2; isolate release branch and backup accepted APK/source.
+- [x] Audit actual feature parity and recheck all 13 photo licenses.
+- [x] Keep unverified personal footage out; expose scoped local video import instead.
+- [x] Establish owner-authorized production key outside Git; password in macOS Keychain, never CI.
+- [x] Add release/debug CI, source/media disclosure gates, templates and dependency update configuration.
 
-- [x] Owner chose MIT for application code; individual image licenses retained.
-- [x] Public source curated without private media, keys, logs, SDK paths or old private Git history.
-- [x] Photo metadata/source/license/hash records and in-app credits retained.
-- [ ] Maintainer verifies copyright/attribution details of every bundled asset against its linked source immediately before publication.
-- [ ] Select and securely back up a production signing identity; review debug-to-production upgrade implications.
-- [x] Pin Actions to reviewed official commit SHAs; the workflow runs for pushes and pull requests.
-- [ ] Confirm a green clean-Linux CI run for the exact revision being released.
-- [ ] Finish physical-TV matrix including a modern Google TV, overnight lifecycle and accessibility.
-- [x] Publish the curated source at https://github.com/MansourAlotaibi/ufuq-dream.
-- [ ] Review issue triage and private vulnerability reporting configuration.
-- [ ] Publish a release with checksum, exact signing status, known limitations and rollback guidance.
+## Per-release verification
+- [ ] Green CI for the exact revision/tag; local build/lint/tests with no failures.
+- [ ] APK identity/API/manifest/assets inspected; release is non-debuggable and production-signed.
+- [ ] APK source commit marker matches annotated tag; checksum and certificate documented.
+- [ ] Release assets downloaded and hashes checked after upload.
 
-The curated source is public. Consult GitHub Actions for the status of a specific commit; source publication does not certify a production binary. Do not upload the original development folder or its history: those contain private local/device diagnostics. The accepted personal APK is not a production-signed public release.
+## Required before stable
+- [ ] Independent offline key/password backup and restore exercise by owner.
+- [ ] Physical-TV acceptance of the new import UI and production APK.
+- [ ] Broader TV/accessibility/overnight test matrix.
+
+Consult the GitHub Release's verification attachments for the exact per-release outcomes. Unchecked stable gates require prerelease labeling; they must not be silently converted into success claims. Do not upload the original private development tree or its history.

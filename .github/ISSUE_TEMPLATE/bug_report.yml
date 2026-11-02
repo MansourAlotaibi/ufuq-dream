@@ -1,0 +1,20 @@
+name: Bug report / بلاغ مشكلة
+description: Report reproducible behavior without private data.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: App version, TV model and Android version
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps, expected behavior and actual result
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Optional screenshots or minimal relevant error
+      description: Remove account names, custom greetings, local paths, device addresses and personal media. Never attach keys or full device dumps.

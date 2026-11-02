@@ -32,7 +32,7 @@ def main():
     for folder in [ROOT / "app/src", ROOT / "tools", ROOT / "docs"]:
         for path in folder.rglob("*"):
             if not path.is_file() or "__pycache__" in path.parts: continue
-            assert path.suffix.lower() not in {".mp4", ".webm", ".jks", ".keystore", ".apk"}, path
+            assert path.suffix.lower() not in {".mp4", ".webm", ".jks", ".keystore", ".p12", ".pem", ".key", ".apk"}, path
             if path.suffix in {".kt", ".py", ".md", ".json", ".xml"}:
                 text = path.read_text()
                 assert not re.search(r"/" + r"Users/[^/\s]+|192\.168\.\d+\.\d+", text), path

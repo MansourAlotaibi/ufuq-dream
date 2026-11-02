@@ -19,6 +19,14 @@ A Saudi cinematic screensaver for Android TV. Native Kotlin Views, Arabic-first,
 
 **No videos are included in the public source/APK.** Personal testing used a separately obtained local video; it is excluded from public distribution. Without eligible local media the app uses photos and hides motion-only controls. The app has no end-user video import UI yet. Do not expect a fresh public install to contain the personal video shown in private testing.
 
+## معرض / Gallery
+
+Host-rendered examples using the actual app renderer; not photographs of a physical TV. Clock and dates are live in the app, not baked into the backgrounds. [Screenshot credits and licenses](docs/images/CREDITS.md).
+
+![الدرعية](docs/images/diriyah-host.jpg)
+![العلا](docs/images/alula-host.jpg)
+![ليل الرياض](docs/images/riyadh-host.jpg)
+
 ## Build / البناء
 
 JDK 17, Android SDK platform 34 and build tools 34.0.0. Android Studio can provision the SDK. The Gradle wrapper downloads build dependencies; normal app use is offline.

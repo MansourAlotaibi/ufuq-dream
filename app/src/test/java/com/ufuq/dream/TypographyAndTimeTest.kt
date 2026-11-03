@@ -119,6 +119,17 @@ class TypographyAndTimeTest {
             assertTrue(display.visualContentBounds.width()>1280*.28f);display.stop()
         }
     }
+    @Test fun deviceTimezoneChangeUpdatesIcuClockAndBothDatesWithoutGlobalIcuMutation(){
+        val old=TimeZone.getDefault();val now=java.util.Date.from(Instant.parse("2026-11-02T22:30:00Z"))
+        val s=SettingsRepository(context).load().copy(language="en",latinDigits=true,hour24=true)
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("UTC"));val utc=DateProvider().labels(now,s)
+            TimeZone.setDefault(TimeZone.getTimeZone("Asia/Riyadh"));val riyadh=DateProvider().labels(now,s)
+            assertEquals("22:30",utc.time);assertEquals("01:30",riyadh.time)
+            assertTrue(utc.gregorian.startsWith("Monday"));assertTrue(riyadh.gregorian.startsWith("Tuesday"))
+            assertNotEquals(utc.hijri,riyadh.hijri)
+        } finally {TimeZone.setDefault(old)}
+    }
     @Test fun twelveHourPolicyReachesClockEveryPrayerAndFixtureKickoff(){
         val old=TimeZone.getDefault();TimeZone.setDefault(TimeZone.getTimeZone("Asia/Riyadh"))
         try {

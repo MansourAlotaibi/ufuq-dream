@@ -2,7 +2,7 @@
 
 ## Accepted feature baseline
 
-The owner tested and explicitly accepted 0.10.0-dev5 on first-generation Xiaomi Mi Box S, MIBOX4/oneday, API28, then authorized public publication. The public app retains that runtime implementation, contextual settings, side-based clock composition, fonts, all smart widgets and content-sized backdrops. Differences are release version/build metadata, public-facing provider/source wording and production certificate. Personal videos are not bundled; the playback engine/import remain. No installed app, USB setting or device data is changed by this publication workflow.
+The owner tested and explicitly accepted 0.10.0-dev5 on first-generation Xiaomi Mi Box S, MIBOX4/oneday, API28, then authorized public publication. The public app retains that runtime implementation, contextual settings, side-based clock composition, fonts, all smart widgets and content-sized backdrops. Differences are release version/build metadata, public-facing provider/source wording, production certificate and a CI-discovered fix explicitly binding ICU clock/date formatting to the current device timezone. No prayer calculation method or media behavior changed. Personal videos are not bundled; the playback engine/import remain. No installed app, USB setting or device data is changed by this publication workflow.
 
 ## Verification
 
@@ -24,3 +24,6 @@ Therefore publish as **RC/prerelease**, not Stable. It is installable for ordina
 Public production certificate remains SHA-256 de13674be215040bafb029fe637a74e9e981accfa5a763bba62ad99dbcda5169. VersionCode28 is above prior public22 and accepted private27. Existing production users can install the update without uninstalling. Existing differently signed debug/independent builds cannot update across keys; do not uninstall/clear data simply to bypass this.
 
 Existing legacy grid positions map to left/right/automatic without resetting other preferences; hidden controls retain values. On confirmed migration the old raw position is retained locally. For production rollback prefer a same-production-key, higher-versionCode rebuild of a known accepted tag. Do not promise a non-debug Android downgrade or preservation through uninstall. User-imported media stays private and must not be published with a source or APK backup.
+
+## CI-discovered timezone regression
+The first Linux UTC run failed two hour-format assertions although local Riyadh tests passed. ICU retained a process-default timezone while Java time followed the changed device zone. Formatting now explicitly uses the current device timezone for clock and both dates; a regression crosses UTC/Riyadh midnight without mutating the global ICU timezone. Full local suites passed in UTC (212 tests per variant, 424 executions). The fix must pass CI before publication; no failure was suppressed.

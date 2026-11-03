@@ -1,5 +1,6 @@
 # 0.10.0-rc1 — Saudi Smart Ambient community release
 
+- Correct ICU clock/Gregorian/Hijri timezone propagation discovered by UTC CI; add midnight/device-zone regression coverage.
 - Publish the owner-accepted dev5 feature baseline with the established production identity, package com.ufuq.dream, versionCode28.
 - Complete offline Arabic daily Quran/Hadith selections with source/license notices; optional favorite-team next fixture with bounded foreground networking/cache.
 - Opposite editorial/clock columns, automatic/left/right placement and compatible legacy-position migration; content-sized translucent backdrops disappear when empty.

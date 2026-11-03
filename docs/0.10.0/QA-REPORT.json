@@ -6,13 +6,13 @@
   "build": "clean assembleDebug assembleRelease lintDebug lintRelease test: SUCCESS",
   "tests": {
     "Debug": {
-      "tests": 210,
+      "tests": 212,
       "failures": 0,
       "errors": 0,
       "skipped": 0
     },
     "Release": {
-      "tests": 210,
+      "tests": 212,
       "failures": 0,
       "errors": 0,
       "skipped": 0
@@ -109,5 +109,6 @@
         "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders."
       }
     ]
-  }
+  },
+  "ciRegression": "First CI run exposed ICU cached timezone versus device/java timezone. Fixed explicit current-device timezone binding for clock/Gregorian/Hijri formatting; UTC host full suite passed, including a midnight timezone-change regression. CI rerun required before merge."
 }

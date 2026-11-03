@@ -1,0 +1,112 @@
+{
+  "sourceRepository": "https://github.com/MansourAlotaibi/ufuq-launcher",
+  "sourceCommit": "ff1b29eae4e107470da6e0bcc32e664955cacd03",
+  "sourceManifest": "third_party/ui-font-provenance.json",
+  "files": [
+    {
+      "file": "launcher/app/src/main/assets/fonts/Lato-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/lato/Lato-Regular.ttf",
+      "sha256": "d636e4683231f931eda222d588e944d082bfd3bdba02f928bee461c0f185b251",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/licenses/lato-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/lato/OFL.txt",
+      "sha256": "74ba064d03f1f1c4a952da936c3eb71866c34404916734de3cae73b34357e59e",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/fonts/Cairo-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/e77afb398e8fcccc0d4531600b1bd8a201bbb232/ofl/cairo/Cairo-Regular.ttf",
+      "repository": "google/fonts",
+      "commit": "e77afb398e8fcccc0d4531600b1bd8a201bbb232",
+      "sha256": "0c9a1ff13c99af2225c665c15ce8f8628617aaebbf49a571442582e0ed4ea403",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/licenses/cairo-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/e77afb398e8fcccc0d4531600b1bd8a201bbb232/ofl/cairo/OFL.txt",
+      "repository": "google/fonts",
+      "commit": "e77afb398e8fcccc0d4531600b1bd8a201bbb232",
+      "sha256": "17b90cece30db64934b7299fd76b033a3774c8a990e78badc74c59a5be8e0727",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/fonts/Tajawal-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/tajawal/Tajawal-Regular.ttf",
+      "repository": "google/fonts",
+      "commit": "6157dfaa640ca5738b4d1a7070fe389c3036d7fc",
+      "sha256": "6882892da3e03527d5db2bbab3b48bde6ef2e878a43f522d1a4eebda90010a19",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/licenses/tajawal-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/tajawal/OFL.txt",
+      "repository": "google/fonts",
+      "commit": "6157dfaa640ca5738b4d1a7070fe389c3036d7fc",
+      "sha256": "9b584984f9db0ee30347391a76eff9c0a6b03dc450c3c6afe3757a2cb3a4db87",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/fonts/IBMPlexSansArabic-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/ibmplexsansarabic/IBMPlexSansArabic-Regular.ttf",
+      "repository": "google/fonts",
+      "commit": "6157dfaa640ca5738b4d1a7070fe389c3036d7fc",
+      "sha256": "6f611412270a132bbac838da9259d4c68569b4175f3b3b8fa3fa36a30b56dab9",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/licenses/ibm-plex-sans-arabic-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/ibmplexsansarabic/OFL.txt",
+      "repository": "google/fonts",
+      "commit": "6157dfaa640ca5738b4d1a7070fe389c3036d7fc",
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/fonts/ReadexPro-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/ThomasJockin/readexpro/563dfbb36ae45e52ec50829b016ce724ac2fca70/fonts/ttf/ReadexPro-Regular.ttf",
+      "repository": "ThomasJockin/readexpro",
+      "commit": "563dfbb36ae45e52ec50829b016ce724ac2fca70",
+      "sha256": "0cd21fac7049bc6e2750281dc9991698ef519d14939a940d8bc0c1f883c9e806",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/licenses/readex-pro-OFL.txt",
+      "url": "https://raw.githubusercontent.com/ThomasJockin/readexpro/563dfbb36ae45e52ec50829b016ce724ac2fca70/OFL.txt",
+      "repository": "ThomasJockin/readexpro",
+      "commit": "563dfbb36ae45e52ec50829b016ce724ac2fca70",
+      "sha256": "b41267a3903a45955f77b44596e080480c577fb7221df59672d0bc8cd8cd4b6f",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/fonts/Almarai-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/almarai/Almarai-Regular.ttf",
+      "repository": "google/fonts",
+      "commit": "6157dfaa640ca5738b4d1a7070fe389c3036d7fc",
+      "sha256": "5b5cad33c8e5922083728d271cdcda91f96ba291f1307eccc4f4ef732dc19622",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    },
+    {
+      "file": "launcher/app/src/main/assets/licenses/almarai-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/6157dfaa640ca5738b4d1a7070fe389c3036d7fc/ofl/almarai/OFL.txt",
+      "repository": "google/fonts",
+      "commit": "6157dfaa640ca5738b4d1a7070fe389c3036d7fc",
+      "sha256": "142e053c374dd465a92bd7378116b517e344dbc662361308130fc2566db30c2a",
+      "license": "SIL OFL 1.1",
+      "modified": false
+    }
+  ],
+  "modifications": "None; originals and individual OFL notices copied byte-for-byte."
+}

@@ -1,3 +1,15 @@
+# 0.10.0-rc1 — Saudi Smart Ambient community release
+
+- Correct ICU clock/Gregorian/Hijri timezone propagation discovered by UTC CI; add midnight/device-zone regression coverage.
+- Publish the owner-accepted dev5 feature baseline with the established production identity, package com.ufuq.dream, versionCode28.
+- Complete offline Arabic daily Quran/Hadith selections with source/license notices; optional favorite-team next fixture with bounded foreground networking/cache.
+- Opposite editorial/clock columns, automatic/left/right placement and compatible legacy-position migration; content-sized translucent backdrops disappear when empty.
+- Shared 12/24-hour formatting for clock/prayers/fixture, separate saved Arabic/English fonts with only the active language selector shown.
+- Contextual prayer/weather/greeting/media controls, preserved hidden preferences and explicit Save/Cancel. Unified fixed-background library replaces duplicate picker paths.
+- 13 licensed photos, no bundled private footage; hardware video playback/local import/static fallback retained.
+- Updated Arabic/English guides, screenshots, credits, privacy, provider terms, rollback and readiness documentation.
+- Remains RC pending independent signing-key recovery and broader isolated production-device/endurance acceptance.
+
 # Unreleased — build and test maintenance
 
 - Review checksum-verified Gradle9.8.2, test-only Robolectric4.17 and SHA-pinned checkout7/setup-java6/upload-artifact7 together.

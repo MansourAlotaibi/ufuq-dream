@@ -14,8 +14,11 @@ The public APK includes 13 licensed Saudi photographs and the working hardware-v
 - Copies contain the user's chosen file, potentially its original metadata. They are never bundled in later public APKs, uploaded, or exposed through an exported provider. Uninstalling removes them; no import/export or in-app deletion library is promised in this RC.
 - Canceling the picker changes nothing. Invalid files leave the old catalog intact. Import runs off the UI thread; at most one poster frame (640×360) is created and recycled. On Activity destruction the worker is interrupted. A killed process can leave an unreferenced temporary file; no automatic deletion of user library files is performed.
 
-A system document provider can use its own network connection; Ufuq itself has no Internet permission. A non-responsive provider may delay background import; this must be tested on real TVs. Host-side tests cannot validate native media extraction, codecs, picker availability or seamless loops.
+A system document provider can use its own network connection. Ufuq has Internet permission for optional smart widgets, but local video import itself does not upload media. A non-responsive provider may delay background import; this must be tested on real TVs. Host-side tests cannot validate native media extraction, codecs, picker availability or seamless loops.
 
 
 ### أجهزة تتضمن واجهة ملفات وهمية
 بعض أجهزة Mi Box تستقبل طلب الاختيار في `com.google.android.tv.frameworkpackagestubs/.Stubs$DocumentsStub` وتعرض رسالة إنجليزية بدل منتقي ملفات. يتحقق التطبيق من وجود منتقي حقيقي، ثم يجرب OPEN_DOCUMENT وبعده GET_CONTENT، دون طلب صلاحية التخزين العامة. عند غياب منتقي فعلي يظهر تفسير عربي ولا تتغير المقاطع الحالية. يلزم مزوّد اختيار ملفات موثوق ومتوافق مع التلفزيون؛ لا يثبته التطبيق ولا يمنح له صلاحيات تلقائيًا.
+
+## 0.10 selection
+Choose Motion or Photos + Motion when compatible local clips exist, select Fixed background, then open Background. This unified picker respects category and media type; there is no separate duplicate all-category video picker. On devices without a real file picker, import is hidden; existing imported clips remain selectable. No new picker app is installed automatically.

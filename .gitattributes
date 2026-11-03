@@ -1,1 +1,3 @@
 *.bat text eol=crlf
+# Third-party license notices are hash-verified verbatim, including original CRLF/spacing.
+app/src/main/assets/licenses/* -text whitespace=-blank-at-eol,-blank-at-eof

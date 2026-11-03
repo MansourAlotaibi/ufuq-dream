@@ -18,7 +18,24 @@ class AmbientDisplay @JvmOverloads constructor(
  internal val motionLayer=MotionLayer(context)
  private val zone=FrameLayout(context)
  internal val smartPanel=com.ufuq.dream.smart.SmartPanel(context){if(alive)refresh()}
- private fun widgetZones(w:Int,h:Int)=com.ufuq.dream.smart.SmartLayout.zones(w,h,resources.displayMetrics.density,settings)
+ private var measuredFooter=0
+ private fun widgetZones(w:Int,h:Int)=com.ufuq.dream.smart.SmartLayout.zones(w,h,resources.displayMetrics.density,settings,measuredFooter)
+ private fun hasEditorial()=settings.smart.reflectionMode in 1..3 || (settings.smart.football && com.ufuq.dream.smart.FootballTeams.find(settings.smart.footballTeam)!=null)
+ private fun clockOnRight()=when {
+  settings.clockPosition in 0..8 && settings.clockPosition%3!=1 -> settings.clockPosition%3==2
+  else -> currentPhoto.composition.left>.5f
+ }
+ private fun clockSpec(w:Int,h:Int):PlacementSpec {
+  val original=ClockPlacement.spec(w,widgetZones(w,h).clockHeight,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
+  if(!hasEditorial())return original
+  val region=Rect((w*if(clockOnRight()).53f else .05f).toInt(),original.zone.top,(w*if(clockOnRight()).95f else .47f).toInt(),original.zone.bottom)
+  return original.copy(zone=region,contentWidth=minOf(original.contentWidth,region.width()-2*original.reserve),x=.5f)
+ }
+ private fun editorialRect(w:Int,h:Int):Rect {
+  if(!hasEditorial())return Rect()
+  val bottom=widgetZones(w,h).clockHeight
+  return Rect((w*if(clockOnRight()).05f else .53f).toInt(),(h*.08f).toInt(),(w*if(clockOnRight()).47f else .95f).toInt(),(bottom-h*.04f).toInt())
+ }
  internal val contrastVeil=TextContrastVeil(context)
  private var isMotionBackground=false
  private var rawNight=0f
@@ -48,7 +65,7 @@ class AmbientDisplay @JvmOverloads constructor(
  var testNow:Date?=null
  internal val settingsSnapshot get()=settings
  val isRunning get()=alive
- init{addView(backgroundRenderer,LayoutParams(-1,-1));addView(motionLayer,LayoutParams(-1,-1));addView(contrastVeil,LayoutParams(-1,-1));addView(zone,LayoutParams(1,1));addView(smartPanel,LayoutParams(-1,-2));setWillNotDraw(false);motionLayer.onLoopBoundary={if(alive)refresh(atMotionBoundary=true)}}
+ init{addView(backgroundRenderer,LayoutParams(-1,-1));addView(motionLayer,LayoutParams(-1,-1));addView(contrastVeil,LayoutParams(-1,-1));addView(zone,LayoutParams(1,1));addView(smartPanel,LayoutParams(-1,-2));addView(smartPanel.supplements,LayoutParams(-1,-2));setWillNotDraw(false);motionLayer.onLoopBoundary={if(alive)refresh(atMotionBoundary=true)}}
  private val tick=object:Runnable{override fun run(){if(!alive)return;refresh();val period=if(settings.seconds)1000L else 60_000L;handler.postDelayed(this,period-Math.floorMod(System.currentTimeMillis(),period))}}
  private val rotate = object:Runnable { override fun run(){ if(alive)refresh() }}
  private val movement=object:Runnable{override fun run(){if(!alive)return
@@ -89,6 +106,7 @@ class AmbientDisplay @JvmOverloads constructor(
   motionLayer.configure(if(alive)media.clip else null,if(photo.composition.left>.5f)0 else 1,backgroundRenderer.nightLevel)
   renderer?.update(clockNow,settings,theme)
   smartPanel.update(clockNow.toInstant(),settings,theme)
+  UfuqFonts.apply(zone,settings);UfuqFonts.apply(smartPanel,settings);UfuqFonts.apply(smartPanel.supplements,settings)
   handler.removeCallbacks(rotate);handler.removeCallbacks(prefetch)
   if(alive&&saved.imageMode==0&&saved.rotationMinutes>0){
    val remaining=rotation.remaining(now,saved.rotationMinutes)
@@ -112,7 +130,11 @@ class AmbientDisplay @JvmOverloads constructor(
  backgroundRenderer.measure(MeasureSpec.makeMeasureSpec(width,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY))
  motionLayer.measure(MeasureSpec.makeMeasureSpec(width,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY))
  contrastVeil.measure(MeasureSpec.makeMeasureSpec(width,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY))
- val spec=ClockPlacement.spec(width,widgetZones(width,height).clockHeight,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
+ // Different licensed typefaces have different real Arabic ascent/leading. Measure
+ // the native footer before reserving space; never fake its font metrics or clip glyphs.
+ smartPanel.measure(MeasureSpec.makeMeasureSpec((width*.90f).toInt(),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED))
+ measuredFooter=if(smartPanel.visibility==android.view.View.VISIBLE)smartPanel.measuredHeight else 0
+ val spec=clockSpec(width,height)
  renderer?.let{
   if(measuredContentWidth!=spec.contentWidth){
    measuredContentWidth=spec.contentWidth;it.setAvailableWidth(spec.contentWidth)
@@ -125,13 +147,16 @@ class AmbientDisplay @JvmOverloads constructor(
  renderer?.view?.measure(MeasureSpec.makeMeasureSpec(spec.contentWidth,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED))
  val panel=widgetZones(width,height).panel
  smartPanel.measure(MeasureSpec.makeMeasureSpec(panel.width().coerceAtLeast(0),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(panel.height().coerceAtLeast(0),MeasureSpec.EXACTLY))
+ val editorial=editorialRect(width,height)
+ smartPanel.supplements.measure(MeasureSpec.makeMeasureSpec(editorial.width().coerceAtLeast(0),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(editorial.height().coerceAtLeast(0),MeasureSpec.EXACTLY))
  setMeasuredDimension(width,height)
  }
  override fun onLayout(changed:Boolean,l:Int,t:Int,r:Int,b:Int){
  backgroundRenderer.layout(0,0,width,height);motionLayer.layout(0,0,width,height);contrastVeil.layout(0,0,width,height)
- val spec=ClockPlacement.spec(width,widgetZones(width,height).clockHeight,resources.displayMetrics.density,settings.clockPosition,currentPhoto.composition)
+ val spec=clockSpec(width,height)
  zone.layout(spec.zone.left,spec.zone.top,spec.zone.right,spec.zone.bottom)
  val panel=widgetZones(width,height).panel;smartPanel.layout(panel.left,panel.top,panel.right,panel.bottom)
+ val editorial=editorialRect(width,height);smartPanel.supplements.layout(editorial.left,editorial.top,editorial.right,editorial.bottom)
  val child=renderer?.view?:return
  val (bounds,scale)=ClockPlacement.visualBounds(spec,child.measuredWidth,child.measuredHeight)
  if(visualContentBounds!=bounds){child.animate().cancel();child.translationX=0f;child.translationY=0f}

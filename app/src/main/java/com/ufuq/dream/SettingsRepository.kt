@@ -22,7 +22,9 @@ data class DisplaySettings(
     val fixedAssetId: String = "",
     val clockPosition: Int = ClockPlacement.AUTOMATIC,
     val smart: com.ufuq.dream.smart.SmartSettings = com.ufuq.dream.smart.SmartSettings(),
-    val language: String = "ar"
+    val language: String = "ar",
+    val fontArabic: String = "default",
+    val fontEnglish: String = "default"
 ) : java.io.Serializable
 
 class SettingsRepository(context: Context) {
@@ -55,9 +57,11 @@ class SettingsRepository(context: Context) {
         prefs.getInt("rotation_minutes",3).let{if(it in listOf(0,1,3,5))it else 3},
         backgroundType=prefs.getInt("background_type",0).coerceIn(0,2),
         fixedAssetId=prefs.getString("fixed_asset_id","").orEmpty(),
-        clockPosition=prefs.getInt("clock_position",ClockPlacement.AUTOMATIC).let{if(it in -1..8)it else -1},
+        clockPosition=ClockPlacement.side(prefs.getInt("clock_position",ClockPlacement.AUTOMATIC)),
         smart=com.ufuq.dream.smart.SmartSettings.read(prefs),
-        language=AppLanguage.normalize(prefs.getString("app_language","ar").orEmpty())
+        language=AppLanguage.normalize(prefs.getString("app_language","ar").orEmpty()),
+        fontArabic=UfuqFonts.normalize(prefs.getString("font_ar_family","default").orEmpty(),"ar"),
+        fontEnglish=UfuqFonts.normalize(prefs.getString("font_en_family","default").orEmpty(),"en")
     )
     /** Atomic snapshot write; unexposed legacy choices are not overwritten. */
     fun save(value: DisplaySettings) {
@@ -69,13 +73,17 @@ class SettingsRepository(context: Context) {
             .putBoolean("greeting", value.greetingMode != 3)
             .putInt("theme",value.theme.coerceIn(0,2))
             .putInt("image_mode",value.imageMode.coerceIn(0,1)).putString("image_id",BackgroundRepository.find(value.imageId).id)
-            .putInt("clock_position",value.clockPosition.let{if(it in -1..8)it else -1})
+            .putInt("clock_position",ClockPlacement.side(value.clockPosition))
+            .putString("font_ar_family",UfuqFonts.normalize(value.fontArabic,"ar"))
+            .putString("font_en_family",UfuqFonts.normalize(value.fontEnglish,"en"))
             .putInt("background_type",value.backgroundType.coerceIn(0,2)).putString("fixed_asset_id",value.fixedAssetId)
             .putInt("rotation_minutes",value.rotationMinutes).putBoolean("show_seconds",value.seconds)
             .putString("app_language",AppLanguage.normalize(value.language))
             .putBoolean("latin_digits", value.language=="en").putBoolean("night_dim", value.nightDim)
         // Mirror only a user-confirmed fixed scene for old-version compatibility.
         // Theme is independent of scene/category from 0.6 onward.
+        val previous=prefs.getInt("clock_position",ClockPlacement.AUTOMATIC)
+        if(previous!=ClockPlacement.side(previous)&&!prefs.contains("legacy_clock_position"))edit.putInt("legacy_clock_position",previous)
         value.smart.write(edit)
         edit.apply()
     }

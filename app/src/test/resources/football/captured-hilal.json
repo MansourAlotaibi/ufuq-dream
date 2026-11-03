@@ -1,0 +1,13 @@
+{
+  "events": [
+    {
+      "idHomeTeam": "136013",
+      "idAwayTeam": "137828",
+      "strHomeTeam": "Al-Hilal",
+      "strAwayTeam": "Shabab Al-Ahli Dubai",
+      "strTimestamp": "2026-11-03T18:15:00",
+      "dateEvent": "2026-11-03",
+      "strTime": "18:15:00"
+    }
+  ]
+}

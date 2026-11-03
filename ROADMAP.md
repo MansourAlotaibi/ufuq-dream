@@ -1,22 +1,17 @@
 # Roadmap
 
-## 0.8.2 — accepted baseline
-Preserve the working Mi Box experience. Publish only the curated source and licensed photos, with honest limitations. Personal video stays separate.
+## Current: 0.10 Saudi Smart Ambient
 
-## Next maintenance milestone
-- Maintain the clean Linux CI build and review updates to SHA-pinned Actions dependencies.
-- Production signing decision and a documented migration from personal debug installs; never promise a signed-key switch preserves upgrades automatically.
-- TV text scaling/TalkBack audit, 720p/1080p/4K checks, remote Save/Cancel/Back and keyboard tests.
-- Long-run playback, sleep/wake, rapid Dream start/stop, fallback and resource profiling on API28 and a modern Google TV.
-- Cache date formatters carefully and verify timezone/time-change handling before changing the stable renderer.
-- Defensive invalid-composition fallback; bounds-first personal thumbnail decoding; preference type/schema validation.
+Public community release candidate: owner-accepted Mi Box development counterpart; production APK signed with the established key. Includes bilingual contextual Studio, fonts, side-based clock layout, 13 photos, personal video engine, prayer/weather, daily reading, favorite-team next fixture and dynamic text-sized backdrops. See docs/0.10.0/RELEASE.md for remaining gates.
 
-## Later, only after stability
-- Validate the new scoped media import across TV document providers; imported files never become public assets.
-- Curated additional Saudi photographs and original motion footage with independently established rights.
-- Localization resources and a deliberate English experience if supported; Arabic remains the primary product language.
+## Stabilization
 
-Do not add weather, prayer times, sports, feeds or network accounts just to increase feature count. No timetable is promised.
+- Independent signing-key/password recovery proof and isolated production-signed TV installation.
+- Wider real Android TV / Google TV coverage, sleep/wake and current-build long-run memory/decoder checks.
+- Real document-picker compatibility and accessibility/overscan review.
+- Continue SHA-pinned CI/dependency review; AGP9 built-in Kotlin migration remains issue #10, not silently adopted.
+- Re-review provider terms/rate behavior before store or commercial distribution.
 
-## 0.9 Smart Ambient — review branch
-Implemented optional offline calculated prayer times and saved-opt-in weather with shared Studio/Dream presentation. Before release: independent production key/password recovery,isolated production APK testing,physical TV/overscan/D-pad/long-run checks,prayer timetable review and provider compatibility. Future extension points only: football information and optional ambient audio; neither is implemented in0.9. No date for them is promised.
+## Next product discussion
+
+No new feature is promised yet. Discuss changes with the owner after this publication; build locally, review on the TV, then explicitly approve publication. Future original Saudi motion assets require verifiable redistribution rights. Preserve simplicity, Arabic quality, opt-in networking and low-memory behavior.

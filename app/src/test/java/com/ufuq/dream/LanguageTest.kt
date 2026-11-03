@@ -63,7 +63,7 @@ class LanguageTest {
         assertEquals("ar",before.language);assertFalse(before.latinDigits)
         repo.save(before.copy(language="en"))
         val after=repo.load()
-        assertTrue(after.latinDigits);assertEquals(8,after.clockPosition);assertEquals("My greeting",after.greetingText);assertEquals(2,after.sceneChoice)
+        assertTrue(after.latinDigits);assertEquals(5,after.clockPosition);assertEquals("My greeting",after.greetingText);assertEquals(2,after.sceneChoice)
         repo.save(after.copy(language="ar",latinDigits=true))
         assertFalse(repo.load().latinDigits)
     }

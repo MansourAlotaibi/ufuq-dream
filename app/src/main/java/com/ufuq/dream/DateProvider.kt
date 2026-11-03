@@ -3,6 +3,10 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.ULocale
 import java.util.Date
 import java.util.Calendar
+/** Bind ICU explicitly to the current device zone rather than a cached process default. */
+private fun localFormat(pattern:String,locale:ULocale)=SimpleDateFormat(pattern,locale).apply {
+ timeZone=android.icu.util.TimeZone.getTimeZone(java.util.TimeZone.getDefault().id)
+}
 interface HijriProvider {
     fun label(now:Date):String
     /** Providers that can switch digit style override this; simple fakes only implement [label]. */
@@ -14,17 +18,17 @@ class UmmAlQuraProvider:HijriProvider {
  override fun label(now:Date,latinDigits:Boolean):String = label(now,latinDigits,"ar")
  override fun label(now:Date,latinDigits:Boolean,language:String):String = try {
   val tag=if(language=="en")"en_SA@calendar=islamic-umalqura;numbers=latn" else if(latinDigits)"ar_SA@calendar=islamic-umalqura;numbers=latn" else "ar_SA@calendar=islamic-umalqura"
-  SimpleDateFormat(if(language=="en")"d MMMM y 'AH'" else "d MMMM y 'هـ'",ULocale(tag)).format(now)
+  localFormat(if(language=="en")"d MMMM y 'AH'" else "d MMMM y 'هـ'",ULocale(tag)).format(now)
  } catch (_:IllegalArgumentException){AppLanguage.text("التاريخ الهجري غير متاح",language)}
 }
 data class TimeLabels(val time:String,val period:String,val gregorian:String,val hijri:String)
 class DateProvider(private val hijriProvider:HijriProvider=UmmAlQuraProvider()) {
  fun labels(now:Date,s:DisplaySettings):TimeLabels {
  val locale=ULocale(if(s.language=="en")"en_US@calendar=gregorian;numbers=latn" else if(s.latinDigits)"ar_SA@calendar=gregorian;numbers=latn" else "ar_SA@calendar=gregorian")
- val pattern=(if(s.hour24) "HH:mm" else "hh:mm")+(if(s.seconds) ":ss" else "")
+ val pattern=TimePresentation.pattern(s.hour24,s.seconds)
  val hour=Calendar.getInstance().apply{time=now}.get(Calendar.HOUR_OF_DAY)
- return TimeLabels(SimpleDateFormat(pattern,locale).format(now),if(s.hour24) "" else if(s.language=="en") {if(hour<12)"AM" else "PM"} else if(hour<12) "ص" else "م",
- SimpleDateFormat(if(s.language=="en")"EEEE, d MMMM y" else "EEEE، d MMMM y",locale).format(now),hijriProvider.label(now,s.latinDigits,s.language))
+ return TimeLabels(localFormat(pattern,locale).format(now),if(s.hour24) "" else if(s.language=="en") {if(hour<12)"AM" else "PM"} else if(hour<12) "ص" else "م",
+ localFormat(if(s.language=="en")"EEEE, d MMMM y" else "EEEE، d MMMM y",locale).format(now),hijriProvider.label(now,s.latinDigits,s.language))
  }
 }
 object GreetingProvider {

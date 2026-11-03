@@ -71,10 +71,13 @@ class SmartCompatibilityTest {
         WeatherCache(context).write(WeatherReading(city.id,31.6,0,false,instant.toEpochMilli(),instant.toEpochMilli()))
         val base=SettingsRepository(context).load().copy(smart=SmartSettings(prayers=true,weather=true))
         val panel=SmartPanel(context)
-        fun allText():String=(0 until panel.childCount).joinToString(" "){index->
-            val child=panel.getChildAt(index)
-            if(child is android.widget.TextView)child.text.toString() else if(child is android.view.ViewGroup)(0 until child.childCount).joinToString(" "){(child.getChildAt(it) as android.widget.TextView).text.toString()} else ""
+        fun collect(view:View):String=when(view){
+            is android.widget.TextView->view.text.toString()
+            is android.view.ViewGroup->(0 until view.childCount).joinToString(" "){collect(view.getChildAt(it))}
+            else->""
         }
+        fun allText()=collect(panel)
+
         panel.update(instant,base.copy(latinDigits=true,hour24=true),ThemeManager.get(0));assertTrue(allText().contains("04:41"));assertTrue(allText().contains("32°"))
         panel.update(instant,base.copy(latinDigits=false,hour24=true),ThemeManager.get(0));assertTrue(allText().contains("٠٤:٤١"));assertTrue(allText().contains("٣٢°"))
         panel.update(instant,base.copy(latinDigits=true,hour24=false),ThemeManager.get(0));assertTrue(allText().contains("02:49"));assertTrue(allText().contains("م"));panel.stop()

@@ -33,7 +33,8 @@ data class SmartSettings(
     val prayerMethod: Int = 0, val hanafiAsr: Boolean = false,
     val weather: Boolean = false, val weatherCity: String = "riyadh",
     val fahrenheit: Boolean = false, val weatherRefreshMinutes: Int = 60,
-    val prayerSource: Int = 0
+    val prayerSource: Int = 0,
+    val reflectionMode: Int = 0, val football: Boolean = false, val footballTeam: String = "none"
 ) : java.io.Serializable {
     companion object {
         fun read(p: SharedPreferences) = SmartSettings(
@@ -41,11 +42,17 @@ data class SmartSettings(
             p.getInt("smart_prayer_method", 0).coerceIn(0, 1), p.getBoolean("smart_hanafi", false),
             p.getBoolean("smart_weather", false), SaudiCities.find(p.getString("smart_weather_city", "riyadh").orEmpty()).id,
             p.getBoolean("smart_fahrenheit", false), p.getInt("smart_weather_refresh", 60).let { if (it in listOf(30, 60, 180)) it else 60 },
-            p.getInt("smart_prayer_source", if(p.contains("smart_prayers"))1 else 0).coerceIn(0,1)
+            p.getInt("smart_prayer_source", if(p.contains("smart_prayers"))1 else 0).coerceIn(0,1),
+            p.getInt("smart_reflection_mode",0).let{if(it in 0..3)it else 0},
+            p.getBoolean("smart_football",false) && FootballTeams.find(p.getString("smart_football_team","none").orEmpty())!=null,
+            FootballTeams.find(p.getString("smart_football_team","none").orEmpty())?.id?:"none"
         )
     }
     fun write(e: SharedPreferences.Editor) {
-        e.putInt("smart_prayer_source",prayerSource.coerceIn(0,1))
+        e.putInt("smart_reflection_mode",reflectionMode.let{if(it in 0..3)it else 0})
+            .putBoolean("smart_football",football && FootballTeams.find(footballTeam)!=null)
+            .putString("smart_football_team",FootballTeams.find(footballTeam)?.id?:"none")
+            .putInt("smart_prayer_source",prayerSource.coerceIn(0,1))
             .putBoolean("smart_prayers", prayers).putString("smart_prayer_city", SaudiCities.find(prayerCity).id)
             .putInt("smart_prayer_method", prayerMethod.coerceIn(0, 1)).putBoolean("smart_hanafi", hanafiAsr)
             .putBoolean("smart_weather", weather).putString("smart_weather_city", SaudiCities.find(weatherCity).id)

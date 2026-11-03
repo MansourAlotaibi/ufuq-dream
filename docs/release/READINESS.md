@@ -1,5 +1,9 @@
 # Current release readiness
 
+See [0.10.0 release review](../0.10.0/RELEASE.md) and the actual release QA/signature assets. The owner accepted the underlying dev5 build; production signing backup recovery and wider isolated-device gates still prevent a Stable claim.
+
+# Current release readiness
+
 For v0.9.0-rc1 see [public QA and limitations](../0.9.0/STABILITY-RC.md), [Smart Ambient](../0.9.0/SMART-AMBIENT.md) and the release QA attachment. This is a prerelease. The historical0.8.3 preparation notes follow, not claims about fresh0.9 runtime testing.
 
 # 0.8.3-rc1 release readiness

@@ -15,6 +15,7 @@ class SettingsUi(private val context: Context) {
     val muted = Color.parseColor("#B9B4A6")
     var themeIndex: Int = 1
     var language: String = "ar"
+    var typography:DisplaySettings?=null
     fun tr(value:String)=AppLanguage.text(value,language)
     val accent get() = ThemeManager.get(themeIndex).accent
     fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
@@ -30,6 +31,7 @@ class SettingsUi(private val context: Context) {
         textDirection = if(language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL
         typeface = Typeface.create("sans-serif", Typeface.NORMAL)
         isFocusable = false
+        typography?.let{UfuqFonts.apply(this,it)}
     }
     fun row(title: String, description: String, value: String, help: (String) -> Unit, click: () -> Unit): LinearLayout {
         val row = LinearLayout(context).apply {
@@ -43,6 +45,7 @@ class SettingsUi(private val context: Context) {
         labels.addView(text(title, 21f)); labels.addView(text(description, 14f, true).apply { setPadding(0, dp(4), 0, 0) })
         row.addView(labels, LinearLayout.LayoutParams(0, -2, 1f))
         if(value.isNotEmpty()) row.addView(text(value, 17f).apply {
+            tag="setting_value";maxWidth=dp(120)
             setTextColor(accent); gravity = Gravity.CENTER
             setPadding(dp(12), dp(8), dp(12), dp(8))
             background = GradientDrawable().apply { setColor(0x33000000); cornerRadius = dp(8).toFloat() }

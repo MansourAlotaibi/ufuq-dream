@@ -20,7 +20,7 @@ class AmbientDisplay @JvmOverloads constructor(
  internal val smartPanel=com.ufuq.dream.smart.SmartPanel(context){if(alive)refresh()}
  private var measuredFooter=0
  private fun widgetZones(w:Int,h:Int)=com.ufuq.dream.smart.SmartLayout.zones(w,h,resources.displayMetrics.density,settings,measuredFooter)
- private fun hasEditorial()=settings.smart.reflectionMode in 1..3 || (settings.smart.football && com.ufuq.dream.smart.FootballTeams.find(settings.smart.footballTeam)!=null)
+ private fun hasEditorial()=settings.smart.hasReflection || (settings.smart.football && com.ufuq.dream.smart.FootballTeams.find(settings.smart.footballTeam)!=null)
  private fun clockOnRight()=when {
   settings.clockPosition in 0..8 && settings.clockPosition%3!=1 -> settings.clockPosition%3==2
   else -> currentPhoto.composition.left>.5f
@@ -104,6 +104,7 @@ class AmbientDisplay @JvmOverloads constructor(
   rawNight=NightMode.backgroundDim(clockNow,saved.nightDim)
   backgroundRenderer.nightLevel=if(isMotionBackground)MotionContrastPolicy.nightDim(rawNight,currentLuminance)else rawNight
   motionLayer.configure(if(alive)media.clip else null,if(photo.composition.left>.5f)0 else 1,backgroundRenderer.nightLevel)
+  renderer?.setPlaceLabel(PlaceLabels.forMedia(context,media,settings.language))
   renderer?.update(clockNow,settings,theme)
   smartPanel.update(clockNow.toInstant(),settings,theme)
   UfuqFonts.apply(zone,settings);UfuqFonts.apply(smartPanel,settings);UfuqFonts.apply(smartPanel.supplements,settings)

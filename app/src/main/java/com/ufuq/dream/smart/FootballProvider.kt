@@ -17,8 +17,8 @@ import javax.net.ssl.HttpsURLConnection
 import java.net.URL
 
 /** Adapted from Ufuq Launcher's MIT fixture parser. No logos, live scores or private API key. */
-data class FootballFixture(val homeId:String,val awayId:String,val home:String,val away:String,val start:Instant) {
-    fun json()=JSONObject().put("homeId",homeId).put("awayId",awayId).put("home",home).put("away",away).put("start",start.toEpochMilli())
+data class FootballFixture(val homeId:String,val awayId:String,val home:String,val away:String,val start:Instant,val competition:String="") {
+    fun json()=JSONObject().put("homeId",homeId).put("awayId",awayId).put("home",home).put("away",away).put("start",start.toEpochMilli()).put("competition",competition)
 }
 object FootballParsing {
     private fun timestamp(event:JSONObject):Instant? {
@@ -35,6 +35,7 @@ object FootballParsing {
         require(f.homeId!=f.awayId && (team==f.homeId||team==f.awayId))
         require(f.home.isNotBlank()&&f.away.isNotBlank()&&f.home.length<=96&&f.away.length<=96)
         require((f.home+f.away).none{Character.isISOControl(it)||it in '\u202a'..'\u202e'||it in '\u2066'..'\u2069'})
+        require(f.competition.length<=96 && f.competition.none{Character.isISOControl(it)||it in '\u202a'..'\u202e'||it in '\u2066'..'\u2069'})
         require(DeviceTime.plausible(f.start.toEpochMilli()))
         return f
     }
@@ -50,7 +51,7 @@ object FootballParsing {
             if(team!=event.optString("idHomeTeam")&&team!=event.optString("idAwayTeam"))continue
             owned=true
             val start=timestamp(event)?:continue
-            try{result.add(validate(FootballFixture(event.optString("idHomeTeam"),event.optString("idAwayTeam"),event.optString("strHomeTeam").trim(),event.optString("strAwayTeam").trim(),start),team))}catch(_:IllegalArgumentException){}
+            try{result.add(validate(FootballFixture(event.optString("idHomeTeam"),event.optString("idAwayTeam"),event.optString("strHomeTeam").trim(),event.optString("strAwayTeam").trim(),start,event.optString("strLeague").takeUnless{it=="null"}.orEmpty().trim()),team))}catch(_:IllegalArgumentException){}
         }
         require(events.length()==0 || owned && result.isNotEmpty()) { "Invalid or mismatched fixture feed" }
         return result.distinctBy{Triple(it.homeId,it.awayId,it.start)}.sortedBy{it.start}.take(32)
@@ -71,7 +72,7 @@ class FootballCache(context:Context) {
         val array=root.getJSONArray("fixtures");require(array.length()<=32)
         val fixtures=(0 until array.length()).map { index ->
             val f=array.getJSONObject(index)
-            FootballParsing.validate(FootballFixture(f.getString("homeId"),f.getString("awayId"),f.getString("home"),f.getString("away"),Instant.ofEpochMilli(f.getLong("start"))),team)
+            FootballParsing.validate(FootballFixture(f.getString("homeId"),f.getString("awayId"),f.getString("home"),f.getString("away"),Instant.ofEpochMilli(f.getLong("start")),f.optString("competition")),team)
         }.sortedBy{it.start}
         FootballFeed(team,fetched,fixtures)
     }catch(_:Exception){null}

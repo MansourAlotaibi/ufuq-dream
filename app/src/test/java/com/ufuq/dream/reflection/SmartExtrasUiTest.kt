@@ -90,7 +90,7 @@ class SmartExtrasUiTest {
                 val editorial=display.smartPanel.supplements
                 val clock=display.visualContentBounds
                 assertFalse("Clock and editorial overlap",android.graphics.RectF.intersects(clock,android.graphics.RectF(editorial.left.toFloat(),editorial.top.toFloat(),editorial.right.toFloat(),editorial.bottom.toFloat())))
-                assertTrue(clock.width()>1920*.28f)
+                assertTrue("$language theme=$theme position=$position width=${clock.width()} height=${clock.height()} place=${display.findViewWithTag<TextView>("place_label").text}",clock.width()>1920*.28f)
                 assertTrue(display.visualContentBounds.bottom<SmartLayout.zones(1920,1080,2f,value).panel.top)
                 val panel=display.smartPanel
                 for(index in 0 until panel.childCount){val child=panel.getChildAt(index);if(child.visibility==View.VISIBLE)assertTrue("Panel child clips",child.bottom<=panel.height)}

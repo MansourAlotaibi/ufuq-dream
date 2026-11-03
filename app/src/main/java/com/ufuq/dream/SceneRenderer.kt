@@ -6,18 +6,21 @@ import android.view.View
 import android.widget.*
 import java.util.Date
 
-interface SceneRenderer {val view:View; fun update(now:Date,s:DisplaySettings,theme:AmbientTheme);fun dispose();fun setAvailableWidth(width:Int) {}}
+interface SceneRenderer {val view:View; fun update(now:Date,s:DisplaySettings,theme:AmbientTheme);fun dispose();fun setAvailableWidth(width:Int) {};fun setPlaceLabel(value:String) {}}
 class ClockSceneRenderer(private val context:Context,private val scene:Int):SceneRenderer {
  private fun dp(v:Int)=(v*context.resources.displayMetrics.density).toInt()
  private val group=LinearLayout(context).apply{orientation=LinearLayout.VERTICAL;gravity=Gravity.CENTER;layoutDirection=View.LAYOUT_DIRECTION_RTL}
  override val view:View=group
  private fun label(size:Float)=TextView(context).apply{textSize=size;gravity=Gravity.CENTER;includeFontPadding=true;textDirection=View.TEXT_DIRECTION_RTL}
- private val eyebrow=label(17f)
+ private val eyebrow=label(17f).apply{tag="place_label";maxLines=2;setAutoSizeTextTypeUniformWithConfiguration(14,17,1,android.util.TypedValue.COMPLEX_UNIT_SP)}
+ private var placeLabel=""
+ override fun setPlaceLabel(value:String){placeLabel=value}
  private val timeRow=LinearLayout(context).apply{orientation=LinearLayout.HORIZONTAL;gravity=Gravity.CENTER_VERTICAL;layoutDirection=View.LAYOUT_DIRECTION_LTR}
  private val clock=label(96f).apply{tag="clock_digits";typeface=Typeface.create("sans-serif",Typeface.NORMAL);textDirection=View.TEXT_DIRECTION_LTR;maxLines=1}
  private val seconds=label(26f).apply{textDirection=View.TEXT_DIRECTION_LTR;setPadding(dp(8),dp(28),0,0)}
  private val period=label(24f).apply{setPadding(dp(12),dp(24),0,0)}
  private val first=label(25f);private val second=label(21f)
+ private val occasion=label(17f).apply{tag="occasion_widget";maxLines=2;setAutoSizeTextTypeUniformWithConfiguration(15,17,1,android.util.TypedValue.COMPLEX_UNIT_SP)}
  private val greeting=label(20f)
  private val provider=DateProvider()
  private var shadowTheme=-1
@@ -30,15 +33,15 @@ class ClockSceneRenderer(private val context:Context,private val scene:Int):Scen
  private fun soften(v:TextView){v.setShadowLayer(dp(5).toFloat(),0f,dp(1).toFloat(),0x99000000.toInt())}
  init {
  group.addView(eyebrow);timeRow.addView(clock,LinearLayout.LayoutParams(-2,-2));timeRow.addView(seconds,LinearLayout.LayoutParams(-2,-2));timeRow.addView(period,LinearLayout.LayoutParams(-2,-2));group.addView(timeRow,LinearLayout.LayoutParams(-2,-2))
- group.addView(first);group.addView(second);group.addView(greeting)
- listOf(first,second,greeting).forEach{(it.layoutParams as LinearLayout.LayoutParams).topMargin=dp(10)}
- listOf(eyebrow,clock,seconds,period,first,second,greeting).forEach{soften(it)}
+ group.addView(first);group.addView(second);group.addView(occasion);group.addView(greeting)
+ listOf(first,second,occasion,greeting).forEach{(it.layoutParams as LinearLayout.LayoutParams).topMargin=dp(10)}
+ listOf(eyebrow,clock,seconds,period,first,second,occasion,greeting).forEach{soften(it)}
  }
  override fun update(now:Date,s:DisplaySettings,theme:AmbientTheme){
  if(shadowTheme!=s.theme){
   shadowTheme=s.theme
   val shadow=listOf(0xb002100a.toInt(),0xb0160b04.toInt(),0xc0020710.toInt())[s.theme.coerceIn(0,2)]
-  listOf(eyebrow,clock,seconds,period,first,second,greeting).forEach{it.setShadowLayer(dp(if(s.theme==2)6 else 5).toFloat(),0f,dp(1).toFloat(),shadow)}
+  listOf(eyebrow,clock,seconds,period,first,second,occasion,greeting).forEach{it.setShadowLayer(dp(if(s.theme==2)6 else 5).toFloat(),0f,dp(1).toFloat(),shadow)}
  }
  group.layoutDirection=AppLanguage.direction(s.language)
  listOf(eyebrow,first,second,period).forEach{it.textDirection=if(s.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL}
@@ -64,9 +67,12 @@ class ClockSceneRenderer(private val context:Context,private val scene:Int):Scen
  first.visibility=if(dates.isEmpty()) View.GONE else View.VISIBLE;second.visibility=if(dates.size<2) View.GONE else View.VISIBLE
  first.textSize=20f;second.textSize=18f
  first.setTextColor(NightMode.fade(theme.ink,night));second.setTextColor(NightMode.fade(if(s.clockPosition>=0)theme.ink else theme.muted,night))
- eyebrow.text=when(s.photoCategory){0->"أُفُق  /  الدرعية";1->"أُفُق  /  العلا";2->"أُفُق  /  ليل الرياض";else->"أُفُق  /  مشاهد سعودية"}
- eyebrow.text=AppLanguage.text(eyebrow.text.toString(),s.language)
+ eyebrow.text=AppLanguage.text("أُفُق",s.language)+"  /  "+placeLabel.ifBlank{AppLanguage.text("مشاهد سعودية",s.language)}
  eyebrow.visibility=View.VISIBLE;eyebrow.setTextColor(NightMode.fade(if(s.clockPosition>=0)theme.ink else theme.accent,night))
+ occasion.text=com.ufuq.dream.reflection.Occasions.label(now.toInstant(),s.smart.occasion,s.language,s.smart.occasionName,s.smart.occasionDate)
+ occasion.visibility=if(occasion.text.isBlank())View.GONE else View.VISIBLE
+ occasion.textDirection=if(s.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL
+ occasion.setTextColor(NightMode.fade(theme.muted,night))
  val phrase=GreetingProvider.label(now,s)
  greeting.text=android.text.BidiFormatter.getInstance(s.language!="en").unicodeWrap(phrase)
  greeting.textDirection=if(s.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL

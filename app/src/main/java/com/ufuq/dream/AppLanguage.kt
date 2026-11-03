@@ -7,6 +7,26 @@ object AppLanguage {
     fun normalize(value:String)=if(value=="en")"en" else "ar"
     fun direction(language:String)=if(language=="en")View.LAYOUT_DIRECTION_LTR else View.LAYOUT_DIRECTION_RTL
     private val translations=mapOf(
+        "القرآن والحديث والأذكار" to "Quran, hadith & remembrance",
+        "نصوص موثّقة دون إنترنت؛ تتناوب الأنواع المختارة في مساحة واحدة." to "Referenced offline texts; your selected types share one space.",
+        "تغيّرت معاينة المحتوى" to "Content preview updated",
+        "أذكار" to "Remembrance", "آية وأذكار" to "Verse & remembrance", "حديث وأذكار" to "Hadith & remembrance", "آية وحديث وأذكار" to "Verse, hadith & remembrance",
+        "المناسبات" to "Occasions", "أقرب مناسبة تلقائيًا" to "Nearest occasion automatically", "مناسبة مخصصة" to "Custom occasion",
+        "أقرب مناسبة تلقائيًا أو مناسبة تختارها؛ تظهر مع التاريخ." to "The nearest occasion or your own choice, shown with the date.",
+        "يوم التأسيس" to "Founding Day", "تفاصيل المناسبة" to "Occasion details",
+        "الاسم والتاريخ الميلادي؛ يُحفظان بعد التأكيد." to "Name and Gregorian date; saved only after confirmation.",
+        "اسم المناسبة" to "Occasion name", "التاريخ الميلادي: سنة-شهر-يوم" to "Gregorian date: year-month-day",
+        "لن تُحفظ التغييرات قبل التأكيد." to "Changes are saved only after confirmation.",
+        "اكتب اسمًا وتاريخًا صحيحًا مثل 2027-02-22" to "Enter a name and a valid date, such as 2027-02-22",
+
+        "تشغيل" to "On", "إيقاف" to "Off",
+        "الأذكار" to "Remembrance", "ذكر" to "Remembrance",
+        "أذكار ثابتة من الصحيحين، تتناوب مع الآية والحديث كل خمس دقائق." to "Authentic remembrance, alternating with verses and hadith every five minutes.",
+        "تغيّرت معاينة الأذكار" to "Remembrance preview updated",
+        "عدّاد المناسبات" to "Occasion countdown",
+        "الأيام المتبقية؛ التواريخ الهجرية تقديرية حتى الإعلان الرسمي." to "Days remaining; Hijri dates are provisional until officially announced.",
+        "تغيّرت معاينة المناسبة" to "Occasion preview updated",
+        "رمضان" to "Ramadan", "عيد الفطر" to "Eid al-Fitr", "عيد الأضحى" to "Eid al-Adha", "اليوم الوطني" to "Saudi National Day",
         "أوقات اليوم والعدّ التنازلي للصلاة القادمة." to "Today’s prayers and the next-prayer countdown.",
         "درجة الحرارة وحالة الجو للمدينة المختارة." to "Temperature and conditions for your selected city.",
         "عبر الإنترنت" to "Online",

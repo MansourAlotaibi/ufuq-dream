@@ -47,7 +47,7 @@ class ReflectionView(context:Context):LinearLayout(context) {
         body.text=entry.text
         body.setTextColor(NightMode.fade(theme.ink,factor))
         val provider=if(entry.kind=="quran")"Tanzil" else "Wikisource"
-        val kind=AppLanguage.text(if(entry.kind=="quran")"آية" else "حديث",language)
+        val kind=AppLanguage.text(when(entry.kind){"quran"->"آية";"dhikr"->"ذكر";else->"حديث"},language)
         val citation=entry.source.substringBefore(" (ويكي مصدر")
         val label="$kind · ${AppLanguage.text(citation,language)}"+(if(entry.kind=="quran")" · $provider" else "")
         reference.text=if(entry.kind=="quran")SpannableString(label).apply{setSpan(URLSpan(entry.sourceUrl),length-provider.length,length,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)} else label

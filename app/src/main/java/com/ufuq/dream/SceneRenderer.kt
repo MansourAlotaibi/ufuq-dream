@@ -14,7 +14,7 @@ class ClockSceneRenderer(private val context:Context,private val scene:Int):Scen
  private fun label(size:Float)=TextView(context).apply{textSize=size;gravity=Gravity.CENTER;includeFontPadding=true;textDirection=View.TEXT_DIRECTION_RTL}
  private val eyebrow=label(17f)
  private val timeRow=LinearLayout(context).apply{orientation=LinearLayout.HORIZONTAL;gravity=Gravity.CENTER_VERTICAL;layoutDirection=View.LAYOUT_DIRECTION_LTR}
- private val clock=label(96f).apply{typeface=Typeface.create("sans-serif",Typeface.NORMAL);textDirection=View.TEXT_DIRECTION_LTR;maxLines=1}
+ private val clock=label(96f).apply{tag="clock_digits";typeface=Typeface.create("sans-serif",Typeface.NORMAL);textDirection=View.TEXT_DIRECTION_LTR;maxLines=1}
  private val seconds=label(26f).apply{textDirection=View.TEXT_DIRECTION_LTR;setPadding(dp(8),dp(28),0,0)}
  private val period=label(24f).apply{setPadding(dp(12),dp(24),0,0)}
  private val first=label(25f);private val second=label(21f)

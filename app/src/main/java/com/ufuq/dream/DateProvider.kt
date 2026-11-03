@@ -21,7 +21,7 @@ data class TimeLabels(val time:String,val period:String,val gregorian:String,val
 class DateProvider(private val hijriProvider:HijriProvider=UmmAlQuraProvider()) {
  fun labels(now:Date,s:DisplaySettings):TimeLabels {
  val locale=ULocale(if(s.language=="en")"en_US@calendar=gregorian;numbers=latn" else if(s.latinDigits)"ar_SA@calendar=gregorian;numbers=latn" else "ar_SA@calendar=gregorian")
- val pattern=(if(s.hour24) "HH:mm" else "hh:mm")+(if(s.seconds) ":ss" else "")
+ val pattern=TimePresentation.pattern(s.hour24,s.seconds)
  val hour=Calendar.getInstance().apply{time=now}.get(Calendar.HOUR_OF_DAY)
  return TimeLabels(SimpleDateFormat(pattern,locale).format(now),if(s.hour24) "" else if(s.language=="en") {if(hour<12)"AM" else "PM"} else if(hour<12) "ص" else "م",
  SimpleDateFormat(if(s.language=="en")"EEEE, d MMMM y" else "EEEE، d MMMM y",locale).format(now),hijriProvider.label(now,s.latinDigits,s.language))

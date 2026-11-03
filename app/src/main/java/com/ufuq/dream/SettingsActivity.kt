@@ -86,6 +86,7 @@ class SettingsActivity : Activity() {
 
     private fun buildScreen() {
         ui.language=draft.current.language
+        ui.typography=draft.current
         root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutDirection = AppLanguage.direction(draft.current.language)
@@ -149,6 +150,7 @@ class SettingsActivity : Activity() {
         rows.removeAllViews(); firstRow = null
         val s = draft.current
         ui.language=s.language
+        ui.typography=s
         palette()
         when (section) {
             0 -> {
@@ -158,6 +160,8 @@ class SettingsActivity : Activity() {
                         rebuildStudio("language");updateUi("تغيّرت لغة المعاينة؛ احفظ للتأكيد")
                     }
                 }
+                if(s.language=="en") row("font_en","الخط الإنجليزي","خط اللغة المختارة؛ يتغير في المعاينة قبل الحفظ.",UfuqFonts.name(s.fontEnglish,"en")) { fontDialog("en") }
+                else row("font_ar","الخط العربي","خط اللغة المختارة؛ يتغير في المعاينة قبل الحفظ.",UfuqFonts.name(s.fontArabic,"ar")) { fontDialog("ar") }
                 row("theme", "الثيم", "ألوان النص والواجهة، مستقلة عن الصور.", themeName(s.theme)) {
                     choose("الثيم",listOf("الأخضر السعودي","أرض الصحراء","ليل الرياض"),s.theme){index->
                         change("theme","الثيم: ${themeName(index)}"){copy(theme=index)}
@@ -177,14 +181,14 @@ class SettingsActivity : Activity() {
                     }
                 }
                 }
-                row("image_mode","عرض الخلفيات","تدوير هادئ أو خلفية تختارها.",if(s.imageMode==0)"تتغيّر تلقائيًا" else "خلفية محددة") {
-                    choose("عرض الصور",listOf("تتغيّر تلقائيًا","خلفية محددة"),s.imageMode){index->
-                        change("image_mode","عرض الصور: ${if(index==0)"تلقائي" else "صورة محددة"}"){copy(imageMode=index)}
+                row("image_mode","عرض الخلفيات","تدوير هادئ أو خلفية تختارها.",if(s.imageMode==0 && s.rotationMinutes>0)"تتغيّر تلقائيًا" else "خلفية محددة") {
+                    choose("عرض الصور",listOf("تتغيّر تلقائيًا","خلفية محددة"),if(s.imageMode==0 && s.rotationMinutes>0)0 else 1){index->
+                        change("image_mode","عرض الصور: ${if(index==0)"تلقائي" else "صورة محددة"}"){copy(imageMode=index,rotationMinutes=if(index==0 && rotationMinutes==0)3 else rotationMinutes)}
                     }
                 }
                 if(s.imageMode==1 || s.rotationMinutes==0) row("image","الخلفية","من المجموعة المختارة.",MediaLibrary.selected(s,0).title){pickImage()}
-                if(s.imageMode==0) row("interval","تغيير الخلفية","٣ دقائق توازن جميل للمشاهدة اليومية.",intervalName(s.rotationMinutes)) {
-                    val values=listOf(1,3,5,0)
+                if(s.imageMode==0 && s.rotationMinutes>0) row("interval","تغيير الخلفية","٣ دقائق توازن جميل للمشاهدة اليومية.",intervalName(s.rotationMinutes)) {
+                    val values=listOf(1,3,5)
                     choose("تغيير الصورة",values.map{intervalName(it)},values.indexOf(s.rotationMinutes)){index->
                         change("interval","تغيير الصورة: ${intervalName(values[index])}"){copy(rotationMinutes=values[index])}
                     }
@@ -192,7 +196,7 @@ class SettingsActivity : Activity() {
                 row("night", "خفض السطوع ليلاً", "يخفّت الصورة والنص تدريجياً بعد العاشرة مساءً.", if (s.nightDim) "مفعّل" else "متوقف") {
                     change("night", if (s.nightDim) "أُوقف خفض السطوع الليلي" else "فُعّل خفض السطوع الليلي") { copy(nightDim = !nightDim) }
                 }
-                if(videoPickerAvailable) row("import_video", "إضافة فيديو من ملفاتك", "MP4 صامت · H.264 · حتى ١٠٨٠p و٣ دقائق و١٢٨ MiB.", if (importing) "جارٍ الفحص" else "اختيار") {
+                if(videoPickerAvailable && (s.backgroundType!=0 || MediaLibrary.clips.isEmpty())) row("import_video", "إضافة فيديو من ملفاتك", "MP4 صامت · H.264 · حتى ١٠٨٠p و٣ دقائق و١٢٨ MiB.", if (importing) "جارٍ الفحص" else "اختيار") {
                     if (!importing) choose("لدي حق استخدام الفيديو محليًا", listOf("رجوع", "اختيار فيديو"), 0) {
                         if (it == 1) {
                             val picker=VideoPicker.resolve(this)
@@ -207,10 +211,9 @@ class SettingsActivity : Activity() {
                         }
                     }
                 }
-                if(!videoPickerAvailable && canMotion && (s.imageMode==1 || s.rotationMinutes==0)) row("video_library","مكتبة الفيديو","المقاطع المضافة متاحة من اختيار الخلفية.","اختيار") { pickVideo() }
             }
             1 -> {
-                row("time", "صيغة الوقت", "بنظام اليوم الكامل أو مع ص / م.", if (s.hour24) "٢٤ ساعة" else "١٢ ساعة") {
+                row("time", "صيغة الوقت", "تُطبّق على الساعة والصلاة وموعد المباراة.", if (s.hour24) "٢٤ ساعة" else "١٢ ساعة") {
                     choose("صيغة الوقت", listOf("١٢ ساعة", "٢٤ ساعة"), if (s.hour24) 1 else 0) {
                         change("time", "صيغة الوقت: ${if (it == 1) "٢٤ ساعة" else "١٢ ساعة"}") { copy(hour24 = it == 1) }
                     }
@@ -220,8 +223,8 @@ class SettingsActivity : Activity() {
                         change("size", "حجم الساعة: ${if (it == 1) "كبير" else "متوسط"}") { copy(size = it + 1) }
                     }
                 }
-                row("position","موضع الساعة","الساعة والتاريخ والعبارة معًا.",ClockPlacement.label(s.clockPosition)){positionDialog()}
-                row("gregorian", "التاريخ الميلادي", "اليوم والتاريخ بالعربية.", if (s.gregorian) "ظاهر" else "مخفي") {
+                row("position","مكان الساعة","الساعة في جهة، والمعلومات في الجهة المقابلة.",ClockPlacement.label(s.clockPosition)){positionDialog()}
+                row("gregorian", "التاريخ الميلادي", "اليوم والتاريخ بلغة التطبيق.", if (s.gregorian) "ظاهر" else "مخفي") {
                     change("gregorian", if (s.gregorian) "أُخفي التاريخ الميلادي" else "ظهر التاريخ الميلادي") { copy(gregorian = !gregorian) }
                 }
                 row("hijri", "التاريخ الهجري", "أم القرى؛ قد يختلف عن الرؤية.", if (s.hijri) "ظاهر" else "مخفي") {
@@ -257,22 +260,22 @@ class SettingsActivity : Activity() {
                         }
                     }
                 }
-                row("prayers","مواقيت الصلاة","AlAdhan أو حساب محلي؛ طابق الأوقات مع مسجدك.",if(smart.prayers)"مفعّلة" else "متوقفة") {
+                row("prayers","مواقيت الصلاة","أوقات اليوم والعدّ التنازلي للصلاة القادمة.",if(smart.prayers)"مفعّلة" else "متوقفة") {
                     change("prayers","تغيّرت معاينة مواقيت الصلاة"){copy(smart=smart.copy(prayers=!smart.prayers))}
                 }
                 if(smart.prayers){
-                    row("prayer_source","مصدر المواقيت","الخدمة تحسب المواقيت أيضًا؛ ليست جدولًا رسميًا معتمدًا.",if(smart.prayerSource==0)"AlAdhan عبر الإنترنت" else "حساب محلي دون إنترنت") {
+                    row("prayer_source","مصدر المواقيت","الخدمة تحسب المواقيت أيضًا؛ ليست جدولًا رسميًا معتمدًا.",if(smart.prayerSource==0)"عبر الإنترنت" else "دون إنترنت") {
                         choose("مصدر المواقيت",listOf("AlAdhan · يتصل بعد الحفظ","حساب محلي تقريبي"),smart.prayerSource){i -> change("prayer_source","تغيّر مصدر المواقيت؛ لن يُحفظ حتى تختار الحفظ"){copy(smart=smart.copy(prayerSource=i))} }
                     }
                     city("prayer_city","مدينة الصلاة",smart.prayerCity,true)
-                    row("prayer_method","طريقة الحساب","عشاء أم القرى: ٩٠ دقيقة، و١٢٠ في رمضان حسابيًا.",if(smart.prayerMethod==0)"أم القرى" else "رابطة العالم الإسلامي") {
+                    row("prayer_method","طريقة الحساب","اختر الطريقة المتبعة لديك؛ لا تتغير تلقائيًا.",if(smart.prayerMethod==0)"أم القرى" else "رابطة العالم الإسلامي") {
                         choose("حساب تقريبي؛ طابق جدول مسجدك",listOf("أم القرى · فجر ١٨٫٥°","رابطة العالم الإسلامي"),smart.prayerMethod){i -> change("prayer_method","تغيّرت طريقة حساب الصلاة"){copy(smart=smart.copy(prayerMethod=i))} }
                     }
                     row("asr","حساب العصر","ظل واحد للجمهور أو ظلان للمذهب الحنفي.",if(smart.hanafiAsr)"ظلان" else "ظل واحد") {
                         change("asr","تغيّر حساب العصر"){copy(smart=smart.copy(hanafiAsr=!smart.hanafiAsr))}
                     }
                 }
-                row("weather","الطقس","Open-Meteo؛ إنترنت عند الحفظ والظهور فقط، بلا موقع دقيق.",if(smart.weather)"مفعّل" else "متوقف") {
+                row("weather","الطقس","درجة الحرارة وحالة الجو للمدينة المختارة.",if(smart.weather)"مفعّل" else "متوقف") {
                     change("weather","المعاينة لا ترسل طلب طقس قبل حفظ الاختيار"){copy(smart=smart.copy(weather=!smart.weather))}
                 }
                 if(smart.weather){
@@ -285,6 +288,13 @@ class SettingsActivity : Activity() {
                         choose("تحديث الطقس",listOf("كل نصف ساعة","كل ساعة","كل ٣ ساعات"),minutes.indexOf(smart.weatherRefreshMinutes)){i -> change("weather_refresh","تغيّر تكرار التحديث"){copy(smart=smart.copy(weatherRefreshMinutes=minutes[i]))} }
                     }
                 }
+                val reflectionNames=listOf("مخفية","آية","حديث","آية وحديث")
+                row("reflection","الآية والحديث","نص عربي كامل من مكتبة اللانشر، يتجدد يوميًا ودون إنترنت.",reflectionNames[smart.reflectionMode]) {
+                    choose("الآية والحديث",reflectionNames,smart.reflectionMode){index ->
+                        change("reflection","تغيّرت معاينة الآية والحديث"){copy(smart=smart.copy(reflectionMode=index))}
+                    }
+                }
+                row("football_team","الفريق المفضل","مباراته القادمة من TheSportsDB؛ يتصل بعد حفظ اختيارك.",if(smart.football)com.ufuq.dream.smart.FootballTeams.find(smart.footballTeam)?.name(s.language).orEmpty() else "بدون") { pickFootballTeam() }
             }
         }
         if (restore != null) rows.findViewWithTag<View>(restore)?.requestFocus()
@@ -300,7 +310,11 @@ class SettingsActivity : Activity() {
             if (event.action == KeyEvent.ACTION_DOWN && (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_RIGHT)) { tabs[section].requestFocus(); true } else false
         }
         // Long custom strings belong in the editor, not a narrow badge.
-        rows.addView(item, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = ui.dp(8) })
+        val dependent=key in setOf("font_ar","font_en","image","interval","preset","custom","prayer_source","prayer_city","prayer_method","asr","weather_city","weather_units","weather_refresh")
+        rows.addView(item, LinearLayout.LayoutParams(-1, -2).apply {
+            bottomMargin = ui.dp(if(dependent)6 else 8)
+            if(dependent)marginStart=ui.dp(14)
+        })
         if (firstRow == null) firstRow = item
     }
 
@@ -330,6 +344,7 @@ class SettingsActivity : Activity() {
             save.nextFocusUpId=last.id
             root.findViewWithTag<View>("cancel").nextFocusUpId=last.id
         }
+        UfuqFonts.apply(root,draft.current)
         studio.refresh()
     }
     private fun persist() {
@@ -383,20 +398,23 @@ class SettingsActivity : Activity() {
 
     private fun themeName(value:Int)=listOf("الأخضر السعودي","أرض الصحراء","ليل الرياض")[value.coerceIn(0,2)]
     private fun intervalName(value:Int)=when(value){1->"دقيقة";3->"٣ دقائق · موصى به";5->"٥ دقائق";else->"ثابتة"}
-    private fun pickVideo() {
-        val clips=MediaLibrary.items(-1,1).filter{it.clip!=null}
-        if(clips.isEmpty())return
-        choose("مكتبة الفيديو",clips.map{it.title},clips.indexOfFirst{it.id==draft.current.fixedAssetId}.coerceAtLeast(0),photos=clips.map{it.photo}){index ->
-            change("video_library","الخلفية: ${clips[index].title}"){
-                copy(sceneChoice=-1,backgroundType=1,imageMode=1,fixedAssetId=clips[index].id,imageId=clips[index].photo.id)
-            }
-        }
-    }
     private fun pickImage(){
         val items=MediaLibrary.items(draft.current.sceneChoice,draft.current.backgroundType)
         val selected=MediaLibrary.selected(draft.current,0).id
         choose("اختر الخلفية",items.map{it.title+if(it.clip!=null)" · متحركة" else ""},items.indexOfFirst{it.id==selected}.coerceAtLeast(0),photos=items.map{it.photo}){index->
             change("image","الخلفية: ${items[index].title}"){copy(imageId=items[index].photo.id,fixedAssetId=items[index].id)}
+        }
+    }
+    private fun pickFootballTeam() {
+        val current=com.ufuq.dream.smart.FootballTeams.find(draft.current.smart.footballTeam)
+        choose("الفريق المفضل",listOf("بدون","أندية سعودية","أندية عالمية"),if(!draft.current.smart.football)0 else if(current?.saudi==true)1 else 2){group ->
+            if(group==0)change("football_team","أُخفيت مباريات الفريق"){copy(smart=smart.copy(football=false,footballTeam="none"))}
+            else {
+                val teams=com.ufuq.dream.smart.FootballTeams.all.filter{it.saudi==(group==1)}
+                choose(if(group==1)"أندية سعودية" else "أندية عالمية",teams.map{it.name(draft.current.language)},teams.indexOfFirst{it.id==current?.id}.coerceAtLeast(0)){index ->
+                    change("football_team","تغيّر الفريق المفضل؛ احفظ للتأكيد"){copy(smart=smart.copy(football=true,footballTeam=teams[index].id))}
+                }
+            }
         }
     }
     private fun photoCredits(){
@@ -409,63 +427,56 @@ class SettingsActivity : Activity() {
             panel.addView(ui.text("",15f).apply{text=label;isFocusable=true;setPadding(0,ui.dp(12),0,ui.dp(12));setOnFocusChangeListener{_,focus->background=ui.surface(focus)}})
         }
         panel.addView(ui.text("الطقس: Open-Meteo · بيانات CC BY 4.0\nhttps://open-meteo.com/\nhttps://creativecommons.org/licenses/by/4.0/\nالخدمة المجانية للاستخدام غير التجاري.\nمواقيت الإنترنت: AlAdhan · https://aladhan.com/prayer-times-api\nأوقات محسوبة وليست جدول مسجد رسميًا.\nالحساب المحلي: Adhan Java 1.2.1 · Batoul Apps · MIT\nhttps://github.com/batoulapps/adhan-kotlin/tree/v1.2.1",15f).apply{isFocusable=true})
+        panel.addView(ui.text("مصادر الآية والحديث والمباريات",22f))
+        val reflectionEntries=com.ufuq.dream.reflection.DailyReflection.entries(this)
+        val reflectionNotices=reflectionEntries.joinToString("\n\n"){it.source+"\n"+it.attribution+"\n"+it.sourceUrl+"\n"+it.licenseUrl+if(it.kind=="hadith")"\n"+it.notice else ""}+"\n\n"+reflectionEntries.first{it.kind=="quran"}.notice
+        panel.addView(ui.text("",14f).apply{text=reflectionNotices;isFocusable=true})
+        panel.addView(ui.text("المباريات: TheSportsDB · بيانات ومواعيد قابلة للتغيير. لا شعارات أو نتائج مباشرة.\nhttps://www.thesportsdb.com/\nhttps://www.thesportsdb.com/docs_terms_of_use.php\nالإصدار المجاني على GitHub يستخدم واجهة المزود العامة؛ النشر في متجر تطبيقات يتطلب اشتراكًا مدفوعًا.",14f).apply{isFocusable=true})
+        panel.addView(ui.text("الخطوط · SIL Open Font License 1.1",22f))
+        listOf("cairo","tajawal","ibm-plex-sans-arabic","readex-pro","almarai","lato").forEach { name ->
+            val notice=assets.open("licenses/$name-OFL.txt").bufferedReader().use{it.readText()}
+            panel.addView(ui.text("",14f).apply{text=notice;isFocusable=true})
+        }
         val diagnostics=com.ufuq.dream.smart.SmartDiagnostics(this)
-        panel.addView(ui.text("تفاصيل المصادر: الصلاة أوقات محسوبة وليست جدولًا رسميًا للمسجد.\nحالة الصلاة: ${diagnostics.detail("prayer")}\nحالة الطقس: ${diagnostics.detail("weather")}\nأوقات الصلاة تُحفظ لنحو ٣٠ يومًا. الطقس قد يعرض قراءة سابقة عند انقطاع الاتصال.",15f).apply{isFocusable=true})
+        panel.addView(ui.text("تفاصيل المصادر: الصلاة أوقات محسوبة وليست جدولًا رسميًا للمسجد.\nحالة الصلاة: ${diagnostics.detail("prayer")}\nحالة الطقس: ${diagnostics.detail("weather")}\nحالة المباريات: ${diagnostics.detail("football")}\nأوقات الصلاة تُحفظ لنحو ٣٠ يومًا. الطقس قد يعرض قراءة سابقة عند انقطاع الاتصال.",15f).apply{isFocusable=true})
         val dialog=newDialog().apply{requestWindowFeature(Window.FEATURE_NO_TITLE)}
         TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),(resources.displayMetrics.widthPixels*.8f).toInt(),AppLanguage.direction(draft.current.language))
     }
 
-    @android.annotation.SuppressLint("RtlHardcoded") // Align with the controls side so the Studio remains visible.
+    private fun fontDialog(language:String) {
+        val choices=UfuqFonts.choices(language)
+        val id=if(language=="en")draft.current.fontEnglish else draft.current.fontArabic
+        choose(if(language=="en")"الخط الإنجليزي" else "الخط العربي",choices.map{it.name},choices.indexOfFirst{it.id==id}.coerceAtLeast(0)) { index ->
+            draft.update(if(language=="en")draft.current.copy(fontEnglish=choices[index].id) else draft.current.copy(fontArabic=choices[index].id))
+            rebuildStudio(if(language=="en")"font_en" else "font_ar")
+            updateUi("تغيّر الخط؛ احفظ للتأكيد")
+        }
+    }
+
+    @android.annotation.SuppressLint("RtlHardcoded")
     private fun positionDialog(){
         val before=draft.current
         var confirmed=false
         val dialog=newDialog().apply{requestWindowFeature(Window.FEATURE_NO_TITLE)}
-        val panel=LinearLayout(this).apply{
-            orientation=LinearLayout.VERTICAL;setPadding(ui.dp(20),ui.dp(16),ui.dp(20),ui.dp(16))
-        }
-        panel.addView(ui.text("موضع الساعة",22f),LinearLayout.LayoutParams(-1,ui.dp(42)))
-        panel.addView(ui.text("تحرّك بين المواضع للمعاينة، واضغط موافق للاختيار.",14f,true),LinearLayout.LayoutParams(-1,ui.dp(38)))
-        fun stage(value:Int){
-            draft.update(before.copy(clockPosition=value))
-            updateUi("معاينة الموضع: ${ClockPlacement.label(value)} · لم يُحفظ بعد")
-        }
-        fun confirm(value:Int){
-            stage(value);confirmed=true;dialog.dismiss();showSection("position")
-            updateUi("الموضع: ${ClockPlacement.label(value)} · احفظ التغييرات للتأكيد")
-        }
-        val automatic=button((if(before.clockPosition<0)"✓  " else "")+"تلقائي · حسب الصورة","position_auto"){confirm(-1)}
-        automatic.setOnFocusChangeListener{_,focus->automatic.background=ui.surface(focus,before.clockPosition<0);if(focus)stage(-1)}
-        panel.addView(automatic,LinearLayout.LayoutParams(-1,ui.dp(48)).apply{bottomMargin=ui.dp(8)})
-        val tiles=mutableListOf<PositionTile>()
-        repeat(3){rowIndex->
-            val line=LinearLayout(this).apply{orientation=LinearLayout.HORIZONTAL;layoutDirection=View.LAYOUT_DIRECTION_LTR}
-            repeat(3){column->
-                val slot=rowIndex*3+column
-                val tile=PositionTile(this,slot,before.clockPosition==slot,ui,{stage(slot)},{confirm(slot)})
-                tiles.add(tile)
-                line.addView(tile,LinearLayout.LayoutParams(0,ui.dp(82),1f).apply{if(column<2)rightMargin=ui.dp(6)})
+        val panel=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setPadding(ui.dp(20),ui.dp(16),ui.dp(20),ui.dp(16))}
+        panel.addView(ui.text("مكان الساعة",22f),LinearLayout.LayoutParams(-1,ui.dp(42)))
+        panel.addView(ui.text("الساعة في جهة، والمعلومات في الجهة المقابلة.",14f,true),LinearLayout.LayoutParams(-1,-2).apply{bottomMargin=ui.dp(10)})
+        fun stage(value:Int){draft.update(before.copy(clockPosition=value));updateUi("معاينة الموضع: ${ClockPlacement.label(value)} · لم يُحفظ بعد")}
+        val values=listOf(-1,5,3)
+        val buttons=values.map { value ->
+            button((if(ClockPlacement.side(before.clockPosition)==value)"✓  " else "")+ClockPlacement.label(value),if(value<0)"position_auto" else "position_$value") {
+                stage(value);confirmed=true;dialog.dismiss();showSection("position")
+                updateUi("الموضع: ${ClockPlacement.label(value)} · احفظ التغييرات للتأكيد")
+            }.apply {
+                setOnFocusChangeListener{_,focus->background=ui.surface(focus,ClockPlacement.side(before.clockPosition)==value);if(focus)stage(value)}
+                panel.addView(this,LinearLayout.LayoutParams(-1,ui.dp(54)).apply{bottomMargin=ui.dp(6)})
             }
-            panel.addView(line,LinearLayout.LayoutParams(-1,-2).apply{if(rowIndex<2)bottomMargin=ui.dp(6)})
         }
-        for(tile in tiles){
-            val row=tile.slot/3;val column=tile.slot%3
-            tile.nextFocusLeftId=if(column>0)tiles[tile.slot-1].id else tile.id
-            tile.nextFocusRightId=if(column<2)tiles[tile.slot+1].id else tile.id
-            tile.nextFocusUpId=if(row>0)tiles[tile.slot-3].id else automatic.id
-            tile.nextFocusDownId=if(row<2)tiles[tile.slot+3].id else tile.id
-        }
-        automatic.nextFocusDownId=tiles[before.clockPosition.takeIf{it in 0..8}?:4].id
-        dialog.setOnDismissListener{
-            dialogDismissed(dialog)
-            if(!confirmed&&!destroying){draft.update(before);showSection("position");updateUi("أُلغيت معاينة الموضع")}
-        }
+        buttons.forEachIndexed{index,view->view.nextFocusUpId=buttons[(index-1).coerceAtLeast(0)].id;view.nextFocusDownId=buttons[(index+1).coerceAtMost(2)].id;view.nextFocusLeftId=view.id;view.nextFocusRightId=view.id}
+        dialog.setOnDismissListener{dialogDismissed(dialog);if(!confirmed&&!destroying){draft.update(before);showSection("position");updateUi("أُلغيت معاينة الموضع")}}
         TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(360),AppLanguage.direction(draft.current.language))
-        // Keep the large Studio preview visible while the remote explores physical positions.
-        dialog.window?.apply {
-            setGravity((if(draft.current.language=="en")Gravity.LEFT else Gravity.RIGHT) or Gravity.CENTER_VERTICAL)
-            attributes=attributes.apply { horizontalMargin=.035f;dimAmount=0f }
-        }
-        if(before.clockPosition<0)automatic.requestFocus() else tiles[before.clockPosition].requestFocus()
+        dialog.window?.apply{setGravity((if(draft.current.language=="en")Gravity.LEFT else Gravity.RIGHT) or Gravity.CENTER_VERTICAL);attributes=attributes.apply{horizontalMargin=.035f;dimAmount=0f}}
+        buttons[values.indexOf(ClockPlacement.side(before.clockPosition)).coerceAtLeast(0)].requestFocus()
     }
 
     private fun customText() {

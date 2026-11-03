@@ -115,8 +115,8 @@ class PhotoLibraryTest {
   val controller=Robolectric.buildActivity(SettingsActivity::class.java).setup();val a=controller.get();val root=a.window.decorView
   choose(a,"theme",0);choose(a,"scene",2);assertEquals(0,a.draft.current.theme);assertEquals(1,a.draft.current.sceneChoice)
   choose(a,"image_mode",1);choose(a,"image",3);assertEquals("alula_4",a.draft.current.imageId)
-  choose(a,"image_mode",0);choose(a,"interval",3);choose(a,"image",2)
-  assertEquals(0,a.draft.current.rotationMinutes);assertEquals("alula_3",a.draft.current.imageId)
+  choose(a,"image_mode",0);choose(a,"image_mode",1);choose(a,"image",2)
+  assertEquals(1,a.draft.current.imageMode);assertEquals(3,a.draft.current.rotationMinutes);assertEquals("alula_3",a.draft.current.imageId)
   root.findViewWithTag<View>("section_1").requestFocus();idle();root.findViewWithTag<View>("seconds").performClick()
   val studio=root.findViewWithTag<PreviewStudio>("studio")
   shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(1));assertTrue(studio.display.settingsSnapshot.seconds)

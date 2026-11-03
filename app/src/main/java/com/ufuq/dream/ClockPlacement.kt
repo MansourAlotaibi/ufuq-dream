@@ -25,7 +25,9 @@ data class PlacementSpec(val zone:Rect,val contentWidth:Int,val x:Float,val y:Fl
 object ClockPlacement {
     const val AUTOMATIC=-1
     val labels=listOf("أعلى اليسار","أعلى الوسط","أعلى اليمين","المنتصف يسارًا","الوسط","المنتصف يمينًا","أسفل اليسار","أسفل الوسط","أسفل اليمين")
-    fun label(value:Int)=if(value in 0..8)labels[value] else "تلقائي"
+    /** Legacy grid column -> editorial side; middle column becomes composition-based Automatic. */
+    fun side(value:Int)=when {value !in 0..8 -> AUTOMATIC;value%3==0 -> 3;value%3==2 -> 5;else -> AUTOMATIC}
+    fun label(value:Int)=when(side(value)){3->"يسار";5->"يمين";else->"تلقائي"}
     fun spec(width:Int,height:Int,density:Float,position:Int,composition:PhotoComposition):PlacementSpec {
         val safe=Rect((width*.05f).roundToInt(),(height*.06f).roundToInt(),(width*.95f).roundToInt(),(height*.94f).roundToInt())
         val manual=position in 0..8

@@ -49,7 +49,7 @@ class ClockPlacementTest {
  }
  @Test fun newPreferenceIsAdditiveValidatedAndSurvivesRestart(){
   val repo=fresh();assertEquals(-1,repo.load().clockPosition)
-  for(position in -1..8){val s=repo.load().copy(clockPosition=position);repo.save(s);assertEquals(position,SettingsRepository(context).load().clockPosition)}
+  for(position in -1..8){val s=repo.load().copy(clockPosition=position);repo.save(s);assertEquals(ClockPlacement.side(position),SettingsRepository(context).load().clockPosition)}
   context.getSharedPreferences("dream_settings",0).edit().putInt("clock_position",100).commit();assertEquals(-1,repo.load().clockPosition)
  }
  @Test fun realRendererFitsAllPositionsAcrossThemesAndKeepsArabicLayout(){
@@ -70,20 +70,20 @@ class ClockPlacementTest {
   val repo=fresh();val controller=Robolectric.buildActivity(SettingsActivity::class.java).setup();val a=controller.get();val decor=a.window.decorView
   decor.findViewWithTag<View>("section_1").requestFocus();idle();decor.findViewWithTag<View>("position").performClick();idle()
   var dialog=ShadowDialog.getLatestDialog();val root=dialog.window!!.decorView
-  val center=root.findViewWithTag<View>("position_4");center.requestFocus();idle()
-  assertEquals(4,a.draft.current.clockPosition);assertEquals(-1,repo.load().clockPosition)
-  assertEquals(root.findViewWithTag<View>("position_3").id,center.nextFocusLeftId)
-  assertEquals(root.findViewWithTag<View>("position_5").id,center.nextFocusRightId)
-  assertEquals(root.findViewWithTag<View>("position_1").id,center.nextFocusUpId)
-  assertEquals(root.findViewWithTag<View>("position_7").id,center.nextFocusDownId)
+  val center=root.findViewWithTag<View>("position_5");center.requestFocus();idle()
+  assertEquals(5,a.draft.current.clockPosition);assertEquals(-1,repo.load().clockPosition)
+  assertEquals(center.id,center.nextFocusLeftId)
+  assertEquals(center.id,center.nextFocusRightId)
+  assertEquals(root.findViewWithTag<View>("position_auto").id,center.nextFocusUpId)
+  assertEquals(root.findViewWithTag<View>("position_3").id,center.nextFocusDownId)
   capture(decor,"studio-live-center");capturePositionDialog(a,dialog)
   dialog.onBackPressed();idle();assertEquals(-1,a.draft.current.clockPosition);assertFalse(a.draft.dirty)
   decor.findViewWithTag<View>("position").performClick();idle();dialog=ShadowDialog.getLatestDialog()
-  dialog.window!!.decorView.findViewWithTag<View>("position_8").performClick();idle()
-  assertEquals(8,a.draft.current.clockPosition);assertEquals(-1,repo.load().clockPosition)
+  dialog.window!!.decorView.findViewWithTag<View>("position_3").performClick();idle()
+  assertEquals(3,a.draft.current.clockPosition);assertEquals(-1,repo.load().clockPosition)
   decor.findViewWithTag<View>("cancel").performClick();idle();assertEquals(-1,a.draft.current.clockPosition)
-  decor.findViewWithTag<View>("position").performClick();idle();ShadowDialog.getLatestDialog().window!!.decorView.findViewWithTag<View>("position_2").performClick();idle()
-  decor.findViewWithTag<View>("save").performClick();idle();assertEquals(2,SettingsRepository(context).load().clockPosition)
+  decor.findViewWithTag<View>("position").performClick();idle();ShadowDialog.getLatestDialog().window!!.decorView.findViewWithTag<View>("position_5").performClick();idle()
+  decor.findViewWithTag<View>("save").performClick();idle();assertEquals(5,SettingsRepository(context).load().clockPosition)
   controller.pause().stop().destroy()
  }
  @Test fun previewUsesIdenticalPositionGeometryWithoutPersisting(){

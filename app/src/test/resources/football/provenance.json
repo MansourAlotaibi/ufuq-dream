@@ -1,0 +1,7 @@
+{
+  "source": "https://www.thesportsdb.com/api/v1/json/123/eventsnext.php?id=136013",
+  "capturedAt": "2026-11-03T04:18:26.915078+00:00",
+  "httpStatus": 200,
+  "selection": "Factual team IDs/names and UTC schedule fields only; artwork, scores and unrelated fields omitted. Test reference, not a live-data fallback.",
+  "sha256": "e5f167abfe1972b4f3bdfdc92b985af29230de5cd6adf593cb6d72826fc512d2"
+}

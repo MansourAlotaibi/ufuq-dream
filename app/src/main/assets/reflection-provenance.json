@@ -1,0 +1,11 @@
+{
+  "sourceRepository": "https://github.com/MansourAlotaibi/ufuq-launcher",
+  "sourceCommit": "4e3e0b970fb39d102a8258e618041e2ae42148ab",
+  "sourcePath": "launcher/app/src/main/assets/daily_reflection.json",
+  "sourceGitBlob": "dc6c1bd27acf76d1c22fdf79f9a9f7c4e781d2b1",
+  "sha256": "8bee2f3c262ed00be8c63d15eff3df2cb8e1065152d67bef1cd560396cac0c4f",
+  "bytes": 9576,
+  "modifications": "None; complete corpus copied byte-for-byte. Display uses the complete unchanged text, no ellipsis, normalization or machine translation.",
+  "quranLicense": "CC BY 3.0 with Tanzil verbatim-copy conditions; complete copyright notice retained in each record.",
+  "hadithLicense": "CC BY-SA 4.0 transcription selections; attribution, revision links and selection notice retained."
+}

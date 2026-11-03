@@ -1,0 +1,113 @@
+{
+  "release": "0.10.0-rc1",
+  "versionCode": 28,
+  "minimumApi": 28,
+  "targetApi": 34,
+  "build": "clean assembleDebug assembleRelease lintDebug lintRelease test: SUCCESS",
+  "tests": {
+    "Debug": {
+      "tests": 210,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 210,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "physicalEvidence": "Owner explicitly accepted corresponding dev5 after physical Mi Box S use; no claim of isolated production-certificate install or current-version endurance test.",
+  "productionKey": "Existing identity retained; Keychain retrieval and local-backup temporary-copy signing recovery passed. Independent offline backup and separately recovered password remain unverified.",
+  "media": "13 licensed photos; no bundled personal videos; playback/import kept. Fonts and religious corpus hashes/notices verified by tests.",
+  "knownLimitations": [
+    "RC: independent signing recovery and isolated production TV/wider hardware tests open",
+    "Nine non-fatal lint warnings per variant, existing deprecated platform APIs",
+    "AGP/KGP Gradle deprecations remain; do not upgrade to Gradle10 without maintenance migration",
+    "Sports free endpoint has limits and app-store subscription requirement; free weather non-commercial only",
+    "No live/provider uptime or official prayer certification guarantee"
+  ],
+  "lint-debug": {
+    "errors": 0,
+    "warnings": [
+      {
+        "id": "CheckResult",
+        "message": "The result of `intersect` is not used. If the rectangles do not intersect, no change is made and the original rectangle is not modified. These methods return false to indicate that this has happened."
+      },
+      {
+        "id": "SimpleDateFormat",
+        "message": "To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+      },
+      {
+        "id": "SimpleDateFormat",
+        "message": "To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+      },
+      {
+        "id": "SimpleDateFormat",
+        "message": "To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+      },
+      {
+        "id": "VectorRaster",
+        "message": "Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more"
+      },
+      {
+        "id": "DiscouragedApi",
+        "message": "Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed."
+      },
+      {
+        "id": "DiscouragedApi",
+        "message": "Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed."
+      },
+      {
+        "id": "DataExtractionRules",
+        "message": "The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+      },
+      {
+        "id": "SetTextI18n",
+        "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+      }
+    ]
+  },
+  "lint-release": {
+    "errors": 0,
+    "warnings": [
+      {
+        "id": "CheckResult",
+        "message": "The result of `intersect` is not used. If the rectangles do not intersect, no change is made and the original rectangle is not modified. These methods return false to indicate that this has happened."
+      },
+      {
+        "id": "SimpleDateFormat",
+        "message": "To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+      },
+      {
+        "id": "SimpleDateFormat",
+        "message": "To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+      },
+      {
+        "id": "SimpleDateFormat",
+        "message": "To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+      },
+      {
+        "id": "VectorRaster",
+        "message": "Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more"
+      },
+      {
+        "id": "DiscouragedApi",
+        "message": "Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed."
+      },
+      {
+        "id": "DiscouragedApi",
+        "message": "Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed."
+      },
+      {
+        "id": "DataExtractionRules",
+        "message": "The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+      },
+      {
+        "id": "SetTextI18n",
+        "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+      }
+    ]
+  }
+}

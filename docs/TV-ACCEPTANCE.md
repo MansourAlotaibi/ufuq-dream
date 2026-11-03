@@ -1,3 +1,7 @@
+# 0.10 acceptance update
+
+Owner accepted the dev5 counterpart after physical Mi Box testing and authorized publication. Host install checks confirmed version27, DreamService registration and settings launch. This is not isolated production-certificate acceptance. For this release additionally review contextual font/prayer/weather controls, left/right/automatic placement, 12-hour fixture/prayer times, every widget alone and all disabled, full long religious text, imported video and sleep/wake/endurance.
+
 # TV acceptance
 
 Source baseline0.8.2 was accepted by its owner on Mi Box S1/API28. New video preview was observed using Amlogic AVC hardware decode for more than one source duration without a logged crash; the owner subsequently reported excellent screensaver operation. This is not certification of other TVs, overnight playback, invisible loop joints or sleep/wake reliability.

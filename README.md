@@ -55,6 +55,7 @@ The app requests INTERNET for saved opt-in weather/online prayers and normal ACC
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Build/test maintenance review](docs/maintenance/DEPENDENCY-REVIEW-2026-11.md)
 - [Local video](docs/LOCAL-VIDEO.md)
 - [Signing](docs/SIGNING.md)
 - [Release readiness and feature parity](docs/release/READINESS.md)

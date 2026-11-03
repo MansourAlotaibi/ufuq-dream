@@ -1,3 +1,9 @@
+# Unreleased — build and test maintenance
+
+- Review checksum-verified Gradle9.8.2, test-only Robolectric4.17 and SHA-pinned checkout7/setup-java6/upload-artifact7 together.
+- Keep AGP8.7.3/KGP2.0.21 after reproducing the AGP9.5 external-Kotlin conflict; coordinate that migration separately.
+- Production sources, accepted public APK and published tags are unchanged. See docs/maintenance/DEPENDENCY-REVIEW-2026-11.md.
+
 # 0.9.0-rc1 — Smart Ambient (public prerelease)
 
 - Arabic / English Studio and screensaver presentation; numerals follow language, with explicit Save/Cancel.

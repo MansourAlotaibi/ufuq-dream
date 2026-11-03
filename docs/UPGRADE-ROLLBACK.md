@@ -8,3 +8,6 @@
 - Safest recovery is a forward fix with the same production key and a higher versionCode. Keep the prior source, APK, checksums and public certificate metadata. No downgrade command, uninstall or data clear is performed by this project.
 
 لا تحتاج إلى استبدال نسختك المقبولة على Mi Box لاختبار نشر GitHub. لا تغيّر USB Debugging أو التخزين المتبنّى أو المشغّل. نسخة الإنتاج لا تستبدل نسخة الاختبار ذات التوقيع المختلف.
+
+## 0.11 reading and occasions
+0.11.0-rc1 production versionCode32 updates prior production versions using the same certificate. Separate legacy remembrance plus Quran/Hadith choices merge into the unified combination; previous fixed occasions remain selected, hidden remains hidden. Custom name/date are local staged preferences. Older builds may reject/ignore modes4–7 and need reading reselection if a downgrade is otherwise supported. Do not uninstall/clear data to force a rollback; preserve source/APK and prefer a forward fix. No private debug TV installation is replaced during public publication.

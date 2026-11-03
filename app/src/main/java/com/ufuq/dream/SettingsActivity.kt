@@ -168,7 +168,7 @@ class SettingsActivity : Activity() {
                     }
                 }
                 row("scene", "المشهد", "اختر مجموعة الصور؛ تلقائي يجمعها كلها.", sceneName(s.sceneChoice)) {
-                    choose("اختر المشهد", listOf("تلقائي", "الدرعية", "العلا", "ليل الرياض"), s.sceneChoice + 1, true) {
+                    choose("اختر المشهد", listOf("تلقائي", "الدرعية", "العلا", "الرياض"), s.sceneChoice + 1, true) {
                         change("scene", "المشهد: ${sceneName(it - 1)}") { copy(sceneChoice = it - 1,imageId=BackgroundRepository.first(it-1).id,fixedAssetId="") }
                     }
                 }
@@ -288,12 +288,21 @@ class SettingsActivity : Activity() {
                         choose("تحديث الطقس",listOf("كل نصف ساعة","كل ساعة","كل ٣ ساعات"),minutes.indexOf(smart.weatherRefreshMinutes)){i -> change("weather_refresh","تغيّر تكرار التحديث"){copy(smart=smart.copy(weatherRefreshMinutes=minutes[i]))} }
                     }
                 }
-                val reflectionNames=listOf("مخفية","آية","حديث","آية وحديث")
-                row("reflection","الآية والحديث","نص عربي كامل من مكتبة اللانشر، يتجدد يوميًا ودون إنترنت.",reflectionNames[smart.reflectionMode]) {
-                    choose("الآية والحديث",reflectionNames,smart.reflectionMode){index ->
-                        change("reflection","تغيّرت معاينة الآية والحديث"){copy(smart=smart.copy(reflectionMode=index))}
+                val reflectionNames=listOf("مخفية","آية","حديث","آية وحديث","أذكار","آية وأذكار","حديث وأذكار","آية وحديث وأذكار")
+                row("reflection","القرآن والحديث والأذكار","نصوص موثّقة دون إنترنت؛ تتناوب الأنواع المختارة في مساحة واحدة.",reflectionNames[smart.reflectionChoice]) {
+                    choose("القرآن والحديث والأذكار",reflectionNames,smart.reflectionChoice){index ->
+                        change("reflection","تغيّرت معاينة المحتوى"){copy(smart=smart.copy(reflectionMode=index,adhkar=false))}
                     }
                 }
+                val occasionIds=listOf(0,6,7,1,2,3,4,5)
+                val occasions=listOf("مخفية","أقرب مناسبة تلقائيًا","مناسبة مخصصة","رمضان","عيد الفطر","عيد الأضحى","اليوم الوطني","يوم التأسيس")
+                row("occasion","المناسبات","أقرب مناسبة تلقائيًا أو مناسبة تختارها؛ تظهر مع التاريخ.",occasions[occasionIds.indexOf(smart.occasion).coerceAtLeast(0)]) {
+                    choose("المناسبات",occasions,occasionIds.indexOf(smart.occasion).coerceAtLeast(0)){index->
+                        if(occasionIds[index]==7)customOccasion()
+                        else change("occasion","تغيّرت معاينة المناسبة"){copy(smart=smart.copy(occasion=occasionIds[index]))}
+                    }
+                }
+                if(smart.occasion==7)row("occasion_custom","تفاصيل المناسبة","الاسم والتاريخ الميلادي؛ يُحفظان بعد التأكيد.","تعديل") { customOccasion() }
                 row("football_team","الفريق المفضل","مباراته القادمة من TheSportsDB؛ يتصل بعد حفظ اختيارك.",if(smart.football)com.ufuq.dream.smart.FootballTeams.find(smart.footballTeam)?.name(s.language).orEmpty() else "بدون") { pickFootballTeam() }
             }
         }
@@ -318,7 +327,7 @@ class SettingsActivity : Activity() {
         if (firstRow == null) firstRow = item
     }
 
-    private fun sceneName(value: Int) = listOf("تلقائي", "الدرعية", "العلا", "ليل الرياض")[value + 1]
+    private fun sceneName(value: Int) = listOf("تلقائي", "الدرعية", "العلا", "الرياض")[value + 1]
     private fun change(key: String, message: String, edit: DisplaySettings.() -> DisplaySettings) {
         draft.update(draft.current.edit())
         showSection(key)
@@ -428,7 +437,7 @@ class SettingsActivity : Activity() {
         }
         panel.addView(ui.text("الطقس: Open-Meteo · بيانات CC BY 4.0\nhttps://open-meteo.com/\nhttps://creativecommons.org/licenses/by/4.0/\nالخدمة المجانية للاستخدام غير التجاري.\nمواقيت الإنترنت: AlAdhan · https://aladhan.com/prayer-times-api\nأوقات محسوبة وليست جدول مسجد رسميًا.\nالحساب المحلي: Adhan Java 1.2.1 · Batoul Apps · MIT\nhttps://github.com/batoulapps/adhan-kotlin/tree/v1.2.1",15f).apply{isFocusable=true})
         panel.addView(ui.text("مصادر الآية والحديث والمباريات",22f))
-        val reflectionEntries=com.ufuq.dream.reflection.DailyReflection.entries(this)
+        val reflectionEntries=com.ufuq.dream.reflection.DailyReflection.entries(this)+com.ufuq.dream.reflection.Adhkar.all
         val reflectionNotices=reflectionEntries.joinToString("\n\n"){it.source+"\n"+it.attribution+"\n"+it.sourceUrl+"\n"+it.licenseUrl+if(it.kind=="hadith")"\n"+it.notice else ""}+"\n\n"+reflectionEntries.first{it.kind=="quran"}.notice
         panel.addView(ui.text("",14f).apply{text=reflectionNotices;isFocusable=true})
         panel.addView(ui.text("المباريات: TheSportsDB · بيانات ومواعيد قابلة للتغيير. لا شعارات أو نتائج مباشرة.\nhttps://www.thesportsdb.com/\nhttps://www.thesportsdb.com/docs_terms_of_use.php\nالإصدار المجاني على GitHub يستخدم واجهة المزود العامة؛ النشر في متجر تطبيقات يتطلب اشتراكًا مدفوعًا.",14f).apply{isFocusable=true})
@@ -477,6 +486,47 @@ class SettingsActivity : Activity() {
         TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(360),AppLanguage.direction(draft.current.language))
         dialog.window?.apply{setGravity((if(draft.current.language=="en")Gravity.LEFT else Gravity.RIGHT) or Gravity.CENTER_VERTICAL);attributes=attributes.apply{horizontalMargin=.035f;dimAmount=0f}}
         buttons[values.indexOf(ClockPlacement.side(before.clockPosition)).coerceAtLeast(0)].requestFocus()
+    }
+
+    private fun customOccasion() {
+        val dialog=newDialog().apply{requestWindowFeature(Window.FEATURE_NO_TITLE)}
+        val before=draft.current
+        val panel=LinearLayout(this).apply {
+            orientation=LinearLayout.VERTICAL;layoutDirection=AppLanguage.direction(before.language)
+            setPadding(ui.dp(24),ui.dp(20),ui.dp(24),ui.dp(20))
+            setBackgroundColor(ThemeManager.get(ui.themeIndex).base)
+        }
+        panel.addView(ui.text("مناسبة مخصصة",24f))
+        panel.addView(ui.text("اسم المناسبة",16f,true))
+        val name=EditText(this).apply {
+            tag="occasion_name_editor";setSingleLine(true);textSize=21f;setTextColor(ui.ink)
+            filters=arrayOf(InputFilter.LengthFilter(40));setText(before.smart.occasionName)
+            textDirection=if(before.language=="en")View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL
+        }
+        panel.addView(name,LinearLayout.LayoutParams(-1,ui.dp(56)))
+        panel.addView(ui.text("التاريخ الميلادي: سنة-شهر-يوم",16f,true))
+        val date=EditText(this).apply {
+            tag="occasion_date_editor";setSingleLine(true);textSize=21f;setTextColor(ui.ink)
+            textDirection=View.TEXT_DIRECTION_LTR;filters=arrayOf(InputFilter.LengthFilter(10))
+            hint="2027-02-22";setHintTextColor(ui.muted);setText(before.smart.occasionDate)
+        }
+        panel.addView(date,LinearLayout.LayoutParams(-1,ui.dp(56)))
+        val error=ui.text("لن تُحفظ التغييرات قبل التأكيد.",15f,true).apply{tag="occasion_editor_error"}
+        panel.addView(error)
+        panel.addView(button("تم","occasion_done") {
+            val clean=GreetingText.clean(name.text.toString())
+            val parsed=com.ufuq.dream.reflection.Occasions.customDate(date.text.toString())
+            if(clean.isBlank()||parsed==null){error.text=tr("اكتب اسمًا وتاريخًا صحيحًا مثل 2027-02-22");return@button}
+            draft.update(draft.current.copy(smart=draft.current.smart.copy(occasion=7,occasionName=clean,occasionDate=parsed.toString())))
+            dialog.dismiss();showSection("occasion_custom");updateUi("تغيّرت معاينة المناسبة")
+        },LinearLayout.LayoutParams(-1,ui.dp(48)))
+        dialog.setOnDismissListener {
+            dialogDismissed(dialog)
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(name.windowToken,0)
+        }
+        TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),ui.dp(560),AppLanguage.direction(before.language))
+        dialog.window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        name.requestFocus()
     }
 
     private fun customText() {

@@ -20,16 +20,17 @@ object WidgetRegistry {
     val clock = AmbientWidget("clock",100,WidgetSlot.CLOCK,0) { true }
     val prayers = AmbientWidget("prayers",80,WidgetSlot.INFORMATION,88) { it.smart.prayers }
     val weather = AmbientWidget("weather",60,WidgetSlot.INFORMATION,42) { it.smart.weather }
-    val reflection = AmbientWidget("reflection",40,WidgetSlot.INFORMATION,com.ufuq.dream.reflection.ReflectionView.HEIGHT_DP) { it.smart.reflectionMode in 1..3 }
+    val reflection = AmbientWidget("reflection",40,WidgetSlot.INFORMATION,com.ufuq.dream.reflection.ReflectionView.HEIGHT_DP) { it.smart.hasReflection }
     val football = AmbientWidget("football",30,WidgetSlot.INFORMATION,64) { it.smart.football && FootballTeams.find(it.smart.footballTeam)!=null }
-    val supported = listOf(clock,prayers,weather,reflection,football)
+    val occasion = AmbientWidget("occasion",20,WidgetSlot.CLOCK,32) { it.smart.occasion!=0 }
+    val supported = listOf(clock,prayers,weather,reflection,football,occasion)
     fun enabled(settings: DisplaySettings)=supported.filter{it.enabled(settings)}.sortedByDescending{it.priority}
 }
 data class WidgetZones(val clockHeight: Int, val panel: Rect)
 object SmartLayout {
     fun zones(width:Int,height:Int,density:Float,settings:DisplaySettings,minimumFooter:Int=0):WidgetZones {
         val information=WidgetRegistry.enabled(settings).filter{it.slot==WidgetSlot.INFORMATION}
-        val base=information.filterNot{it.id=="reflection"||it.id=="football"}.sumOf{it.heightDp}
+        val base=information.filterNot{it.id=="reflection"||it.id=="football"||it.id=="occasion"}.sumOf{it.heightDp}
         return place(width,height,density,base+if(base==0)0 else 4,minimumFooter=minimumFooter)
     }
     private fun place(width:Int,height:Int,density:Float,heightDp:Int,fraction:Float=.34f,minimumFooter:Int=0):WidgetZones {
@@ -113,7 +114,7 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
         layoutDirection=com.ufuq.dream.AppLanguage.direction(s.language)
         weatherRow.layoutDirection=layoutDirection;prayerRow.layoutDirection=layoutDirection
         listOf(header,weather).plus(prayerLabels).forEach{it.textDirection=if(english)View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL}
-        val options=s.smart;visibility=if(options.prayers||options.weather||options.reflectionMode in 1..3||(options.football && FootballTeams.find(options.footballTeam)!=null))View.VISIBLE else View.GONE
+        val options=s.smart;visibility=if(options.prayers||options.weather||options.hasReflection||(options.football && FootballTeams.find(options.footballTeam)!=null))View.VISIBLE else View.GONE
         fun digits(value: String)=if(s.latinDigits)value else value.map { if(it in '0'..'9') '٠'+(it-'0') else it }.joinToString("")
         val ink=com.ufuq.dream.NightMode.fade(theme.ink,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim))
         listOf(header,weather,weatherCredit).plus(prayerLabels).forEach { it.setTextColor(ink);it.setLinkTextColor(ink) }
@@ -161,10 +162,10 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
                 }
             } catch (_: Exception) { header.text=tr(if(!DeviceTime.valid(now.toEpochMilli()))"تحقق من تاريخ الجهاز ووقته" else "تعذّر التحقق من أوقات الصلاة");prayerLabels.forEach { it.text="—";it.contentDescription="—" } }
         }else{prayerApi.stop()}
-        reflectionBlock.visibility=if(options.reflectionMode in 1..3)View.VISIBLE else View.GONE
+        reflectionBlock.visibility=if(options.hasReflection)View.VISIBLE else View.GONE
         if(reflectionBlock.visibility==View.VISIBLE) {
             try {
-                val entry=com.ufuq.dream.reflection.DailyReflection.today(context,now.atZone(java.time.ZoneId.systemDefault()).toLocalDate(),options.reflectionMode)
+                val entry=com.ufuq.dream.reflection.ReflectionSelection.entry(context,now,options)
                 if(entry!=null)reflectionBlock.render(entry,s.language,theme,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim))
                 else reflectionBlock.visibility=View.GONE
             }catch(_:Exception){reflectionBlock.unavailable(s.language,theme,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim))}
@@ -179,7 +180,17 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
                 val zone=java.time.ZoneId.systemDefault()
 
                 val home=FootballTeams.localized(fixture.home,s.language);val away=FootballTeams.localized(fixture.away,s.language)
-                "${android.text.BidiFormatter.getInstance(!english).unicodeWrap(home)} × ${android.text.BidiFormatter.getInstance(!english).unicodeWrap(away)}\n${android.text.BidiFormatter.getInstance(!english).unicodeWrap(com.ufuq.dream.TimePresentation.reading(fixture.start,zone,s,true))}"+(if(!feed.fresh(now.toEpochMilli()))" · ${tr("جدول محفوظ")}" else "")
+                val remaining=java.time.Duration.between(now,fixture.start).toMinutes().coerceAtLeast(1)
+                val countdown=if(english)"In ${remaining/1440}d ${(remaining/60)%24}h ${remaining%60}m" else "بعد ${remaining/1440} ي و${(remaining/60)%24} س و${remaining%60} د"
+                // Keep the accepted two-line card budget. Details rotate once per minute,
+                // sharing the same slot rather than shrinking the clock or religious text.
+                val details=listOf(
+                    android.text.BidiFormatter.getInstance(!english).unicodeWrap(com.ufuq.dream.TimePresentation.reading(fixture.start,zone,s,true)),
+                    digits(countdown),
+                    fixture.competition.takeIf{it.isNotBlank()}?.let{android.text.BidiFormatter.getInstance(!english).unicodeWrap(it)}
+                ).filterNotNull()
+                val detail=details[Math.floorMod(now.epochSecond/60,details.size.toLong()).toInt()]
+                "${android.text.BidiFormatter.getInstance(!english).unicodeWrap(home)} × ${android.text.BidiFormatter.getInstance(!english).unicodeWrap(away)}\n$detail"+(if(!feed.fresh(now.toEpochMilli()))" · ${tr("جدول محفوظ")}" else "")
             }else tr(when {
                 !DeviceTime.valid(now.toEpochMilli())->"تحقق من تاريخ الجهاز ووقته"
                 !FootballConsent.allowed(options,savedOptions)->"احفظ فريقك لعرض المباراة"

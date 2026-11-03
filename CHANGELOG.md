@@ -1,3 +1,14 @@
+# 0.11.0-rc1 — Unified reading and occasion countdowns
+
+- Publish the owner-accepted 0.11.0-dev2 behavior with the established production certificate, versionCode32, Android API28+.
+- Unified Quran/hadith/remembrance combinations with read-only migration of the previous two controls; explicit Save/Cancel retained. Two small authenticated devotional selections retain traditional references.
+- Automatic nearest occasion, Founding Day (22 February), fixed occasions and a staged custom name/Gregorian date editor with Arabic-digit/leap-date validation. Hijri dates remain marked estimates.
+- Independent occasion line under the dates; never replaces a favorite-team card.
+- Football competition metadata and a local kickoff countdown, bounded parsing/cache compatibility and no extra network requests. Free endpoint home-only/coverage limitations are explicit.
+- Correct bilingual place captions from actual photo provenance; isolate imported-video captions from fallback photo location.
+- Preserve all existing cinematic media, fonts, prayer/weather behavior and preferences. No personal video, badge, live-score subscription, new permission or account is bundled.
+- Accepted by the owner on Mi Box; host framework tests cover API28/34. Remains RC pending independent signing-key recovery and isolated production/wider-hardware/endurance gates.
+
 # 0.10.0-rc1 — Saudi Smart Ambient community release
 
 - Correct ICU clock/Gregorian/Hijri timezone propagation discovered by UTC CI; add midnight/device-zone regression coverage.

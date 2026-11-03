@@ -34,8 +34,12 @@ data class SmartSettings(
     val weather: Boolean = false, val weatherCity: String = "riyadh",
     val fahrenheit: Boolean = false, val weatherRefreshMinutes: Int = 60,
     val prayerSource: Int = 0,
-    val reflectionMode: Int = 0, val football: Boolean = false, val footballTeam: String = "none"
+    val reflectionMode: Int = 0, val football: Boolean = false, val footballTeam: String = "none",
+    val adhkar: Boolean = false, val occasion: Int = 0,
+    val occasionName: String = "", val occasionDate: String = ""
 ) : java.io.Serializable {
+    val reflectionChoice: Int get() = if(adhkar && reflectionMode in 0..3)when(reflectionMode){0->4;1->5;2->6;else->7} else reflectionMode
+    val hasReflection: Boolean get() = reflectionChoice in 1..7
     companion object {
         fun read(p: SharedPreferences) = SmartSettings(
             p.getBoolean("smart_prayers", false), SaudiCities.find(p.getString("smart_prayer_city", "riyadh").orEmpty()).id,
@@ -43,13 +47,18 @@ data class SmartSettings(
             p.getBoolean("smart_weather", false), SaudiCities.find(p.getString("smart_weather_city", "riyadh").orEmpty()).id,
             p.getBoolean("smart_fahrenheit", false), p.getInt("smart_weather_refresh", 60).let { if (it in listOf(30, 60, 180)) it else 60 },
             p.getInt("smart_prayer_source", if(p.contains("smart_prayers"))1 else 0).coerceIn(0,1),
-            p.getInt("smart_reflection_mode",0).let{if(it in 0..3)it else 0},
+            p.getInt("smart_reflection_mode",0).let{if(it in 0..7)it else 0},
             p.getBoolean("smart_football",false) && FootballTeams.find(p.getString("smart_football_team","none").orEmpty())!=null,
-            FootballTeams.find(p.getString("smart_football_team","none").orEmpty())?.id?:"none"
-        )
+            FootballTeams.find(p.getString("smart_football_team","none").orEmpty())?.id?:"none",
+            p.getBoolean("smart_adhkar",false), p.getInt("smart_occasion",0).let{if(it in 0..7)it else 0},
+            com.ufuq.dream.GreetingText.clean(p.getString("smart_occasion_name","").orEmpty()),
+            p.getString("smart_occasion_date","").orEmpty().take(10)
+        ).let{it.copy(reflectionMode=it.reflectionChoice,adhkar=false)}
     }
     fun write(e: SharedPreferences.Editor) {
-        e.putInt("smart_reflection_mode",reflectionMode.let{if(it in 0..3)it else 0})
+        e.putBoolean("smart_adhkar",false).putInt("smart_occasion",occasion.let{if(it in 0..7)it else 0})
+            .putString("smart_occasion_name",com.ufuq.dream.GreetingText.clean(occasionName)).putString("smart_occasion_date",occasionDate.take(10))
+            .putInt("smart_reflection_mode",reflectionChoice.let{if(it in 0..7)it else 0})
             .putBoolean("smart_football",football && FootballTeams.find(footballTeam)!=null)
             .putString("smart_football_team",FootballTeams.find(footballTeam)?.id?:"none")
             .putInt("smart_prayer_source",prayerSource.coerceIn(0,1))

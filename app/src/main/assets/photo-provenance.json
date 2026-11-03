@@ -39,7 +39,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://cc.spa.gov.sa/en/terms/1220",
-    "sourceMediaWikiSHA1": "64f444c4f1c1b2f6e5f0e34ea37fbc0de07d43d3"
+    "sourceMediaWikiSHA1": "64f444c4f1c1b2f6e5f0e34ea37fbc0de07d43d3",
+    "displayLocation": {
+      "ar": "العلا · كهف صخري",
+      "en": "AlUla · Sandstone cave"
+    }
   },
   {
     "id": "alula_2",
@@ -81,7 +85,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://cc.spa.gov.sa/en/terms/1220",
-    "sourceMediaWikiSHA1": "dad16200c7f72de05abe642924d2cada7f9109c9"
+    "sourceMediaWikiSHA1": "dad16200c7f72de05abe642924d2cada7f9109c9",
+    "displayLocation": {
+      "ar": "العلا · تشكيلات الحجر الرملي",
+      "en": "AlUla · Sandstone formations"
+    }
   },
   {
     "id": "alula_4",
@@ -123,7 +131,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://cc.spa.gov.sa/en/terms/1220",
-    "sourceMediaWikiSHA1": "1b0188435f85dd7cff072732c881a4e5b97e226d"
+    "sourceMediaWikiSHA1": "1b0188435f85dd7cff072732c881a4e5b97e226d",
+    "displayLocation": {
+      "ar": "العلا · جبل الفيل",
+      "en": "AlUla · Elephant Rock"
+    }
   },
   {
     "id": "alula_3",
@@ -165,7 +177,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://cc.spa.gov.sa/en/terms/1220",
-    "sourceMediaWikiSHA1": "ed0b48fe20ba93db6cb9f44f58831e1c8908db8b"
+    "sourceMediaWikiSHA1": "ed0b48fe20ba93db6cb9f44f58831e1c8908db8b",
+    "displayLocation": {
+      "ar": "العلا · قوس صخري",
+      "en": "AlUla · Natural rock arch"
+    }
   },
   {
     "id": "alula_5",
@@ -207,7 +223,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://cc.spa.gov.sa/en/terms/1220",
-    "sourceMediaWikiSHA1": "246f344423940641251e69a40480b877511c2d4a"
+    "sourceMediaWikiSHA1": "246f344423940641251e69a40480b877511c2d4a",
+    "displayLocation": {
+      "ar": "العلا",
+      "en": "AlUla"
+    }
   },
   {
     "id": "diriyah_1",
@@ -249,7 +269,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:At-Turaif_District_in_ad-Dir%27iyah_(3).jpg",
-    "sourceMediaWikiSHA1": "cb1eff8d1ff6ebcac28197b08c754641b38f0d43"
+    "sourceMediaWikiSHA1": "cb1eff8d1ff6ebcac28197b08c754641b38f0d43",
+    "displayLocation": {
+      "ar": "الدرعية · حي الطريف",
+      "en": "Diriyah · At-Turaif"
+    }
   },
   {
     "id": "diriyah_2",
@@ -291,7 +315,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:At-Turaif_District_in_ad-Dir%27iyah_(6).jpg",
-    "sourceMediaWikiSHA1": "d25fc52f337f7df490850a2cefe6635396dea9b2"
+    "sourceMediaWikiSHA1": "d25fc52f337f7df490850a2cefe6635396dea9b2",
+    "displayLocation": {
+      "ar": "الدرعية · حي الطريف",
+      "en": "Diriyah · At-Turaif"
+    }
   },
   {
     "id": "diriyah_3",
@@ -333,7 +361,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:At-Turaif_District_in_ad-Dir%27iyah_(12).jpg",
-    "sourceMediaWikiSHA1": "72e880ba4f219d221c23a6d39e73a00c73e92723"
+    "sourceMediaWikiSHA1": "72e880ba4f219d221c23a6d39e73a00c73e92723",
+    "displayLocation": {
+      "ar": "الدرعية · حي الطريف",
+      "en": "Diriyah · At-Turaif"
+    }
   },
   {
     "id": "riyadh_1",
@@ -375,7 +407,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:Riyadh_Skyline.jpg",
-    "sourceMediaWikiSHA1": "2a8250488a1dde6d33810906e80495dacef941bf"
+    "sourceMediaWikiSHA1": "2a8250488a1dde6d33810906e80495dacef941bf",
+    "displayLocation": {
+      "ar": "الرياض · برج المملكة والفيصلية",
+      "en": "Riyadh · Kingdom Centre"
+    }
   },
   {
     "id": "riyadh_2",
@@ -417,7 +453,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:Night_view_of_City_Riyadh_from_Hauptstadt_Saudi_Arabiens_-_panoramio.jpg",
-    "sourceMediaWikiSHA1": ""
+    "sourceMediaWikiSHA1": "",
+    "displayLocation": {
+      "ar": "الرياض · وسط المدينة",
+      "en": "Riyadh · City centre"
+    }
   },
   {
     "id": "riyadh_3",
@@ -459,7 +499,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://cc.spa.gov.sa/en/terms/1220",
-    "sourceMediaWikiSHA1": "97f8738e410c16d2e6e6442343b55d6ecf0136d4"
+    "sourceMediaWikiSHA1": "97f8738e410c16d2e6e6442343b55d6ecf0136d4",
+    "displayLocation": {
+      "ar": "الرياض · مركز الملك عبدالله المالي",
+      "en": "Riyadh · KAFD"
+    }
   },
   {
     "id": "riyadh_4",
@@ -501,7 +545,11 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:Riyadh_Skyline_showing_the_King_Abdullah_Financial_District_(KAFD)_and_the_famous_Kingdom_Tower_.jpg",
-    "sourceMediaWikiSHA1": "40da28e8354d46b4d1b57265efc201abbb9d7aeb"
+    "sourceMediaWikiSHA1": "40da28e8354d46b4d1b57265efc201abbb9d7aeb",
+    "displayLocation": {
+      "ar": "الرياض · برج المملكة",
+      "en": "Riyadh · Kingdom Centre"
+    }
   },
   {
     "id": "riyadh_5",
@@ -543,6 +591,10 @@
     "status": "approved",
     "reviewStatus": "Creative/source-license review approved for RC; physical-TV acceptance pending",
     "licenseEvidence": "https://commons.wikimedia.org/wiki/File:King_Abdullah_Financial_District_201553.jpg",
-    "sourceMediaWikiSHA1": "d7d89755453e5fbd8243dd5f66d7939617376208"
+    "sourceMediaWikiSHA1": "d7d89755453e5fbd8243dd5f66d7939617376208",
+    "displayLocation": {
+      "ar": "الرياض · مركز الملك عبدالله المالي",
+      "en": "Riyadh · KAFD"
+    }
   }
 ]

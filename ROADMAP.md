@@ -1,8 +1,8 @@
 # Roadmap
 
-## Current: 0.10 Saudi Smart Ambient
+## Current: 0.11 Saudi Smart Ambient
 
-Public community release candidate: owner-accepted Mi Box development counterpart; production APK signed with the established key. Includes bilingual contextual Studio, fonts, side-based clock layout, 13 photos, personal video engine, prayer/weather, daily reading, favorite-team next fixture and dynamic text-sized backdrops. See docs/0.10.0/RELEASE.md for remaining gates.
+Public community release candidate: owner-accepted Mi Box development counterpart; production APK signed with the established key. Includes bilingual contextual Studio, fonts, side-based clock layout, 13 photos, personal video engine, prayer/weather, daily reading, favorite-team next fixture and dynamic text-sized backdrops. Includes unified remembrance, independent nearest/custom occasion countdowns, verified place labels and fixture metadata/countdown. See docs/0.11.0/RELEASE.md for remaining gates.
 
 ## Stabilization
 

@@ -7,6 +7,9 @@ object AppLanguage {
     fun normalize(value:String)=if(value=="en")"en" else "ar"
     fun direction(language:String)=if(language=="en")View.LAYOUT_DIRECTION_LTR else View.LAYOUT_DIRECTION_RTL
     private val translations=mapOf(
+        "تحديث المكتبة" to "Library updates",
+        "فحص كل ١٥ يومًا عند توفر الإنترنت؛ تبقى النصوص المحفوظة متاحة دون اتصال." to "Check every 15 days when online. Saved texts remain available offline.",
+        "تغيّر خيار تحديث المكتبة؛ احفظ للتأكيد" to "Library update preference changed. Save to confirm.",
         "القرآن والحديث والأذكار" to "Quran, hadith & remembrance",
         "نصوص موثّقة دون إنترنت؛ تتناوب الأنواع المختارة في مساحة واحدة." to "Referenced offline texts; your selected types share one space.",
         "تغيّرت معاينة المحتوى" to "Content preview updated",

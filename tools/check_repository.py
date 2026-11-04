@@ -10,7 +10,7 @@ for name in filter(None, files):
     path = root / name
     assert path.suffix.lower() not in {'.jks','.keystore','.p12','.pem','.key','.apk','.mp4','.webm'}, name
     assert path.name not in {'local.properties','keystore.properties','.env'}, name
-    if path.suffix in {'.py','.kt','.md','.yml','.xml','.json','.properties','.kts'}:
+    if path.suffix in {'.py','.kt','.md','.yml','.xml','.json','.properties','.kts','.java'}:
         text = path.read_text()
         assert not any(re.search(pattern,text) for pattern in patterns), name
 print('PASS: tracked-file credential and private-binary gate (limited patterns, not a security certification)')

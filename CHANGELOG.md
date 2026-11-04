@@ -1,3 +1,11 @@
+# 0.12.0-rc1 — Reviewed offline text library
+
+- 21 sourced Arabic entries: 9 complete Quran verses, 7 hadith matn, 5 remembrance formulas. The previous nine entries are unchanged. User approved the twelve additions before integration.
+- Optional explicitly saved library updates, OFF by default, with validated-internet checks while Studio/Dream is visible, a 15-day successful-check cadence and bounded failure backoff.
+- Signed versioned text-only payloads, pinned public certificate, atomic cache, rollback/tamper rejection and bundled offline fallback. No account, new permission, hidden polling or raw API corpus import.
+- Preserve all existing design, media, prayer/weather/football/occasion settings, fonts and Save/Cancel. Production package/signing identity unchanged; versionCode35, API28+.
+- Corresponding dev2 installed on Mi Box with byte-identical saved settings and successful Settings launch/Dream registration. Expanded-text owner visual review, independent signing-key restore, production-TV/endurance and wider-device gates remain open; this is RC, not Stable.
+
 # 0.11.0-rc1 — Unified reading and occasion countdowns
 
 - Publish the owner-accepted 0.11.0-dev2 behavior with the established production certificate, versionCode32, Android API28+.

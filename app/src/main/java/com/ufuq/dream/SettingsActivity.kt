@@ -294,6 +294,9 @@ class SettingsActivity : Activity() {
                         change("reflection","تغيّرت معاينة المحتوى"){copy(smart=smart.copy(reflectionMode=index,adhkar=false))}
                     }
                 }
+                if(smart.hasReflection)row("reading_updates","تحديث المكتبة","فحص كل ١٥ يومًا عند توفر الإنترنت؛ تبقى النصوص المحفوظة متاحة دون اتصال.",if(smart.contentUpdates)"تشغيل" else "إيقاف") {
+                    change("reading_updates","تغيّر خيار تحديث المكتبة؛ احفظ للتأكيد"){copy(smart=smart.copy(contentUpdates=!smart.contentUpdates))}
+                }
                 val occasionIds=listOf(0,6,7,1,2,3,4,5)
                 val occasions=listOf("مخفية","أقرب مناسبة تلقائيًا","مناسبة مخصصة","رمضان","عيد الفطر","عيد الأضحى","اليوم الوطني","يوم التأسيس")
                 row("occasion","المناسبات","أقرب مناسبة تلقائيًا أو مناسبة تختارها؛ تظهر مع التاريخ.",occasions[occasionIds.indexOf(smart.occasion).coerceAtLeast(0)]) {
@@ -319,7 +322,7 @@ class SettingsActivity : Activity() {
             if (event.action == KeyEvent.ACTION_DOWN && (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_DPAD_RIGHT)) { tabs[section].requestFocus(); true } else false
         }
         // Long custom strings belong in the editor, not a narrow badge.
-        val dependent=key in setOf("font_ar","font_en","image","interval","preset","custom","prayer_source","prayer_city","prayer_method","asr","weather_city","weather_units","weather_refresh")
+        val dependent=key in setOf("reading_updates","font_ar","font_en","image","interval","preset","custom","prayer_source","prayer_city","prayer_method","asr","weather_city","weather_units","weather_refresh")
         rows.addView(item, LinearLayout.LayoutParams(-1, -2).apply {
             bottomMargin = ui.dp(if(dependent)6 else 8)
             if(dependent)marginStart=ui.dp(14)
@@ -437,7 +440,7 @@ class SettingsActivity : Activity() {
         }
         panel.addView(ui.text("الطقس: Open-Meteo · بيانات CC BY 4.0\nhttps://open-meteo.com/\nhttps://creativecommons.org/licenses/by/4.0/\nالخدمة المجانية للاستخدام غير التجاري.\nمواقيت الإنترنت: AlAdhan · https://aladhan.com/prayer-times-api\nأوقات محسوبة وليست جدول مسجد رسميًا.\nالحساب المحلي: Adhan Java 1.2.1 · Batoul Apps · MIT\nhttps://github.com/batoulapps/adhan-kotlin/tree/v1.2.1",15f).apply{isFocusable=true})
         panel.addView(ui.text("مصادر الآية والحديث والمباريات",22f))
-        val reflectionEntries=com.ufuq.dream.reflection.DailyReflection.entries(this)+com.ufuq.dream.reflection.Adhkar.all
+        val reflectionEntries=com.ufuq.dream.reflection.ContentRepository.entries(this)
         val reflectionNotices=reflectionEntries.joinToString("\n\n"){it.source+"\n"+it.attribution+"\n"+it.sourceUrl+"\n"+it.licenseUrl+if(it.kind=="hadith")"\n"+it.notice else ""}+"\n\n"+reflectionEntries.first{it.kind=="quran"}.notice
         panel.addView(ui.text("",14f).apply{text=reflectionNotices;isFocusable=true})
         panel.addView(ui.text("المباريات: TheSportsDB · بيانات ومواعيد قابلة للتغيير. لا شعارات أو نتائج مباشرة.\nhttps://www.thesportsdb.com/\nhttps://www.thesportsdb.com/docs_terms_of_use.php\nالإصدار المجاني على GitHub يستخدم واجهة المزود العامة؛ النشر في متجر تطبيقات يتطلب اشتراكًا مدفوعًا.",14f).apply{isFocusable=true})

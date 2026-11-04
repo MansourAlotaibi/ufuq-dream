@@ -10,13 +10,17 @@ object ReflectionSelection {
     fun entry(context: Context, now: Instant, settings: SmartSettings): ReflectionEntry? {
         val mode=settings.reflectionChoice
         val date=now.atZone(ZoneId.systemDefault()).toLocalDate()
-        if(mode in 0..3)return DailyReflection.today(context,date,mode)
+        val entries=ContentRepository.entries(context)
+        if(mode in 0..3)return DailyReflection.select(entries.filter{it.kind!="dhikr"},date,mode)
         val kinds=when(mode){4->listOf("dhikr");5->listOf("quran","dhikr");6->listOf("hadith","dhikr");7->listOf("quran","hadith","dhikr");else->return null}
         val slot=Math.floorMod(now.epochSecond/300,kinds.size.toLong()).toInt()
         return when(kinds[slot]) {
-            "quran"->DailyReflection.today(context,date,1)
-            "hadith"->DailyReflection.today(context,date,2)
-            else->Adhkar.entry(now,"ar") // Original religious text remains Arabic in both UI languages.
+            "quran"->DailyReflection.select(entries,date,1)
+            "hadith"->DailyReflection.select(entries,date,2)
+            else->{
+                val pool=entries.filter{it.kind=="dhikr"}
+                pool.getOrNull(Math.floorMod(now.epochSecond/600+if(now.atZone(ZoneId.systemDefault()).hour<12)0 else 1,pool.size.toLong()).toInt())
+            }
         }
     }
 }

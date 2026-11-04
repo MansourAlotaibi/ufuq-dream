@@ -1,0 +1,198 @@
+{
+  "schema": 1,
+  "version": 2,
+  "minAppVersionCode": 33,
+  "reviewedAt": "2026-11-04",
+  "reviewedBy": "Ufuq Dream maintainers",
+  "entries": [
+    {
+      "kind": "quran",
+      "text": "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+      "source": "الشرح · الآية ٦",
+      "sourceUrl": "https://tanzil.net/#94:6",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "quran",
+      "text": "ٱلَّذِينَ ءَامَنُوا۟ وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ ٱللَّهِ أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ",
+      "source": "الرعد · الآية ٢٨",
+      "sourceUrl": "https://tanzil.net/#13:28",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "quran",
+      "text": "فَٱذْكُرُونِىٓ أَذْكُرْكُمْ وَٱشْكُرُوا۟ لِى وَلَا تَكْفُرُونِ",
+      "source": "البقرة · الآية ١٥٢",
+      "sourceUrl": "https://tanzil.net/#2:152",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "hadith",
+      "text": "إنما الأعمال بالنيات وإنما لكل امرئ ما نوى فمن كانت هجرته إلى دنيا يصيبها أو إلى امرأة ينكحها فهجرته إلى ما هاجر إليه.",
+      "source": "صحيح البخاري · ١",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=484874",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih al-Bukhari — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "hadith",
+      "text": "(خيركم من تعلم القرآن وعلمه)",
+      "source": "صحيح البخاري · ٥٠٢٧ (ويكي مصدر: ٤٧٣٩)",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=512181",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih al-Bukhari — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "quran",
+      "text": "لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا ٱكْتَسَبَتْ رَبَّنَا لَا تُؤَاخِذْنَآ إِن نَّسِينَآ أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ إِصْرًا كَمَا حَمَلْتَهُۥ عَلَى ٱلَّذِينَ مِن قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِۦ وَٱعْفُ عَنَّا وَٱغْفِرْ لَنَا وَٱرْحَمْنَآ أَنتَ مَوْلَىٰنَا فَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ",
+      "source": "البقرة · الآية ٢٨٦",
+      "sourceUrl": "https://tanzil.net/#2:286",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "hadith",
+      "text": "(من كان يؤمن بالله واليوم الآخر فلا يؤذ جاره، ومن كان يؤمن بالله واليوم الآخر فليكرم ضيفه، ومن كان يؤمن بالله واليوم الآخر فليقل خيراً أو ليصمت).",
+      "source": "صحيح البخاري · ٦٠١٨ (ويكي مصدر: ٥٦٧٢)",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=627517",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih al-Bukhari — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "dhikr",
+      "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+      "source": "صحيح مسلم 2692 · مائة مرة",
+      "sourceUrl": "https://dorar.net/h/Cfuml05Y?osoul=1",
+      "licenseUrl": "",
+      "attribution": "نص تراثي؛ المرجع: صحيح مسلم 2692",
+      "notice": "ذِكر ثابت للصباح والمساء؛ العرض لا يحسب عدد قراءات المستخدم ولا يقوم مقام الذكر باللسان."
+    },
+    {
+      "kind": "dhikr",
+      "text": "اللَّهُمَّ أَنْتَ رَبِّي، لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+      "source": "صحيح البخاري 6306 · سيد الاستغفار",
+      "sourceUrl": "https://sunnah.com/bukhari:6306",
+      "licenseUrl": "",
+      "attribution": "نص تراثي؛ المرجع: صحيح البخاري 6306",
+      "notice": "نص الدعاء دون شرح أو ترجمة من الناشر؛ ثابت للنهار والليل."
+    },
+    {
+      "kind": "quran",
+      "text": "وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰٓ",
+      "source": "الضحى · الآية ٥",
+      "sourceUrl": "https://tanzil.net/#93:5",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "quran",
+      "text": "وَإِلَىٰ رَبِّكَ فَٱرْغَب",
+      "source": "الشرح · الآية ٨",
+      "sourceUrl": "https://tanzil.net/#94:8",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "quran",
+      "text": "وَٱسْتَعِينُوا۟ بِٱلصَّبْرِ وَٱلصَّلَوٰةِ وَإِنَّهَا لَكَبِيرَةٌ إِلَّا عَلَى ٱلْخَٰشِعِينَ",
+      "source": "البقرة · الآية ٤٥",
+      "sourceUrl": "https://tanzil.net/#2:45",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "quran",
+      "text": "إِنَّ ٱللَّهَ يَأْمُرُ بِٱلْعَدْلِ وَٱلْإِحْسَٰنِ وَإِيتَآئِ ذِى ٱلْقُرْبَىٰ وَيَنْهَىٰ عَنِ ٱلْفَحْشَآءِ وَٱلْمُنكَرِ وَٱلْبَغْىِ يَعِظُكُمْ لَعَلَّكُمْ تَذَكَّرُونَ",
+      "source": "النحل · الآية ٩٠",
+      "sourceUrl": "https://tanzil.net/#16:90",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "quran",
+      "text": "إِنَّ ٱللَّهَ وَمَلَٰٓئِكَتَهُۥ يُصَلُّونَ عَلَى ٱلنَّبِىِّ يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ صَلُّوا۟ عَلَيْهِ وَسَلِّمُوا۟ تَسْلِيمًا",
+      "source": "الأحزاب · الآية ٥٦",
+      "sourceUrl": "https://tanzil.net/#33:56",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Tanzil Project — Quran Text, Uthmani 1.1",
+      "notice": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Uthmani, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================\n"
+    },
+    {
+      "kind": "hadith",
+      "text": "كل معروف صدقة",
+      "source": "صحيح البخاري · ٦٠٢١",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=627517",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih al-Bukhari — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "hadith",
+      "text": "المسلم من سلم المسلمون من لسانه ويده والمهاجر من هجر ما نهى الله عنه",
+      "source": "صحيح البخاري · ١٠",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=490285",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih al-Bukhari — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "hadith",
+      "text": "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه",
+      "source": "صحيح البخاري · ١٣",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=490285",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih al-Bukhari — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "hadith",
+      "text": "من لا يرحم الناس لا يرحمه الله عز وجل",
+      "source": "صحيح مسلم · ٢٣١٩",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=20495",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Sahih Muslim — Arabic Wikisource contributors; contributor history available from the source page.",
+      "notice": "Arabic matn excerpt selected from the attributed chapter. Narrator chains and surrounding commentary omitted. Wording in the excerpt is unchanged. This transcription selection is distributed under CC BY-SA 4.0; the independent application code remains MIT. No endorsement is implied."
+    },
+    {
+      "kind": "dhikr",
+      "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ",
+      "source": "صحيح البخاري 7563 · التسبيح",
+      "sourceUrl": "https://sunnah.com/bukhari:7563",
+      "licenseUrl": "",
+      "attribution": "نص تراثي؛ المرجع: صحيح البخاري 7563",
+      "notice": "صيغة الذكر المذكورة في الحديث؛ ليست نقلًا لكامل رواية الفضل."
+    },
+    {
+      "kind": "dhikr",
+      "text": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهْوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+      "source": "صحيح البخاري 6403 · التهليل",
+      "sourceUrl": "https://sunnah.com/bukhari:6403",
+      "licenseUrl": "",
+      "attribution": "نص تراثي؛ المرجع: صحيح البخاري 6403",
+      "notice": "ورد فضلها مائة مرة في اليوم؛ التطبيق يعرض النص ولا يعدّ التكرار ولا يخصّصه للصباح أو المساء."
+    },
+    {
+      "kind": "dhikr",
+      "text": "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+      "source": "صحيح البخاري 6384 · الحوقلة",
+      "sourceUrl": "https://sunnah.com/bukhari:6384",
+      "licenseUrl": "",
+      "attribution": "نص تراثي؛ المرجع: صحيح البخاري 6384",
+      "notice": "صيغة ذكر تراثية دون نقل القصة أو شرح الناشر."
+    }
+  ]
+}

@@ -29,11 +29,11 @@ def main():
     service = manifest.find("application/service")
     assert service.get(ns + "permission") == "android.permission.BIND_DREAM_SERVICE"
     # Limit to distributable source folders; do not inspect user's home or build caches.
-    for folder in [ROOT / "app/src", ROOT / "tools", ROOT / "docs"]:
+    for folder in [ROOT / "app/src", ROOT / "tools", ROOT / "docs", ROOT / "content"]:
         for path in folder.rglob("*"):
             if not path.is_file() or "__pycache__" in path.parts: continue
             assert path.suffix.lower() not in {".mp4", ".webm", ".jks", ".keystore", ".p12", ".pem", ".key", ".apk"}, path
-            if path.suffix in {".kt", ".py", ".md", ".json", ".xml"}:
+            if path.suffix in {".kt", ".py", ".md", ".json", ".xml", ".java"}:
                 text = path.read_text()
                 assert not re.search(r"/" + r"Users/[^/\s]+|192\.168\.\d+\.\d+", text), path
     print("PASS: 13 licensed-record photos and thumbnails; runtime hashes; Dream permission; no bundled private media/local device details")

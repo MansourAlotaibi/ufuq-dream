@@ -1,0 +1,22 @@
+# Ufuq Dream 0.12.0-rc1 — reviewed reading library
+
+User-approved expansion: 21 entries (9 complete Quran verses, 7 short hadith matn, 5 traditional remembrance formulas), with the prior nine unchanged. Optional signed library updates are OFF by default, require explicit Save, run only while visible with validated internet, and wait 15 days after a successful check. Finite timeouts, bounded backoff, conditional ETag requests, signature/version/source validation and atomic offline fallback preserve current texts on failures. No unreviewed religious API corpus is imported.
+
+## Identity and testing
+Package com.ufuq.dream; API28 minimum/34 target; production versionCode35. Established production certificate SHA-256: `de13674be215040bafb029fe637a74e9e981accfa5a763bba62ad99dbcda5169`. Corresponding private dev2 uses the original separate debug signature. Full source/binary verification, actual build/test counts and hashes accompany the release assets. Public signing is not an in-place replacement for the owner’s debug TV installation.
+
+The development counterpart was installed successfully on MIBOX4 / oneday / API28. Dream registration and Settings launch passed. Saved settings were byte-identical after update. The sampled recent crash buffer contained no Ufuq entry; this is a limited smoke check, not evidence of endurance. Owner visual review of all expanded texts and real TV network-update behavior remain pending. All existing design, personal media, location captions, prayer/weather, fixtures, occasions, language/fonts, placement and Save/Cancel are preserved.
+
+## Sources and resource budget
+Five new verses use the exact Tanzil Uthmani1.1 source with its original notice. Four short hadith matn use CC BY-SA4.0 revision-pinned Wikisource; original Arabic words retained without adding an English translation. Three traditional remembrance formulas preserve references and scope. Credits use the actual selected signed collection. See APPROVED-TEXT-PROVENANCE.json and ../../content/README.md. No personal video, club artwork, credentials or private device reports are bundled. Thirteen licensed photos retain their existing hashes.
+
+The complete text envelope is bounded to512KiB (decoded payload256KiB, at most128 entries); each text4096 characters maximum. One finite worker and one process-wide request lease; cancellation/generation checks prevent late UI callbacks. No independent recurring timer, background job, alarm or wake lock is added. Bitmap/player behavior is unchanged. Host layout checks cover all21 texts/citations across both languages, three themes and selectable fonts at1080p; they do not certify every physical screen/font/rendering path.
+
+## Still RC, not Stable
+Independent offline signing-keystore/password restore is unverified; existing Keychain/local backup access is not independent recovery. Production-signed isolated physical-TV acceptance, wider vendor/API behavior, current-version overnight memory/power/sleep-wake and full expanded-text visual acceptance remain open. Prayer/provider and media limitations from ../0.11.0/RELEASE.md still apply. Public hosting is free community distribution, not unlimited provider access or permission for commercial/app-store use. No tag/history rewriting, debugging/storage changes, reboot, uninstall, app-data clearing or launcher/default-screen changes are required.
+
+## Upgrade and rollback
+Same production certificate plus increasing versionCode updates previous public releases in place. Existing settings are preserved; update consent remains OFF unless explicitly saved. Keep prior source/APK; prefer a same-key higher-code forward fix. Android may reject a downgrade and no lossless downgrade is promised. Do not uninstall or clear data to bypass signature/version protection. See ../UPGRADE-ROLLBACK.md.
+
+## CI regression resolved
+The first PR run exposed a test-only scheduling race on API28: the failure counter is visible immediately before the worker finishes releasing its process-wide admission lease. The test advanced its virtual clock and issued exactly one retry tick before that release, then waited for work it had not scheduled. The corrected test drives subsequent visible refresh ticks (matching the runtime caller) while preserving request-count/backoff assertions. No runtime retry cadence, network behavior or installed app source was changed by this correction. The initial failed run is retained; final CI must pass on the corrected commit.

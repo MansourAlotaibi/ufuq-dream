@@ -69,6 +69,8 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
     internal val weatherSession=WeatherSession(context,{weatherRevision++;changed()})
     private var footballRevision=0
     internal val footballSession=FootballSession(context,{footballRevision++;changed()})
+    private var contentRevision=0
+    internal val contentSession=com.ufuq.dream.reflection.ContentUpdateSession(context,{contentRevision++;changed()})
     private var active=false
     private fun text(size: Float)=TextView(context).apply { textSize=size;gravity=Gravity.CENTER;setTextColor(Color.WHITE);setShadowLayer(dp(3).toFloat(),0f,1f,Color.BLACK);isFocusable=false;textDirection=View.TEXT_DIRECTION_FIRST_STRONG_RTL }
     private val header=text(15f).apply { tag="prayer_header" }
@@ -103,12 +105,14 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
 
     }
     fun start(){active=true;renderKey="";weatherSession.start();prayerApi.start();footballSession.start()}
-    fun stop(){active=false;renderKey="";weatherSession.stop();prayerApi.stop();footballSession.stop()}
+    fun stop(){active=false;renderKey="";weatherSession.stop();prayerApi.stop();footballSession.stop();contentSession.stop()}
     fun update(now: Instant, s: DisplaySettings, theme: AmbientTheme) {
         val savedOptions=SettingsRepository(context).load().smart
-        val key="${s.language}:${now.epochSecond/60}:${s.smart}:$savedOptions:${s.theme}:${s.hour24}:${s.latinDigits}:$weatherRevision:$prayerRevision:$footballRevision"
+        val key="${s.language}:${now.epochSecond/60}:${s.smart}:$savedOptions:${s.theme}:${s.hour24}:${s.latinDigits}:$weatherRevision:$prayerRevision:$footballRevision:$contentRevision"
         if(key==renderKey)return
         renderKey=key
+        val contentAllowed=com.ufuq.dream.reflection.ContentUpdatePolicy.consent(s.smart,savedOptions)
+        if(active && contentAllowed){contentSession.start();contentSession.refresh(true)}else contentSession.stop()
         fun tr(value:String)=com.ufuq.dream.AppLanguage.text(value,s.language)
         val english=s.language=="en"
         layoutDirection=com.ufuq.dream.AppLanguage.direction(s.language)

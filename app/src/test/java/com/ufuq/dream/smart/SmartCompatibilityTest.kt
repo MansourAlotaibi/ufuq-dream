@@ -76,7 +76,7 @@ class SmartCompatibilityTest {
             is android.view.ViewGroup->(0 until view.childCount).joinToString(" "){collect(view.getChildAt(it))}
             else->""
         }
-        fun allText()=collect(panel)
+        fun allText()=collect(panel)+collect(panel.supplements)
 
         panel.update(instant,base.copy(latinDigits=true,hour24=true),ThemeManager.get(0));assertTrue(allText().contains("04:41"));assertTrue(allText().contains("32°"))
         panel.update(instant,base.copy(latinDigits=false,hour24=true),ThemeManager.get(0));assertTrue(allText().contains("٠٤:٤١"));assertTrue(allText().contains("٣٢°"))
@@ -89,10 +89,10 @@ class SmartCompatibilityTest {
         val panel=SmartPanel(context)
         panel.update(instant,settings,ThemeManager.get(0))
         for(width in listOf(1152,1728,3456)) {
-            panel.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(280,View.MeasureSpec.AT_MOST))
-            panel.layout(0,0,width,panel.measuredHeight)
-            val reading=panel.findViewWithTag<android.widget.TextView>("weather_reading")
-            val credit=panel.findViewWithTag<android.widget.TextView>("weather_credit")
+            panel.supplements.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(280,View.MeasureSpec.AT_MOST))
+            panel.supplements.layout(0,0,width,panel.supplements.measuredHeight)
+            val reading=panel.supplements.findViewWithTag<android.widget.TextView>("weather_reading")
+            val credit=panel.supplements.findViewWithTag<android.widget.TextView>("weather_credit")
             assertTrue(reading.width < width / 2)
             assertNotNull(reading.compoundDrawablesRelative[0])
             assertEquals("Open-Meteo",credit.text.toString())

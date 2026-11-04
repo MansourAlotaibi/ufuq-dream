@@ -1,3 +1,11 @@
+# 0.12.2-rc1 - Unified ambient information and automatic text library
+
+- Compact weather capsule in the outside corner; muted source attribution retained. Hide weather readings older than three hours instead of a technical stale-reading banner; offline/unavailable states remain honest.
+- One content-sized fixture/religious card with a thin separator only when both are present. Empty sections collapse. Larger team headline; smaller rotating kickoff/countdown/competition detail; known Arabic team/league aliases. No extra fixture requests, club badges or unverified stadium text.
+- Original vector dawn/sun/sunset/moon glyphs beside prayer names, aligned with existing current-prayer color. No changes to prayer calculations, providers, calendar or text collection.
+- Remove the technical Library updates setting. Automatically check only while reading is saved/enabled, visible and online; retain 15-day cadence, signed-only validation, backoff, cancellation and offline fallback. Legacy stored update flag is retained but no longer gates requests. Save/Cancel still isolates unsaved reading choices.
+- Preserve all features, media, settings and production signing identity; public code42. Owner accepted dev3 visual layout; dev4/code41 installed successfully, then ADB went offline. No post-install dev4 runtime claim. RC release gates remain documented.
+
 # 0.12.1-rc1 — Quotation/citation overlap hotfix
 
 - Fix the long-verse/citation overlap reported on Android9: remove manual placement inside the text area; measure the actual TextView metrics and keep text/citation in separate centered vertical flow with a4dp gap.

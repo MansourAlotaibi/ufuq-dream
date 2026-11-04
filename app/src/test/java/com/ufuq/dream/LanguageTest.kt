@@ -117,7 +117,7 @@ class LanguageTest {
         val panel=com.ufuq.dream.smart.SmartPanel(context)
         panel.update(now,settings,ThemeManager.get(0))
         fun texts(v:View):String=if(v is TextView)v.text.toString() else if(v is ViewGroup)(0 until v.childCount).joinToString(" "){texts(v.getChildAt(it))} else ""
-        val text=texts(panel)
+        val text=texts(panel)+texts(panel.supplements)
         assertTrue(text.contains("Riyadh"));assertTrue(text.contains("Fajr"));assertTrue(text.contains("Partly cloudy"))
         assertFalse(text,text.any{it in '\u0621'..'\u064a'})
         panel.stop()

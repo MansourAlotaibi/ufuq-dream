@@ -1,0 +1,10 @@
+# Local 0.12.2-dev2 — aligned cards and clear typography
+
+Follow-up to owner physical-TV feedback. The earlier content-sized backgrounds had unrelated widths and the fixture used the same base size on both lines. This changes presentation only; all saved options, signed religious text and provider access rules remain.
+
+- Match and religious-reading backdrops share the full available column width and the same radius/colors; height still follows the actual visible content. Empty/disabled cards paint nothing. Footer and other backdrops retain their original behavior.
+- Teams use the headline16–21sp range. Date/competition/countdown retains the same underlying text in a72-percent-size muted span; title12sp. Unavailable fixture states use the quieter style instead of imitating team names. Known Ettifaq/Shabab Al-Ahli and Saudi league labels are localized in Arabic; unknown provider labels are unchanged.
+- Weather uses12–15sp, a20dp colored glyph and smaller padding; source credit remains10sp. The natural capsule width is bounded to84percent of the available column, anchored to its physical outside corner via locale-aware gravity. Both clock sides and languages are tested. Weather freshness behavior from dev1 is unchanged.
+- Native tests compare actual painted card widths/edges, corner anchoring, span boundaries/size ratio and complete text across every21 entry at1080p/xhdpi and720p/tvdpi on API28/34. Font/date/lifecycle/network/Save-Cancel regressions remain. Sample native images use test data and are not evidence of physical-TV visual acceptance.
+
+Local trial only: no public push, PR, tag or release. APK and validation/signature reports are preserved outside the repository with the previous APK/preferences/source. Same package/debug certificate, versionCode39. Physical owner acceptance remains pending. No USB debugging/storage/launcher/default-screen or firmware changes; no root, reboot, uninstall or data clear. Prefer a same-key forward fix rather than forced downgrade.

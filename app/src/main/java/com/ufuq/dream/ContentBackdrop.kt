@@ -20,7 +20,8 @@ class ContentBackdrop(
     colors:IntArray,
     cornerDp:Int,
     private val horizontalDp:Int,
-    private val verticalDp:Int
+    private val verticalDp:Int,
+    private val fullWidth:Boolean=false
 ):Drawable(){
     private val shape=GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,colors).apply{
         cornerRadius=cornerDp*owner.resources.displayMetrics.density
@@ -34,6 +35,7 @@ class ContentBackdrop(
         if(!ink.isEmpty){
             ink.inset(-(horizontalDp*density).toInt(),-(verticalDp*density).toInt())
             if(!ink.intersect(0,0,owner.width,owner.height))ink.setEmpty()
+            if(fullWidth && !ink.isEmpty){ink.left=0;ink.right=owner.width}
         }
         return Rect(ink)
     }

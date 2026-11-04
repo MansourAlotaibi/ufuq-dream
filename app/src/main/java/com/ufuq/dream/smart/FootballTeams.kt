@@ -29,8 +29,10 @@ object FootballTeams {
     fun find(id:String)=all.firstOrNull{it.id==id}
     private fun key(value:String)=value.replace('-',' ').trim().replace(Regex("\\s+")," ").lowercase(Locale.ROOT)
     private val names=all.associateBy{key(it.english)}
+    private val opponentNames=mapOf("al ettifaq" to "الاتفاق", "shabab al ahli dubai" to "شباب الأهلي دبي")
+    fun competition(providerName:String,language:String):String = if(language=="ar" && key(providerName) in setOf("saudi arabian pro league","saudi pro league","saudi professional league")) "الدوري السعودي للمحترفين" else providerName
     fun localized(providerName:String,language:String):String {
         if(language=="en" || providerName.any{it in '\u0600'..'\u06ff'})return providerName
-        return names[key(providerName)]?.arabic ?: providerName
+        return names[key(providerName)]?.arabic ?: opponentNames[key(providerName)] ?: providerName
     }
 }

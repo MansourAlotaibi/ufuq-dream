@@ -44,15 +44,15 @@ class DynamicBackdropTest {
                 val footer=display.smartPanel;val editorial=footer.supplements
                 val bottom=(footer.background as ContentBackdrop).contentBounds()
                 val side=(editorial.background as ContentBackdrop).contentBounds()
-                assertEquals("Footer mask=$mask",!prayer&&!weather,bottom.isEmpty)
-                assertEquals("Editorial mask=$mask",!reflection&&!football,side.isEmpty)
+                assertEquals("Footer mask=$mask",!prayer,bottom.isEmpty)
+                assertEquals("Editorial mask=$mask",!reflection&&!football&&!weather,side.isEmpty)
                 if(!bottom.isEmpty){assertTrue(bottom.left>=0&&bottom.right<=footer.width);assertTrue(bottom.top>=0&&bottom.bottom<=footer.height)}
                 if(!side.isEmpty){assertTrue(side.left>=0&&side.right<=editorial.width);assertTrue(side.top>=0&&side.bottom<=editorial.height)}
-                if(football&&!reflection)assertTrue("Fixture keeps empty tall card",side.height()<editorial.height/2)
-                if(weather&&!prayer)assertTrue("Weather keeps a full-width card",bottom.width()<footer.width*.80f)
+                if(football&&!reflection&&!weather)assertTrue("Fixture keeps empty tall card",side.height()<editorial.height/2)
+                if(weather&&!prayer)assertTrue("Weather must not reserve a footer",bottom.isEmpty)
                 if(android.os.Build.VERSION.SDK_INT==28&&language=="ar"&&theme==1&&mask in listOf(0,2,3,4,8,15)){
                     if(reflection){
-                        val entry=DailyReflection.entries(context).first{if(mask==15)it.source.contains("٢٨٦") else it.source.contains("الشرح")}
+                        val entry=if(mask==15)com.ufuq.dream.reflection.ContentRepository.entries(context).first{it.sourceUrl=="https://tanzil.net/#16:90"} else DailyReflection.entries(context).first{it.source.contains("الشرح")}
                         display.findViewWithTag<ReflectionView>("reflection_block").render(entry,language,ThemeManager.get(theme),1f)
                     }
                     repeat(80){if(display.backgroundRenderer.loadedAsset.isEmpty()){Thread.sleep(5);org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()}}
@@ -85,12 +85,14 @@ class DynamicBackdropTest {
         val bitmap=Bitmap.createBitmap(1920,1080,Bitmap.Config.ARGB_8888);val canvas=Canvas(bitmap)
         footer.background.draw(canvas)
         assertEquals(0,bitmap.getPixel(1920/2,100))
-        side.background.draw(canvas)
-        val rect=(side.background as ContentBackdrop).contentBounds()
-        assertEquals(0,bitmap.getPixel(rect.centerX(),1))
+        val card=display.findViewWithTag<android.widget.LinearLayout>("information_card")
+        val cardBackground=card.background as ContentBackdrop
+        cardBackground.draw(canvas)
+        val rect=cardBackground.contentBounds()
+        assertTrue(rect.top>=0 && rect.bottom<=card.height)
         assertTrue(bitmap.getPixel(rect.centerX(),rect.centerY()) ushr 24>0)
         s=s.copy(smart=SmartSettings());display.refresh();layout(display)
-        bitmap.eraseColor(0);side.background.draw(canvas);footer.background.draw(canvas)
+        bitmap.eraseColor(0);cardBackground.draw(canvas);footer.background.draw(canvas)
         assertEquals(0,bitmap.getPixel(rect.centerX(),rect.centerY()))
         bitmap.recycle();display.stop()
     }

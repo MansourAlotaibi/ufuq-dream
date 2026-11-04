@@ -39,3 +39,6 @@ The owner authorized public source and APK publication after installing dev2. Th
 - Native layout checks include all 21 reviewed texts/citations, three themes, both languages and every selectable font, alongside existing regression cases.
 - Lint:0 errors/9 existing warnings. Deprecated Gradle/Kotlin DSL and Android test API warnings remain.
 - Offline source/media/content-signature gates passed. Dev2 installation, Settings launch and registered DreamService verified on Mi Box; saved settings byte-identical and no Ufuq entry in the sampled crash buffer. Full visual review, actual TV update download and endurance remain unverified. See RELEASE.md for public build results.
+
+## Local 0.12.2-dev4 behavior
+The separate update toggle has been removed. Updates are automatic only while reading is enabled in both saved settings and the visible Studio/Dream. Legacy reading_updates values remain stored for compatibility but no longer gate requests. The 15-day cadence, validated connectivity, signed-only validation, retry backoff, cancellation and offline fallback are unchanged. Staging reading on does not admit a request until saved. No background job runs when the UI/Dream is inactive.

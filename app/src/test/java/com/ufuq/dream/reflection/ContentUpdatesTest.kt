@@ -100,7 +100,8 @@ class ContentUpdatesTest {
     @Test fun offlineAndUnconfirmedSettingsPerformZeroRequests(){
         val calls=AtomicInteger();val transport=object:ContentTransport {override fun fetch(etag:String):ContentResponse{calls.incrementAndGet();return ContentResponse(200,bundled())}}
         val enabled=SmartSettings(reflectionMode=7,contentUpdates=true)
-        assertFalse(ContentUpdatePolicy.consent(enabled,enabled.copy(contentUpdates=false)))
+        assertTrue(ContentUpdatePolicy.consent(enabled,enabled.copy(contentUpdates=false)))
+        assertFalse(ContentUpdatePolicy.consent(enabled,enabled.copy(reflectionMode=0)))
         assertFalse(ContentUpdatePolicy.consent(enabled.copy(reflectionMode=0),enabled))
         assertTrue(ContentUpdatePolicy.consent(enabled,enabled))
         val offline=ContentUpdateSession(context,{},transport,{false})
@@ -166,17 +167,20 @@ class ContentUpdatesTest {
         Thread.sleep(30);Shadows.shadowOf(Looper.getMainLooper()).idle()
         assertFalse(session.running);assertEquals(0,changes.get());assertEquals(0L,state.getLong("checked",0))
     }
-    @Test fun studioToggleIsContextualAndStagedUntilSave(){
-        val repo=SettingsRepository(context);assertFalse(repo.load().smart.contentUpdates)
+    @Test fun automaticUpdatesHaveNoStudioControlAndRespectSavedReadingChoice(){
+        val repo=SettingsRepository(context)
         val controller=Robolectric.buildActivity(SettingsActivity::class.java).setup();val a=controller.get()
-        a.window.decorView.findViewWithTag<View>("section_3").requestFocus();Shadows.shadowOf(Looper.getMainLooper()).idle()
-        assertNull(a.window.decorView.findViewWithTag<View>("reading_updates"))
-        a.window.decorView.findViewWithTag<View>("reflection").performClick()
-        ShadowDialog.getLatestDialog().findViewById<View>(android.R.id.content).findViewWithTag<View>("choice_7").performClick()
-        a.window.decorView.findViewWithTag<View>("reading_updates").performClick()
-        assertTrue(a.draft.current.smart.contentUpdates);assertFalse(repo.load().smart.contentUpdates)
-        a.window.decorView.findViewWithTag<View>("cancel").performClick();assertFalse(a.draft.current.smart.contentUpdates)
-        controller.pause().stop().destroy()
+        try {
+            a.window.decorView.findViewWithTag<View>("section_3").requestFocus();Shadows.shadowOf(Looper.getMainLooper()).idle()
+            assertNull(a.window.decorView.findViewWithTag<View>("reading_updates"))
+            a.window.decorView.findViewWithTag<View>("reflection").performClick()
+            ShadowDialog.getLatestDialog().findViewById<View>(android.R.id.content).findViewWithTag<View>("choice_7").performClick()
+            assertNull(a.window.decorView.findViewWithTag<View>("reading_updates"))
+            assertFalse(ContentUpdatePolicy.consent(a.draft.current.smart,repo.load().smart))
+            a.window.decorView.findViewWithTag<View>("cancel").performClick()
+            assertFalse(a.draft.current.smart.hasReflection)
+            assertFalse(repo.load().smart.hasReflection)
+        } finally { controller.pause().stop().destroy() }
     }
     @Test fun invalidClockNeverStartsPolling(){
         assertFalse(ContentUpdatePolicy.due(0,0,0))

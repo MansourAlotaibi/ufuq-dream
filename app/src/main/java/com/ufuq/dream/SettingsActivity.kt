@@ -294,9 +294,6 @@ class SettingsActivity : Activity() {
                         change("reflection","تغيّرت معاينة المحتوى"){copy(smart=smart.copy(reflectionMode=index,adhkar=false))}
                     }
                 }
-                if(smart.hasReflection)row("reading_updates","تحديث المكتبة","فحص كل ١٥ يومًا عند توفر الإنترنت؛ تبقى النصوص المحفوظة متاحة دون اتصال.",if(smart.contentUpdates)"تشغيل" else "إيقاف") {
-                    change("reading_updates","تغيّر خيار تحديث المكتبة؛ احفظ للتأكيد"){copy(smart=smart.copy(contentUpdates=!smart.contentUpdates))}
-                }
                 val occasionIds=listOf(0,6,7,1,2,3,4,5)
                 val occasions=listOf("مخفية","أقرب مناسبة تلقائيًا","مناسبة مخصصة","رمضان","عيد الفطر","عيد الأضحى","اليوم الوطني","يوم التأسيس")
                 row("occasion","المناسبات","أقرب مناسبة تلقائيًا أو مناسبة تختارها؛ تظهر مع التاريخ.",occasions[occasionIds.indexOf(smart.occasion).coerceAtLeast(0)]) {
@@ -450,7 +447,7 @@ class SettingsActivity : Activity() {
             panel.addView(ui.text("",14f).apply{text=notice;isFocusable=true})
         }
         val diagnostics=com.ufuq.dream.smart.SmartDiagnostics(this)
-        panel.addView(ui.text("تفاصيل المصادر: الصلاة أوقات محسوبة وليست جدولًا رسميًا للمسجد.\nحالة الصلاة: ${diagnostics.detail("prayer")}\nحالة الطقس: ${diagnostics.detail("weather")}\nحالة المباريات: ${diagnostics.detail("football")}\nأوقات الصلاة تُحفظ لنحو ٣٠ يومًا. الطقس قد يعرض قراءة سابقة عند انقطاع الاتصال.",15f).apply{isFocusable=true})
+        panel.addView(ui.text("تفاصيل المصادر: الصلاة أوقات محسوبة وليست جدولًا رسميًا للمسجد.\nحالة الصلاة: ${diagnostics.detail("prayer")}\nحالة الطقس: ${diagnostics.detail("weather")}\nحالة المباريات: ${diagnostics.detail("football")}\nأوقات الصلاة تُحفظ لنحو ٣٠ يومًا. يُخفى الطقس إذا تجاوز عمر القراءة ٣ ساعات.",15f).apply{isFocusable=true})
         val dialog=newDialog().apply{requestWindowFeature(Window.FEATURE_NO_TITLE)}
         TvDialogSurface.show(dialog,panel,ThemeManager.get(ui.themeIndex),(resources.displayMetrics.widthPixels*.8f).toInt(),AppLanguage.direction(draft.current.language))
     }

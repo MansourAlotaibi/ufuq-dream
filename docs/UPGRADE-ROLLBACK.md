@@ -11,3 +11,6 @@
 
 ## 0.11 reading and occasions
 0.11.0-rc1 production versionCode32 updates prior production versions using the same certificate. Separate legacy remembrance plus Quran/Hadith choices merge into the unified combination; previous fixed occasions remain selected, hidden remains hidden. Custom name/date are local staged preferences. Older builds may reject/ignore modes4–7 and need reading reselection if a downgrade is otherwise supported. Do not uninstall/clear data to force a rollback; preserve source/APK and prefer a forward fix. No private debug TV installation is replaced during public publication.
+
+## 0.12 reviewed library
+0.12.0-rc1 production versionCode35 preserves public production signing and preferences. The private matching dev2 versionCode34 uses the existing separate debug key; publication does not install the production APK on that TV. Library updates default OFF without overwriting other choices. Bundled pack version2 retains all original nine entries and adds twelve approved entries. Content cache and update state are separate from user settings. Verified newer cached content cannot be replaced by an older network pack. A compiled trusted fallback remains available if the cache is corrupt. Do not clear data or force a downgrade; keep earlier artifacts and prefer a same-key higher-code forward fix.

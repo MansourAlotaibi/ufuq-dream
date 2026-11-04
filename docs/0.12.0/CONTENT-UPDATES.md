@@ -1,6 +1,6 @@
-# 0.12.0-dev2 — offline-first reviewed text updates
+# 0.12.0-rc1 — offline-first reviewed text updates
 
-Local development branch only. No GitHub push, public release, TV installation, ADB, debugging/storage/launcher changes in this task.
+Release candidate: matching dev2 installed on the owner’s Mi Box with settings preserved. No debugging/storage/launcher setting was changed. Expanded-text visual acceptance and wider runtime gates remain open.
 
 ## Behavior
 The existing religious-content choice exposes one dependent Library updates toggle. Default OFF for existing/new users. Only a user-confirmed saved toggle plus visible/enabled reading admits requests; staged choices never silently grant consent. Hidden reading stops requests while retaining the preference and texts.
@@ -17,11 +17,11 @@ AtomicFile preserves the previous complete library across interruption. Only aut
 Network work runs on one finite executor; process-wide admission permits one request at a time across Preview/Dream. Generation checks and cancellation prevent a stopped view from applying a late result/callback. The controller releases worker/connection/callback resources on exit; no new redraw timer is introduced. Schedule checks precede network capability queries; seconds mode does not issue per-second capability checks.
 
 ## Sources, privacy and current limitation
-The first signed collection is exactly the current4 verses,3 hadith selections and2 remembrance texts. It is not a new larger corpus. Legacy text and notices remain unchanged. Newly considered API sources (including HadeethEnc) still require completed storage/redistribution and scholarly/reference review before additions; no third-party API text is auto-approved by being online.
+Pack version 2 contains 9 complete verses, 7 hadith matn and 5 remembrance formulas: the user-approved twelve additions plus the original nine unchanged. Tanzil verses are verbatim Uthmani 1.1; short hadith matn use revision-pinned Wikisource with CC BY-SA 4.0 attribution; traditional dhikr formulas retain authenticated references. See APPROVED-TEXT-PROVENANCE.json. Legacy text and notices remain unchanged. Newly considered API sources (including HadeethEnc) still require completed storage/redistribution and scholarly/reference review before additions; no third-party API text is auto-approved by being online.
 
 GitHub receives ordinary client IP/request headers and an optional content ETag. No city, account, greeting, user media, custom occasion, favorite team or precise location is sent. Sources/credits use the actual cached collection. No new permission, third-party SDK, credentials in APK, analytics or account requirement.
 
-The prepared channel file remains local until explicit publication approval. Live production download and physical-TV validated-network behavior have not been tested; local mocked transports and cryptographic fixtures exercise the complete success/failure path. Do not claim online distribution is active yet.
+The owner authorized public source and APK publication after installing dev2. The channel is content/library.json on main; release verification must compare its anonymous download with the signed bundled bytes. Physical-TV validated-network fetch/cadence remains unverified: mocked transports and cryptographic fixtures exercise success/failure paths but do not establish long-term network reliability.
 
 ## Review checklist
 - Toggle is visible only for enabled reading and remains staged through Save/Cancel/Back.
@@ -38,4 +38,4 @@ The prepared channel file remains local until explicit publication approval. Liv
 - New coverage includes offline/no-consent zero requests, real production signature verification, tampering, invalid schemas/sources/versions, rollback rejection, corrupt/interrupted cache recovery, ETag/304 cadence, timeout/rate-limit backoff, rapid start/stop and staged Studio settings.
 - Native layout checks include all 21 reviewed texts/citations, three themes, both languages and every selectable font, alongside existing regression cases.
 - Lint:0 errors/9 existing warnings. Deprecated Gradle/Kotlin DSL and Android test API warnings remain.
-- Offline source/media/content-signature gates passed. No live public-channel, physical-TV or endurance test performed; no deployment or publication.
+- Offline source/media/content-signature gates passed. Dev2 installation, Settings launch and registered DreamService verified on Mi Box; saved settings byte-identical and no Ufuq entry in the sampled crash buffer. Full visual review, actual TV update download and endurance remain unverified. See RELEASE.md for public build results.

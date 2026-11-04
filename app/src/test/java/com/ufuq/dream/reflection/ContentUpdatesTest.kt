@@ -131,7 +131,10 @@ class ContentUpdatesTest {
             repeat(20){session.refresh(true)};assertEquals(1,calls.get())
             assertEquals(clock.get()+ContentUpdatePolicy.DAY,state.getLong("after",0))
             assertEquals(0L,state.getLong("checked",0));assertEquals(21,ContentRepository.entries(context).size)
-            clock.addAndGet(ContentUpdatePolicy.DAY);session.refresh(true);await{state.getInt("failures",0)==2}
+            // A failure becomes observable just before the worker releases its admission lease.
+            // Drive subsequent visible ticks, as the real caller does, instead of assuming that
+            // one immediate refresh must start while the previous Future is still completing.
+            clock.addAndGet(ContentUpdatePolicy.DAY);await{session.refresh(true);state.getInt("failures",0)==2}
             assertEquals(clock.get()+3*ContentUpdatePolicy.DAY,state.getLong("after",0))
         }finally{session.stop()}
     }

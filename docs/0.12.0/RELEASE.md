@@ -17,3 +17,6 @@ Independent offline signing-keystore/password restore is unverified; existing Ke
 
 ## Upgrade and rollback
 Same production certificate plus increasing versionCode updates previous public releases in place. Existing settings are preserved; update consent remains OFF unless explicitly saved. Keep prior source/APK; prefer a same-key higher-code forward fix. Android may reject a downgrade and no lossless downgrade is promised. Do not uninstall or clear data to bypass signature/version protection. See ../UPGRADE-ROLLBACK.md.
+
+## CI regression resolved
+The first PR run exposed a test-only scheduling race on API28: the failure counter is visible immediately before the worker finishes releasing its process-wide admission lease. The test advanced its virtual clock and issued exactly one retry tick before that release, then waited for work it had not scheduled. The corrected test drives subsequent visible refresh ticks (matching the runtime caller) while preserving request-count/backoff assertions. No runtime retry cadence, network behavior or installed app source was changed by this correction. The initial failed run is retained; final CI must pass on the corrected commit.

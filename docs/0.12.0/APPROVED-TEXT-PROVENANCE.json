@@ -1,0 +1,36 @@
+{
+  "libraryVersion": 2,
+  "reviewedAt": "2026-11-04",
+  "tanzilSourceSha256": "bf4f57b968d03f4131c070b1e285da9be0e0a108a21c910e872801ca273312c8",
+  "hadith": [
+    {
+      "reference": "صحيح البخاري · ٦٠٢١",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=627517",
+      "sourceResponseSha256": "0bf9553ace2a07ee0d4edb9817efad03839a1aa2717f26016af668b92e5ae34a",
+      "textSha256": "1b471879c1d2b40f2af78ce9cec4cafa00507fb2d685de13015e98b130191a09",
+      "changes": "Selected full short matn; isnad and surrounding commentary omitted; original unvocalized transcription retained."
+    },
+    {
+      "reference": "صحيح البخاري · ١٠",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=490285",
+      "sourceResponseSha256": "c971763b75611f2af757a8b29de775fa7d1973ba422c7d4c884f78b663f87437",
+      "textSha256": "6c7bb7d12a63a7bb5c7746bf865102ec3d8dc7fc5f89614bf36e45c18199138e",
+      "changes": "Selected full short matn; isnad and surrounding commentary omitted; original unvocalized transcription retained."
+    },
+    {
+      "reference": "صحيح البخاري · ١٣",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=490285",
+      "sourceResponseSha256": "c971763b75611f2af757a8b29de775fa7d1973ba422c7d4c884f78b663f87437",
+      "textSha256": "e81dcffa4ba2b52271e2cf044024c3481c2e9ef13ce4d2e27a1c9371eee615f0",
+      "changes": "Selected full short matn; isnad and surrounding commentary omitted; original unvocalized transcription retained."
+    },
+    {
+      "reference": "صحيح مسلم · ٢٣١٩",
+      "sourceUrl": "https://ar.wikisource.org/w/index.php?oldid=20495",
+      "sourceResponseSha256": "c9ee59cb1c83120deea5d1f3a877c400f1415e1cc8301a6da7227f77d5fb7d84",
+      "textSha256": "35a8bf56697ce58f62e0f5c25a4fadcd61f7b00a04f52f8566f20081370622ce",
+      "changes": "Selected full short matn; isnad and surrounding commentary omitted; original unvocalized transcription retained."
+    }
+  ],
+  "policy": "Five complete Quran verses copied verbatim from Tanzil Uthmani 1.1. Four full short hadith matn copied from revision-pinned Wikisource under CC BY-SA 4.0. Three traditional dhikr formulas only; no modern commentary or translation copied."
+}

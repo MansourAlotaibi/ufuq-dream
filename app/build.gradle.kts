@@ -3,7 +3,7 @@ android {
     namespace = "com.ufuq.dream"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.ufuq.dream"; minSdk = 28; targetSdk = 34; versionCode = 33; versionName = "0.12.0-dev1"
+        applicationId = "com.ufuq.dream"; minSdk = 28; targetSdk = 34; versionCode = 34; versionName = "0.12.0-dev2"
         val sourceCommit = providers.environmentVariable("UFUQ_SOURCE_COMMIT").orElse("development").get()
         require(sourceCommit == "development" || sourceCommit.matches(Regex("[0-9a-f]{40}")))
         resValue("string", "source_commit", sourceCommit)

@@ -1,4 +1,4 @@
-# 0.12.0-dev1 — offline-first reviewed text updates
+# 0.12.0-dev2 — offline-first reviewed text updates
 
 Local development branch only. No GitHub push, public release, TV installation, ADB, debugging/storage/launcher changes in this task.
 
@@ -36,6 +36,6 @@ The prepared channel file remains local until explicit publication approval. Liv
 - assembleDebug, lintDebug, testDebugUnitTest: SUCCESS.
 - 284 executed framework test cases across API28/34, zero failures/errors/skips.
 - New coverage includes offline/no-consent zero requests, real production signature verification, tampering, invalid schemas/sources/versions, rollback rejection, corrupt/interrupted cache recovery, ETag/304 cadence, timeout/rate-limit backoff, rapid start/stop and staged Studio settings.
-- Native layout checks include all nine reviewed texts/citations, three themes, both languages and every selectable font, alongside existing regression cases.
+- Native layout checks include all 21 reviewed texts/citations, three themes, both languages and every selectable font, alongside existing regression cases.
 - Lint:0 errors/9 existing warnings. Deprecated Gradle/Kotlin DSL and Android test API warnings remain.
 - Offline source/media/content-signature gates passed. No live public-channel, physical-TV or endurance test performed; no deployment or publication.

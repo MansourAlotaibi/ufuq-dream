@@ -37,9 +37,9 @@ class ContentUpdatesTest {
     }
     @Test fun realProductionSignatureAuthenticatesOnlyExistingReviewedTexts(){
         val library=LibraryVerification.verify(bundled(),certificate(),33)
-        assertEquals(1L,library.version);assertEquals(9,library.entries.size)
-        assertEquals(DailyReflection.entries(context)+Adhkar.all,library.entries)
-        assertEquals(mapOf("quran" to 4,"hadith" to 3,"dhikr" to 2),library.entries.groupingBy{it.kind}.eachCount())
+        assertEquals(2L,library.version);assertEquals(21,library.entries.size)
+        assertEquals(DailyReflection.entries(context)+Adhkar.all,library.entries.take(9))
+        assertEquals(mapOf("quran" to 9,"hadith" to 7,"dhikr" to 5),library.entries.groupingBy{it.kind}.eachCount())
         assertThrows(IllegalArgumentException::class.java){LibraryVerification.verify(bundled(),byteArrayOf(1),33)}
         assertThrows(IllegalArgumentException::class.java){LibraryVerification.verify(bundled(),certificate(),32)}
     }
@@ -61,7 +61,7 @@ class ContentUpdatesTest {
             val envelope=JSONObject().put("formatVersion",1).put("payload",Base64.getEncoder().encodeToString(payload)).put("signature",Base64.getEncoder().encodeToString(signature))
             return LibraryVerification.verifyPayload(envelope.toString().toByteArray(),pair.public,33)
         }
-        assertEquals(9,verify(original).entries.size)
+        assertEquals(21,verify(original).entries.size)
         for(field in listOf("sourceUrl","licenseUrl","kind")){
             val copy=JSONObject(original.toString());copy.getJSONArray("entries").getJSONObject(0).put(field,"https://unreviewed.example/")
             assertThrows(Exception::class.java){verify(copy)}
@@ -72,7 +72,7 @@ class ContentUpdatesTest {
     }
     @Test fun rollbackHighWaterAndCorruptCacheKeepAnAuthenticatedFallback(){
         ContentRepository.accept(context,bundled());val previous=ContentRepository.snapshot(context)
-        state.edit().putLong("version",2).putString("digest","newer").commit()
+        state.edit().putLong("version",3).putString("digest","newer").commit()
         assertThrows(Exception::class.java){ContentRepository.accept(context,bundled())}
         ContentRepository.file(context).baseFile.writeText("broken partial content");ContentRepository.invalidate()
         assertEquals(previous,ContentRepository.snapshot(context))
@@ -82,7 +82,7 @@ class ContentUpdatesTest {
         val file=ContentRepository.file(context)
         file.startWrite().close() // Simulate process death before finishWrite/failWrite.
         ContentRepository.invalidate()
-        assertEquals(9,ContentRepository.entries(context).size)
+        assertEquals(21,ContentRepository.entries(context).size)
         assertArrayEquals(bundled(),file.baseFile.readBytes())
     }
     @Test fun rapidStartStopDoesNotLeakTheProcessWideAdmissionSlot(){
@@ -107,7 +107,7 @@ class ContentUpdatesTest {
         offline.start();repeat(20){offline.refresh(true)};offline.stop()
         val unsaved=ContentUpdateSession(context,{},transport,{true})
         unsaved.start();repeat(20){unsaved.refresh(false)};unsaved.stop()
-        assertEquals(0,calls.get());assertEquals(0L,state.getLong("checked",0));assertEquals(9,ContentRepository.entries(context).size)
+        assertEquals(0,calls.get());assertEquals(0L,state.getLong("checked",0));assertEquals(21,ContentRepository.entries(context).size)
     }
     @Test fun successfulFetchThen304UsesFifteenDayCadenceAndEtag(){
         val clock=AtomicLong(System.currentTimeMillis());val calls=AtomicInteger();val changes=AtomicInteger();val etags=mutableListOf<String>()
@@ -120,7 +120,7 @@ class ContentUpdatesTest {
             clock.incrementAndGet();session.refresh(true);await{changes.get()==2}
             assertEquals(listOf("","\"v1\""),etags)
             assertEquals(clock.get(),state.getLong("checked",0))
-            assertEquals(9,ContentRepository.entries(context).size)
+            assertEquals(21,ContentRepository.entries(context).size)
         }finally{session.stop()}
     }
     @Test fun failuresHaveBoundedBackoffAndDoNotInventOrDiscardTexts(){
@@ -130,7 +130,7 @@ class ContentUpdatesTest {
             session.start();session.refresh(true);await{state.getInt("failures",0)==1}
             repeat(20){session.refresh(true)};assertEquals(1,calls.get())
             assertEquals(clock.get()+ContentUpdatePolicy.DAY,state.getLong("after",0))
-            assertEquals(0L,state.getLong("checked",0));assertEquals(9,ContentRepository.entries(context).size)
+            assertEquals(0L,state.getLong("checked",0));assertEquals(21,ContentRepository.entries(context).size)
             clock.addAndGet(ContentUpdatePolicy.DAY);session.refresh(true);await{state.getInt("failures",0)==2}
             assertEquals(clock.get()+3*ContentUpdatePolicy.DAY,state.getLong("after",0))
         }finally{session.stop()}
@@ -146,11 +146,11 @@ class ContentUpdatesTest {
         assertEquals(0L,state.getLong("checked",0))
     }
     @Test fun staleEtagIsNotSentAfterHigherVersionCacheIsLost(){
-        state.edit().putBoolean("verifiedBefore",true).putLong("version",2).putString("digest","lost-cache").putString("etag","old").commit()
+        state.edit().putBoolean("verifiedBefore",true).putLong("version",3).putString("digest","lost-cache").putString("etag","old").commit()
         var sent:String?=null
         val session=ContentUpdateSession(context,{},object:ContentTransport {override fun fetch(etag:String):ContentResponse{sent=etag;return ContentResponse(200,bundled())}},{true})
         session.start();session.refresh(true);await{state.getInt("failures",0)==1};session.stop()
-        assertEquals("",sent);assertEquals(2L,state.getLong("version",0));assertEquals(9,ContentRepository.entries(context).size)
+        assertEquals("",sent);assertEquals(3L,state.getLong("version",0));assertEquals(21,ContentRepository.entries(context).size)
     }
     @Test fun stopCancelsAnInflightRequestAndDropsItsLateResult(){
         val started=CountDownLatch(1);val release=CountDownLatch(1);val changes=AtomicInteger()

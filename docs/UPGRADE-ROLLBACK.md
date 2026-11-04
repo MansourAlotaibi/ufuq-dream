@@ -17,3 +17,6 @@
 
 ## 0.12.1 citation layout hotfix
 Production versionCode37 updates previous same-certificate public APKs without preference changes. Text pack version2, cached content and update consent are unchanged. The separate private debug counterpart code36 updates the owner’s debug installation. Preserve previous APK/source/preferences and prefer a same-key higher-code forward fix. No data-clearing or forced downgrade is recommended.
+
+## 0.12.2-rc1
+Production code42 updates older production-signed versions in place. Private dev4/code41 uses the separate established debug key; do not replace it with production APK. All preferences and the legacy reading_updates key remain stored; text-library checks are now automatic when reading is saved/enabled, the Studio/Dream is visible and validated internet is available. No default screensaver or launcher changes. Back up private media/settings privately. Retain prior releases; use a same-key higher-code corrective update if needed rather than forced downgrade, uninstall or data clearing.

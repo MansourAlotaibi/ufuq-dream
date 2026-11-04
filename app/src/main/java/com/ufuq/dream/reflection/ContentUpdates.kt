@@ -19,7 +19,7 @@ import javax.net.ssl.HttpsURLConnection
 object ContentUpdatePolicy {
     const val INTERVAL=15L*24*60*60*1000
     const val DAY=24L*60*60*1000
-    fun consent(draft:SmartSettings,saved:SmartSettings)=draft.contentUpdates && saved.contentUpdates && draft.hasReflection && saved.hasReflection
+    fun consent(draft:SmartSettings,saved:SmartSettings)=draft.hasReflection && saved.hasReflection
     fun online(context:Context):Boolean=try {
         val manager=context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         manager.getNetworkCapabilities(manager.activeNetwork)?.let{it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && it.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)}==true

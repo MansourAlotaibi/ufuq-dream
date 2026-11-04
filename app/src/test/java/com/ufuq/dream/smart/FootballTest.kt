@@ -108,4 +108,14 @@ class FootballTest {
         assertNull(FootballTeams.find("unknown"))
     }
 
+    @Test fun knownProviderLabelsFollowLanguageAndUnknownLabelsArePreserved(){
+        assertEquals("الاتفاق",FootballTeams.localized("Al-Ettifaq","ar"))
+        assertEquals("Al-Ettifaq",FootballTeams.localized("Al-Ettifaq","en"))
+        assertEquals("شباب الأهلي دبي",FootballTeams.localized("Shabab Al-Ahli Dubai","ar"))
+        assertEquals("الدوري السعودي للمحترفين",FootballTeams.competition("Saudi-Arabian Pro League","ar"))
+        assertEquals("Saudi-Arabian Pro League",FootballTeams.competition("Saudi-Arabian Pro League","en"))
+        assertEquals("Unknown competition",FootballTeams.competition("Unknown competition","ar"))
+        assertEquals("Unknown opponent",FootballTeams.localized("Unknown opponent","ar"))
+    }
+
 }

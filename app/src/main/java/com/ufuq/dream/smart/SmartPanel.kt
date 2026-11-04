@@ -30,7 +30,7 @@ data class WidgetZones(val clockHeight: Int, val panel: Rect)
 object SmartLayout {
     fun zones(width:Int,height:Int,density:Float,settings:DisplaySettings,minimumFooter:Int=0):WidgetZones {
         val information=WidgetRegistry.enabled(settings).filter{it.slot==WidgetSlot.INFORMATION}
-        val base=information.filterNot{it.id=="reflection"||it.id=="football"||it.id=="occasion"}.sumOf{it.heightDp}
+        val base=information.filterNot{it.id=="reflection"||it.id=="football"||it.id=="weather"||it.id=="occasion"}.sumOf{it.heightDp}
         return place(width,height,density,base+if(base==0)0 else 4,minimumFooter=minimumFooter)
     }
     private fun place(width:Int,height:Int,density:Float,heightDp:Int,fraction:Float=.34f,minimumFooter:Int=0):WidgetZones {
@@ -45,6 +45,17 @@ object SmartLayout {
 }
 /** Fixed-size custom weather marks, no external icon/font asset or animation. */
 class WeatherGlyph(private val code: Int, private val ink: Int, private val daylight: Boolean = true): Drawable() {
+    companion object {
+        fun colorFor(code:Int,daylight:Boolean):Int=when {
+            code>=95->0xffffd28c.toInt()
+            code in 71..77 || code in 85..86->0xffd6f5ff.toInt()
+            code in 51..67 || code in 80..82->0xff8ec9ff.toInt()
+            code in 45..48->0xffd3d6d2.toInt()
+            code<=2 && daylight->0xffffd477.toInt()
+            code<=2->0xffd0d9f5.toInt()
+            else->0xffd9e1e8.toInt()
+        }
+    }
     private val paint=Paint(Paint.ANTI_ALIAS_FLAG).apply { color=ink;strokeWidth=2f }
     override fun draw(canvas: Canvas) {
         canvas.save();canvas.translate(bounds.left.toFloat(),bounds.top.toFloat());canvas.scale(bounds.width()/32f,bounds.height()/32f)
@@ -52,7 +63,10 @@ class WeatherGlyph(private val code: Int, private val ink: Int, private val dayl
         if(code<=2 && !daylight)canvas.drawArc(RectF(5f,3f,22f,21f),45f,270f,false,paint)
         if(code<=2 && daylight) { canvas.drawCircle(13f,13f,6f,paint); for(i in 0..7){ val a=i*Math.PI/4;canvas.drawLine(13+9*kotlin.math.cos(a).toFloat(),13+9*kotlin.math.sin(a).toFloat(),13+12*kotlin.math.cos(a).toFloat(),13+12*kotlin.math.sin(a).toFloat(),paint) } }
         if(code>0){paint.style=Paint.Style.FILL;canvas.drawCircle(13f,17f,6f,paint);canvas.drawCircle(20f,16f,7f,paint);canvas.drawRoundRect(7f,17f,27f,24f,4f,4f,paint)}
-        if(code>=51){paint.style=Paint.Style.STROKE;canvas.drawLine(10f,26f,9f,30f,paint);canvas.drawLine(18f,26f,17f,30f,paint);canvas.drawLine(25f,26f,24f,30f,paint)}
+        if(code in 51..67 || code in 80..82){paint.style=Paint.Style.STROKE;canvas.drawLine(10f,26f,9f,30f,paint);canvas.drawLine(18f,26f,17f,30f,paint);canvas.drawLine(25f,26f,24f,30f,paint)}
+        if(code in 45..48){paint.style=Paint.Style.STROKE;canvas.drawLine(5f,26f,27f,26f,paint);canvas.drawLine(8f,30f,24f,30f,paint)}
+        if(code in 71..77 || code in 85..86){paint.style=Paint.Style.FILL;for(x in listOf(10f,18f,26f))canvas.drawCircle(x,28f,1.7f,paint)}
+        if(code>=95){paint.style=Paint.Style.FILL;canvas.drawPath(Path().apply{moveTo(19f,21f);lineTo(13f,27f);lineTo(18f,27f);lineTo(14f,32f);lineTo(24f,24f);lineTo(19f,24f);close()},paint)}
         canvas.restore()
     }
     override fun setAlpha(alpha: Int){paint.alpha=alpha}
@@ -77,14 +91,37 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
     private val prayerRow=LinearLayout(context).apply { orientation=HORIZONTAL;layoutDirection=View.LAYOUT_DIRECTION_RTL }
     private val prayerLabels=(0..4).map { index -> text(17f).also { label -> label.tag="prayer_$index"; prayerRow.addView(label,LayoutParams(0,-2,1f)) } }
     private val reflectionBlock=com.ufuq.dream.reflection.ReflectionView(context).apply { tag="reflection_block";visibility=View.GONE }
-    private val football=text(17f).apply { tag="football_widget";visibility=View.GONE;maxLines=3;setAutoSizeTextTypeUniformWithConfiguration(14,18,1,android.util.TypedValue.COMPLEX_UNIT_SP) }
-    internal val supplements=LinearLayout(context).apply {
-        orientation=VERTICAL;gravity=Gravity.CENTER_VERTICAL;visibility=View.GONE;tag="supplementary_row"
-        setPadding(dp(16),dp(16),dp(16),dp(16));isFocusable=false;descendantFocusability=FOCUS_BLOCK_DESCENDANTS
-        background=com.ufuq.dream.ContentBackdrop(this,intArrayOf(0x00000000,0x38000000),18,16,12)
+    private val football=text(21f).apply { tag="football_widget";gravity=Gravity.START or Gravity.CENTER_VERTICAL;visibility=View.GONE;maxLines=3;setAutoSizeTextTypeUniformWithConfiguration(16,21,1,android.util.TypedValue.COMPLEX_UNIT_SP) }
+    private val footballHeading=text(12f).apply { tag="football_heading";gravity=Gravity.START }
+    private val footballCard=LinearLayout(context).apply {
+        tag="football_card";orientation=VERTICAL;setPadding(dp(12),dp(8),dp(12),dp(8))
+        background=null
+        addView(footballHeading,LayoutParams(-1,-2))
+        addView(football,LayoutParams(-1,dp(56)).apply{topMargin=dp(3)})
     }
-    private val weather=text(19f).apply { tag="weather_reading";compoundDrawablePadding=dp(8) }
-    private val weatherRow=LinearLayout(context).apply { orientation=HORIZONTAL;gravity=Gravity.CENTER;layoutDirection=View.LAYOUT_DIRECTION_RTL;tag="weather_row" }
+    private val informationDivider=View(context).apply {tag="information_divider";isFocusable=false}
+    internal val informationCard=LinearLayout(context).apply {
+        tag="information_card";orientation=VERTICAL;isFocusable=false
+        background=com.ufuq.dream.ContentBackdrop(this,intArrayOf(0x55000000,0x77000000),14,12,8,fullWidth=true)
+    }
+    internal val supplements=LinearLayout(context).apply {
+        orientation=VERTICAL;gravity=Gravity.TOP;visibility=View.GONE;tag="supplementary_row"
+        setPadding(dp(16),dp(16),dp(16),dp(16));isFocusable=false;descendantFocusability=FOCUS_BLOCK_DESCENDANTS
+        background=com.ufuq.dream.ContentBackdrop(this,intArrayOf(0x00000000,0x00000000),18,16,12)
+    }
+    private val weather=text(15f).apply { tag="weather_reading";compoundDrawablePadding=dp(6);maxLines=1;setAutoSizeTextTypeUniformWithConfiguration(12,15,1,android.util.TypedValue.COMPLEX_UNIT_SP) }
+    private val weatherRow=object:LinearLayout(context) {
+        override fun onMeasure(w:Int,h:Int){
+            val credit=if(weatherCredit.visibility==View.VISIBLE)weatherCredit.paint.measureText("Open-Meteo").toInt()+dp(8) else 0
+            val limit=((MeasureSpec.getSize(w)*.84f).toInt()-paddingLeft-paddingRight-credit).coerceAtLeast(dp(80))
+            if(weather.maxWidth!=limit)weather.maxWidth=limit
+            super.onMeasure(w,h)
+        }
+    }.apply {
+        orientation=HORIZONTAL;gravity=Gravity.CENTER;layoutDirection=View.LAYOUT_DIRECTION_RTL;tag="weather_row"
+        setPadding(dp(10),dp(5),dp(10),dp(5))
+        background=com.ufuq.dream.ContentBackdrop(this,intArrayOf(0x66000000,0x77000000),24,10,5)
+    }
     private val weatherCredit=text(10f).apply {
         tag="weather_credit"
         text=android.text.SpannableString("Open-Meteo").apply{setSpan(object:android.text.style.URLSpan("https://open-meteo.com/"){
@@ -98,11 +135,21 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
         background=com.ufuq.dream.ContentBackdrop(this,intArrayOf(0x05000000,0x99000000.toInt()),10,12,8)
         addView(header,LayoutParams(-1,-2));addView(prayerRow,LayoutParams(-1,-2).apply { topMargin=dp(3) })
         weatherRow.addView(weather,LayoutParams(-2,-2))
-        weatherRow.addView(weatherCredit,LayoutParams(-2,-2).apply { marginStart=dp(12) })
-        addView(weatherRow,LayoutParams(-1,-2).apply { topMargin=dp(4) })
-        supplements.addView(reflectionBlock,LayoutParams(-1,0,1f))
-        supplements.addView(football,LayoutParams(-1,dp(64)).apply{topMargin=dp(12)})
+        weatherRow.addView(weatherCredit,LayoutParams(-2,-2).apply { marginStart=dp(8) })
+        supplements.addView(weatherRow,LayoutParams(-2,-2).apply{gravity=Gravity.START})
+        supplements.addView(informationCard,LayoutParams(-1,-2))
+        informationCard.addView(footballCard,LayoutParams(-1,-2))
+        informationCard.addView(informationDivider,LayoutParams(-1,dp(1).coerceAtLeast(1)).apply{marginStart=dp(12);marginEnd=dp(12);topMargin=dp(5);bottomMargin=dp(5)})
+        reflectionBlock.setPadding(dp(12),dp(8),dp(12),dp(8))
+        reflectionBlock.background=null
+        informationCard.addView(reflectionBlock,LayoutParams(-1,-2))
 
+    }
+    internal fun alignEditorialWeather(onRight:Boolean){
+        // Anchor the compact capsule to the physical outside corner, independently
+        // of Arabic/English text direction. Card text still follows its locale.
+        val startOnRight=supplements.layoutDirection==View.LAYOUT_DIRECTION_RTL
+        (weatherRow.layoutParams as LayoutParams).gravity=if(onRight==startOnRight)Gravity.START else Gravity.END
     }
     fun start(){active=true;renderKey="";weatherSession.start();prayerApi.start();footballSession.start()}
     fun stop(){active=false;renderKey="";weatherSession.stop();prayerApi.stop();footballSession.stop();contentSession.stop()}
@@ -118,7 +165,7 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
         layoutDirection=com.ufuq.dream.AppLanguage.direction(s.language)
         weatherRow.layoutDirection=layoutDirection;prayerRow.layoutDirection=layoutDirection
         listOf(header,weather).plus(prayerLabels).forEach{it.textDirection=if(english)View.TEXT_DIRECTION_FIRST_STRONG_LTR else View.TEXT_DIRECTION_FIRST_STRONG_RTL}
-        val options=s.smart;visibility=if(options.prayers||options.weather||options.hasReflection||(options.football && FootballTeams.find(options.footballTeam)!=null))View.VISIBLE else View.GONE
+        val options=s.smart;visibility=if(options.prayers)View.VISIBLE else View.GONE
         fun digits(value: String)=if(s.latinDigits)value else value.map { if(it in '0'..'9') '٠'+(it-'0') else it }.joinToString("")
         val ink=com.ufuq.dream.NightMode.fade(theme.ink,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim))
         listOf(header,weather,weatherCredit).plus(prayerLabels).forEach { it.setTextColor(ink);it.setLinkTextColor(ink) }
@@ -156,13 +203,19 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
                 val highlights=PrayerHighlights.at(now,entries,next)
                 val factor=com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim)
                 prayerLabels.forEachIndexed { i,label ->
-                    label.text=entries.getOrNull(i)?.let { tr(it.name)+"\n\u2066"+com.ufuq.dream.TimePresentation.reading(it.instant,city.zoneId,s)+"\u2069" }?:"—"
+                    label.text=entries.getOrNull(i)?.let {
+                        val value="\uFFFC "+tr(it.name)+"\n\u2066"+com.ufuq.dream.TimePresentation.reading(it.instant,city.zoneId,s)+"\u2069"
+                        android.text.SpannableString(value).apply {
+                            val glyph=PrayerGlyph(i,com.ufuq.dream.NightMode.fade(if(i==highlights.current)theme.accent else theme.muted,factor)).apply {setBounds(0,0,dp(17),dp(17))}
+                            setSpan(android.text.style.ImageSpan(glyph,android.text.style.ImageSpan.ALIGN_BASELINE),0,1,android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        }
+                    }?:"—"
                     label.setTextColor(when(i){
                         highlights.current -> com.ufuq.dream.NightMode.fade(theme.accent,factor)
                         else -> ink
                     })
                     val status=when(i){highlights.current->if(english)"Current" else "الحالية";highlights.next->if(english)"Next" else "القادمة";else->""}
-                    label.contentDescription=listOf(label.text.toString(),status).filter{it.isNotBlank()}.joinToString(" · ")
+                    label.contentDescription=listOf(label.text.toString().replace("\uFFFC","").trim(),status).filter{it.isNotBlank()}.joinToString(" · ")
                 }
             } catch (_: Exception) { header.text=tr(if(!DeviceTime.valid(now.toEpochMilli()))"تحقق من تاريخ الجهاز ووقته" else "تعذّر التحقق من أوقات الصلاة");prayerLabels.forEach { it.text="—";it.contentDescription="—" } }
         }else{prayerApi.stop()}
@@ -191,7 +244,7 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
                 val details=listOf(
                     android.text.BidiFormatter.getInstance(!english).unicodeWrap(com.ufuq.dream.TimePresentation.reading(fixture.start,zone,s,true)),
                     digits(countdown),
-                    fixture.competition.takeIf{it.isNotBlank()}?.let{android.text.BidiFormatter.getInstance(!english).unicodeWrap(it)}
+                    fixture.competition.takeIf{it.isNotBlank()}?.let{android.text.BidiFormatter.getInstance(!english).unicodeWrap(FootballTeams.competition(it,s.language))}
                 ).filterNotNull()
                 val detail=details[Math.floorMod(now.epochSecond/60,details.size.toLong()).toInt()]
                 "${android.text.BidiFormatter.getInstance(!english).unicodeWrap(home)} × ${android.text.BidiFormatter.getInstance(!english).unicodeWrap(away)}\n$detail"+(if(!feed.fresh(now.toEpochMilli()))" · ${tr("جدول محفوظ")}" else "")
@@ -203,8 +256,26 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
                 else->"المباراة القادمة غير متاحة حاليًا"
             })
         }else footballSession.stop()
+        // Teams are the headline; competition/date/countdown is a quieter secondary line.
+        val fixtureText=football.text.toString()
+        val detailStart=(fixtureText.indexOf('\n')+1).coerceAtLeast(0)
+        if(detailStart<fixtureText.length){
+            football.text=android.text.SpannableString(fixtureText).apply {
+                setSpan(android.text.style.RelativeSizeSpan(.72f),detailStart,length,android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(android.text.style.ForegroundColorSpan(com.ufuq.dream.NightMode.fade(theme.muted,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim))),detailStart,length,android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
+        footballCard.visibility=football.visibility
+        footballCard.layoutDirection=layoutDirection
+        footballHeading.text=tr("المباراة القادمة")
+        footballHeading.setTextColor(com.ufuq.dream.NightMode.fade(theme.accent,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim)))
+        informationCard.visibility=if(football.visibility==View.VISIBLE||reflectionBlock.visibility==View.VISIBLE)View.VISIBLE else View.GONE
+        informationCard.layoutDirection=layoutDirection
+        informationDivider.visibility=if(football.visibility==View.VISIBLE&&reflectionBlock.visibility==View.VISIBLE)View.VISIBLE else View.GONE
+        informationDivider.setBackgroundColor(com.ufuq.dream.NightMode.fade((theme.muted and 0x00ffffff) or 0x38000000,com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim)))
+        (informationCard.layoutParams as LayoutParams).topMargin=if(options.weather)dp(10) else 0
         supplements.layoutDirection=layoutDirection
-        supplements.visibility=if(reflectionBlock.visibility==View.VISIBLE||football.visibility==View.VISIBLE)View.VISIBLE else View.GONE
+        supplements.visibility=if(options.weather||reflectionBlock.visibility==View.VISIBLE||football.visibility==View.VISIBLE)View.VISIBLE else View.GONE
         weatherRow.visibility=if(options.weather)View.VISIBLE else View.GONE
         weather.visibility=weatherRow.visibility;weatherCredit.visibility=weather.visibility
         if(!options.weather) { weatherSession.stop();if(active)weatherSession.start();return }
@@ -212,12 +283,11 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
         val policy=WeatherConsent.policy(options,savedOptions)
         val permitted=policy!=null
         if(active&&policy!=null)weatherSession.refresh(city,millis,policy.intervalMinutes,true)
-        val reading=weatherSession.reading(city,millis)
+        val reading=weatherSession.reading(city,millis)?.takeUnless{it.stale(millis)}
         weatherCredit.visibility=if(reading!=null)View.VISIBLE else View.GONE
         // Never fabricate weather values, even in a staged preview.
         val status=when {
             !DeviceTime.valid(millis)->"تحقق من تاريخ الجهاز ووقته"
-            reading!=null && reading.stale(millis)->"قراءة سابقة"
             reading!=null->""
             !permitted->"احفظ اختيارك لعرض الطقس"
             weatherSession.loading->"جارٍ تحميل الطقس"
@@ -225,7 +295,7 @@ class SmartPanel @JvmOverloads constructor(context: Context, private val changed
         }
         val temperature=if(reading!=null)"\u2066${reading.temperature(options.fahrenheit).roundToInt()}°${if(options.fahrenheit){if(english)"F" else "ف"} else {if(english)"C" else "م"}}\u2069 · ${tr(WeatherParsing.condition(reading.code))}" else ""
         weather.text=digits(listOf(tr(city.arabic),temperature,tr(status)).filter{it.isNotBlank()}.joinToString(" · "))
-        if(reading!=null)weather.setCompoundDrawablesRelative(WeatherGlyph(reading.code,ink,reading.daylight).apply { setBounds(0,0,dp(28),dp(28)) },null,null,null)
+        if(reading!=null)weather.setCompoundDrawablesRelative(WeatherGlyph(reading.code,com.ufuq.dream.NightMode.fade(WeatherGlyph.colorFor(reading.code,reading.daylight),com.ufuq.dream.NightMode.textFactor(java.util.Date.from(now),s.nightDim)),reading.daylight).apply { setBounds(0,0,dp(20),dp(20)) },null,null,null)
         else weather.setCompoundDrawablesRelative(null,null,null,null)
     }
 }

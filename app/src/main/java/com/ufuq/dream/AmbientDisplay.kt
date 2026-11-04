@@ -20,7 +20,7 @@ class AmbientDisplay @JvmOverloads constructor(
  internal val smartPanel=com.ufuq.dream.smart.SmartPanel(context){if(alive)refresh()}
  private var measuredFooter=0
  private fun widgetZones(w:Int,h:Int)=com.ufuq.dream.smart.SmartLayout.zones(w,h,resources.displayMetrics.density,settings,measuredFooter)
- private fun hasEditorial()=settings.smart.hasReflection || (settings.smart.football && com.ufuq.dream.smart.FootballTeams.find(settings.smart.footballTeam)!=null)
+ private fun hasEditorial()=settings.smart.weather || settings.smart.hasReflection || (settings.smart.football && com.ufuq.dream.smart.FootballTeams.find(settings.smart.footballTeam)!=null)
  private fun clockOnRight()=when {
   settings.clockPosition in 0..8 && settings.clockPosition%3!=1 -> settings.clockPosition%3==2
   else -> currentPhoto.composition.left>.5f
@@ -149,6 +149,7 @@ class AmbientDisplay @JvmOverloads constructor(
  val panel=widgetZones(width,height).panel
  smartPanel.measure(MeasureSpec.makeMeasureSpec(panel.width().coerceAtLeast(0),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(panel.height().coerceAtLeast(0),MeasureSpec.EXACTLY))
  val editorial=editorialRect(width,height)
+ smartPanel.alignEditorialWeather(editorial.centerX()>width/2)
  smartPanel.supplements.measure(MeasureSpec.makeMeasureSpec(editorial.width().coerceAtLeast(0),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(editorial.height().coerceAtLeast(0),MeasureSpec.EXACTLY))
  setMeasuredDimension(width,height)
  }

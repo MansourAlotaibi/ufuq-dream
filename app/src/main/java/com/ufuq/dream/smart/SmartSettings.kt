@@ -36,7 +36,7 @@ data class SmartSettings(
     val prayerSource: Int = 0,
     val reflectionMode: Int = 0, val football: Boolean = false, val footballTeam: String = "none",
     val adhkar: Boolean = false, val occasion: Int = 0,
-    val occasionName: String = "", val occasionDate: String = ""
+    val occasionName: String = "", val occasionDate: String = "", val contentUpdates: Boolean = false
 ) : java.io.Serializable {
     val reflectionChoice: Int get() = if(adhkar && reflectionMode in 0..3)when(reflectionMode){0->4;1->5;2->6;else->7} else reflectionMode
     val hasReflection: Boolean get() = reflectionChoice in 1..7
@@ -52,11 +52,11 @@ data class SmartSettings(
             FootballTeams.find(p.getString("smart_football_team","none").orEmpty())?.id?:"none",
             p.getBoolean("smart_adhkar",false), p.getInt("smart_occasion",0).let{if(it in 0..7)it else 0},
             com.ufuq.dream.GreetingText.clean(p.getString("smart_occasion_name","").orEmpty()),
-            p.getString("smart_occasion_date","").orEmpty().take(10)
+            p.getString("smart_occasion_date","").orEmpty().take(10), p.getBoolean("reading_updates",false)
         ).let{it.copy(reflectionMode=it.reflectionChoice,adhkar=false)}
     }
     fun write(e: SharedPreferences.Editor) {
-        e.putBoolean("smart_adhkar",false).putInt("smart_occasion",occasion.let{if(it in 0..7)it else 0})
+        e.putBoolean("reading_updates",contentUpdates).putBoolean("smart_adhkar",false).putInt("smart_occasion",occasion.let{if(it in 0..7)it else 0})
             .putString("smart_occasion_name",com.ufuq.dream.GreetingText.clean(occasionName)).putString("smart_occasion_date",occasionDate.take(10))
             .putInt("smart_reflection_mode",reflectionChoice.let{if(it in 0..7)it else 0})
             .putBoolean("smart_football",football && FootballTeams.find(footballTeam)!=null)

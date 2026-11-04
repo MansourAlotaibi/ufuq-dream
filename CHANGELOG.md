@@ -1,3 +1,10 @@
+# 0.12.1-rc1 — Quotation/citation overlap hotfix
+
+- Fix the long-verse/citation overlap reported on Android9: remove manual placement inside the text area; measure the actual TextView metrics and keep text/citation in separate centered vertical flow with a4dp gap.
+- Bound and cache font fitting; retain complete verbatim text, source links and signed pack version2. No library content, preferences, design mode, media or network policy changes.
+- Add native post-draw/replacement regression coverage for every21 text at narrow/wide sizes and normal/enlarged font scales on API28/34. Earlier tests inspected pre-draw text height only; the new check fails on the previous layout.
+- Package/signing identity unchanged; public versionCode37. Matching private dev1 uses code36. Remains RC pending physical visual confirmation and existing production/endurance/signing-key recovery gates.
+
 # 0.12.0-rc1 — Reviewed offline text library
 
 - 21 sourced Arabic entries: 9 complete Quran verses, 7 hadith matn, 5 remembrance formulas. The previous nine entries are unchanged. User approved the twelve additions before integration.

@@ -1,8 +1,8 @@
 # Ufuq Dream — Saudi cinematic ambient display
 
-[العربية](README.md) · **[Download 0.12.0-rc1 APK](https://github.com/MansourAlotaibi/ufuq-dream/releases/tag/v0.12.0-rc1)** · [Install](docs/INSTALL.md)
+[العربية](README.md) · **[Download 0.12.1-rc1 APK](https://github.com/MansourAlotaibi/ufuq-dream/releases/tag/v0.12.1-rc1)** · [Install](docs/INSTALL.md)
 
-Free Android TV / Google TV screensaver, Android 9 / API 28+, landscape and D-pad. No ads, accounts or analytics. The previous baseline was owner-accepted on a first-generation Mi Box S. The matching 0.12 development update installed successfully and preserved settings; owner visual acceptance of the expanded texts is pending. This remains a public release candidate: independent signing-key recovery and isolated production-signed TV/wider-hardware acceptance are not yet verified.
+Free Android TV / Google TV screensaver, Android 9 / API 28+, landscape and D-pad. No ads, accounts or analytics. The previous baseline was owner-accepted on a first-generation Mi Box S. The matching 0.12.1 update fixes quotation/citation overlap using measured vertical flow. Physical visual confirmation of the fix remains pending. This remains a public release candidate: independent signing-key recovery and isolated production-signed TV/wider-hardware acceptance are not yet verified.
 
 ## Included
 
@@ -30,7 +30,7 @@ No personal video is bundled: redistribution permission for privately tested foo
 
 Download the signed APK and SHA256SUMS, verify integrity, install using your TV's trusted installer, open Ufuq, customize and Save. Select it in native Screensaver/Daydream settings. Manufacturers can restrict selection; no ADB or launcher replacement is required. Updates from prior production releases keep the same production certificate. Debug installations use a different key: never uninstall or clear data simply to bypass a mismatch. [Upgrade/rollback](docs/UPGRADE-ROLLBACK.md).
 
-Build with JDK 17/21 and SDK/build-tools 34: `./gradlew assembleDebug assembleRelease lintDebug lintRelease test`. CI runs Temurin 17, limited offline source/media gates and unit tests. Host tests do not certify TV decoder performance or endurance. [Release results/limits](docs/0.12.0/RELEASE.md).
+Build with JDK 17/21 and SDK/build-tools 34: `./gradlew assembleDebug assembleRelease lintDebug lintRelease test`. CI runs Temurin 17, limited offline source/media gates and unit tests. Host tests do not certify TV decoder performance or endurance. [Release results/limits](docs/0.12.1/RELEASE.md).
 
 Network widgets default off and require explicit Save. Only selected city-centre coordinates/calculation parameters or team IDs are sent while visible. No precise location permission, tracking, background listener or media upload. [Privacy](PRIVACY.md).
 

@@ -14,3 +14,6 @@
 
 ## 0.12 reviewed library
 0.12.0-rc1 production versionCode35 preserves public production signing and preferences. The private matching dev2 versionCode34 uses the existing separate debug key; publication does not install the production APK on that TV. Library updates default OFF without overwriting other choices. Bundled pack version2 retains all original nine entries and adds twelve approved entries. Content cache and update state are separate from user settings. Verified newer cached content cannot be replaced by an older network pack. A compiled trusted fallback remains available if the cache is corrupt. Do not clear data or force a downgrade; keep earlier artifacts and prefer a same-key higher-code forward fix.
+
+## 0.12.1 citation layout hotfix
+Production versionCode37 updates previous same-certificate public APKs without preference changes. Text pack version2, cached content and update consent are unchanged. The separate private debug counterpart code36 updates the owner’s debug installation. Preserve previous APK/source/preferences and prefer a same-key higher-code forward fix. No data-clearing or forced downgrade is recommended.

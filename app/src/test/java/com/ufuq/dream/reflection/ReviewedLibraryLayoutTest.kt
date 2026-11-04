@@ -48,4 +48,33 @@ class ReviewedLibraryLayoutTest {
             }finally{display.stop()}
         }
     }
+    @Test fun bodyAndCitationStaySeparateAfterDrawingAndReplacingLongVerses() {
+        val metrics=context.resources.displayMetrics
+        for(widthDp in listOf(400,590))for(scale in listOf(1f,1.3f)) {
+            val config=android.content.res.Configuration(context.resources.configuration).apply { fontScale=scale }
+            val themed=context.createConfigurationContext(config)
+            val view=ReflectionView(themed)
+            val width=(widthDp*metrics.density).toInt()
+            val height=(230*metrics.density).toInt()
+            val bitmap=android.graphics.Bitmap.createBitmap(width,height,android.graphics.Bitmap.Config.ARGB_8888)
+            try {
+                for(entry in ContentRepository.entries(context).sortedByDescending{it.text.length}) {
+                    view.render(entry,"ar",ThemeManager.get(1),1f)
+                    repeat(2) {
+                        view.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(height,View.MeasureSpec.EXACTLY))
+                        view.layout(0,0,width,height)
+                        view.draw(android.graphics.Canvas(bitmap))
+                        val body=view.findViewWithTag<TextView>("reflection_original")
+                        val ref=view.findViewWithTag<TextView>("reflection_reference")
+                        assertEquals(entry.text,body.text.toString())
+                        assertTrue("Body overlaps reference: ${entry.source} $widthDp / $scale",body.bottom<ref.top)
+                        assertTrue("Body clipped: ${entry.source} $widthDp / $scale: ${body.layout.height} > ${body.height}",body.layout.height<=body.height)
+                        assertEquals(entry.text.length,body.layout.getLineEnd(body.layout.lineCount-1))
+                        assertTrue("Reference outside container",ref.bottom<=view.height)
+                    }
+                }
+            }finally{bitmap.recycle()}
+        }
+    }
+
 }

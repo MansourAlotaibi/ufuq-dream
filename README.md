@@ -4,11 +4,11 @@
 
 A free, open-source Saudi cinematic screensaver for Android TV. Native Kotlin Views, Arabic/English, offline core, no ads, accounts or analytics.
 
-**[تحميل APK / Download APK](https://github.com/MansourAlotaibi/ufuq-dream/releases/tag/v0.12.0-rc1)** · [التثبيت / Installation](docs/INSTALL.md) · [English guide](README.en.md) · [حقوق المحتوى / Credits](THIRD_PARTY_NOTICES.md)
+**[تحميل APK / Download APK](https://github.com/MansourAlotaibi/ufuq-dream/releases/tag/v0.12.1-rc1)** · [التثبيت / Installation](docs/INSTALL.md) · [English guide](README.en.md) · [حقوق المحتوى / Credits](THIRD_PARTY_NOTICES.md)
 
 ## الإصدار الحالي
 
-**0.12.0-rc1 — مكتبة نصوص موثّقة مع تحديث اختياري.** تتضمن 21 نصًا، ويمكن تشغيل فحص المكتبة كل 15 يومًا عند توفر الإنترنت. ثُبّتت النسخة التطويرية المقابلة على Mi Box S / Android 9 مع بقاء الإعدادات؛ المراجعة البصرية للنصوص الجديدة ما زالت مفتوحة. لا نعدّ نجاح البناء بديلًا عن تجربة التلفزيون. توقيع الإنتاج العام ثابت ومختلف عن نسخة الاختبار. يبقى الإصدار RC إلى حين استكمال الاستعادة المستقلة لمفتاح التوقيع واختبارات الإنتاج والأجهزة الأوسع. [الفحص والقيود](docs/0.12.0/RELEASE.md).
+**0.12.1-rc1 — إصلاح تداخل الآية ومرجعها.** أصبح النص والمرجع في ترتيب عمودي مستقل مع قياس فعلي للخط ومسافة فاصلة؛ لا اختصار أو تغيير للنصوص. تتضمن 21 نصًا، ويمكن تشغيل فحص المكتبة كل 15 يومًا عند توفر الإنترنت. ثُبّتت النسخة التطويرية المقابلة على Mi Box S / Android 9 مع بقاء الإعدادات؛ تأكيد الإصلاح بصريًا على التلفزيون ما زال مطلوبًا. لا نعدّ نجاح البناء بديلًا عن تجربة التلفزيون. توقيع الإنتاج العام ثابت ومختلف عن نسخة الاختبار. يبقى الإصدار RC إلى حين استكمال الاستعادة المستقلة لمفتاح التوقيع واختبارات الإنتاج والأجهزة الأوسع. [الفحص والقيود](docs/0.12.1/RELEASE.md).
 
 ## التجربة
 
